@@ -1,0 +1,43 @@
+styles:
+  cyberpunk:
+    display_name: Cyberpunk
+    stage1_prompt: "Convert this cyberpunk portrait into a natural realistic photograph while preserving identity, pose, composition, and background structure."
+    stage2_prompt: "Refine as an unstylized natural photo with realistic skin, lighting, and texture; preserve identity, pose, composition, and background structure."
+    negative_prompt: "cyberpunk, neon illustration, painted, cartoon, distorted face, changed identity, changed pose, altered composition"
+    canny_low: 100
+    canny_high: 200
+  3d_cartoon:
+    display_name: 3D Cartoon
+    stage1_prompt: "Convert this 3D cartoon face into a natural realistic photograph while preserving identity, pose, composition, and background structure."
+    stage2_prompt: "Refine as an unstylized natural photo with realistic anatomy, skin, and lighting; preserve identity, pose, composition, and background structure."
+    negative_prompt: "3d render, cartoon, plastic skin, illustration, changed identity, changed pose, altered composition"
+    canny_low: 80
+    canny_high: 180
+  comic:
+    display_name: Comic
+    stage1_prompt: "Convert this comic portrait into a natural realistic photograph while preserving identity, pose, composition, and background structure."
+    stage2_prompt: "Remove inked and halftone styling and refine realistic skin and lighting without changing identity, pose, composition, or background structure."
+    negative_prompt: "comic, manga, line art, halftone, illustration, changed identity, changed pose, altered composition"
+    canny_low: 90
+    canny_high: 190
+  ink:
+    display_name: Ink
+    stage1_prompt: "Convert this ink-style portrait into a natural realistic photograph while preserving identity, pose, composition, and background structure."
+    stage2_prompt: "Remove ink strokes and refine natural photographic skin, lighting, and texture while preserving identity and structure."
+    negative_prompt: "ink drawing, brush strokes, monochrome illustration, changed identity, changed pose, altered composition"
+    canny_low: 70
+    canny_high: 160
+  watercolor:
+    display_name: Watercolor
+    stage1_prompt: "Convert this watercolor portrait into a natural realistic photograph while preserving identity, pose, composition, and background structure."
+    stage2_prompt: "Remove watercolor pigment and paper texture and refine a natural photo while preserving identity, pose, composition, and background structure."
+    negative_prompt: "watercolor, painting, paper texture, illustration, changed identity, changed pose, altered composition"
+    canny_low: 60
+    canny_high: 150
+  ghibli:
+    display_name: Ghibli-inspired Animation
+    stage1_prompt: "Convert this animation-style portrait into a natural realistic photograph while preserving identity, pose, composition, and background structure."
+    stage2_prompt: "Remove animation styling and refine natural photographic anatomy, skin, and light while preserving identity and scene structure."
+    negative_prompt: "anime, animation, cel shading, illustration, changed identity, changed pose, altered composition"
+    canny_low: 80
+    canny_high: 170

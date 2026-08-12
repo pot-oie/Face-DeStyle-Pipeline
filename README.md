@@ -1,0 +1,117 @@
+# Face-DeStyle-Pipeline
+
+A compact, reproducible research scaffold for turning stylized face images into natural-looking
+photographs while retaining identity, pose, composition, and background structure.
+
+> “This repository is a compact and independent reproduction developed from an undergraduate
+> innovation project under the same research direction as DeStyle. It focuses on face-domain
+> destylization, structural conditioning, and quality filtering. It is not the official
+> implementation of DeStyle-350K.”
+
+## Research questions and scope
+
+The planned 1–2 week study asks whether a two-stage destylization pipeline benefits from
+style-adaptive prompts and structural controls. It compares generic versus category-adaptive
+prompts, prompt-only generation, whole-image Canny, face/background region-aware Canny, and an
+optional pose condition. Results will be judged on content preservation, identity preservation,
+style removal, and human pass rate. A dual-threshold gate produces only accepted
+`<destylized content, style reference, original style target>` triplets.
+
+This repository owns code, small public examples, configuration, tests, and documentation. It
+does not contain DeStyle-350K, model weights, full datasets, private faces, caches, checkpoints, or
+bulk outputs. It is an independent undergraduate reproduction in the same research direction,
+not an official DeStyle or DeStyle-350K implementation.
+
+## Implemented versus planned
+
+Implemented locally: strict Pydantic records, JSONL validation, stable metadata IDs, OpenCV Canny,
+manual/center masks for smoke testing, a no-op copy backend, explicit pixel similarity, dual
+threshold filtering, deterministic triplet sampling, CSV export, and unit tests.
+
+Planned for AutoDL: actual diffusers inference, ControlNet or equivalent conditioning, production
+face parsing, pose extraction, DINO/CLIP content similarity, ArcFace identity similarity, and VLM
+style-removal scoring. Their modules intentionally raise `NotImplementedError`; the copy backend is
+only plumbing validation and is not an experimental result.
+
+## Installation
+
+Use CPython 3.10. The normal local install has no Torch or GPU stack:
+
+```bash
+python -m pip install -e ".[dev]"
+```
+
+On an AutoDL GPU host, after selecting a CUDA-compatible PyTorch build:
+
+```bash
+python -m pip install -e ".[gpu,dev]"
+```
+
+No command in this repository downloads a model automatically. See
+[`docs/autodl_setup.md`](docs/autodl_setup.md).
+
+## Quick Start: local no-GPU smoke test
+
+```bash
+python scripts/check_environment.py
+python scripts/prepare_data.py --input-dir data/samples --style-category comic \
+  --output outputs/metadata.jsonl
+python scripts/run_destylization.py --metadata outputs/metadata.jsonl \
+  --output-dir outputs/copied --records-output outputs/destylized.jsonl
+python scripts/evaluate_pairs.py --records outputs/destylized.jsonl \
+  --output outputs/evaluations.jsonl
+python scripts/filter_pairs.py --evaluations outputs/evaluations.jsonl \
+  --output outputs/filtered.jsonl
+python scripts/build_triplets.py --evaluations outputs/filtered.jsonl \
+  --output outputs/triplets.jsonl --seed 42 -k 1
+```
+
+`smoke_test_similarity` is a normalized pixel similarity, never DINO, ArcFace, CLIP, or VLM. The
+smoke evaluator uses an explicitly labeled, unmeasured style-removal sentinel solely so all stages
+can be exercised. Do not report it as a scientific metric.
+
+## Data formats
+
+Every stage uses one validated JSON object per line. Core types are `ImageRecord`,
+`DestylizationRecord`, `EvaluationRecord`, and `TripletRecord` in
+`src/face_destyle/schemas.py`. A source example is in `data/metadata.example.jsonl`. Triplets store:
+
+```text
+destylized_content_path, style_reference_path, original_style_target_path,
+style_category, target_source_id, reference_source_id
+```
+
+Only accepted samples are used. Reference and target share a style category but cannot share a
+`source_id`.
+
+## Planned evaluation and ablations
+
+Formal evaluation will calibrate thresholds against a human-annotated validation set and report:
+
+- DINO/CLIP content preservation;
+- ArcFace identity preservation;
+- VLM style removal;
+- human acceptance rate.
+
+The planned factorial comparisons are generic versus adaptive prompts; prompt-only versus global
+Canny versus face/background region-aware Canny; and the optional addition of pose control. Seeds,
+model revisions, prompts, control strengths, and threshold calibration must be recorded.
+
+## Repository layout
+
+```text
+configs/                inference, style, and provisional evaluation settings
+scripts/                one CLI per pipeline stage
+src/face_destyle/       schemas, pipelines, controls, metrics, filtering, and data logic
+data/                   documentation, ignored private data, and tiny local samples
+docs/                   method, protocol, limitations, AutoDL setup, experiment plan
+tests/                  lightweight unit tests
+outputs/, results/      ignored generated artifacts, except placeholders
+```
+
+## Privacy, copyright, and licensing
+
+Do not commit faces without documented authorization and an appropriate research-use basis. Respect
+dataset terms, likeness/privacy rights, copyright, and removal requests. Generated outputs can still
+contain identifying information. Code is licensed under Apache-2.0; that license does not grant
+rights to datasets, model weights, faces, trademarks, or third-party outputs.
