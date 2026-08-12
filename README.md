@@ -24,14 +24,16 @@ not an official DeStyle or DeStyle-350K implementation.
 
 ## Implemented versus planned
 
-Implemented locally: strict Pydantic records, JSONL validation, stable metadata IDs, OpenCV Canny,
-manual/center masks for smoke testing, a no-op copy backend, explicit pixel similarity, dual
-threshold filtering, deterministic triplet sampling, CSV export, and unit tests.
+Implemented: strict Pydantic records, JSONL validation, stable metadata IDs, OpenCV Canny,
+manual/center masks for smoke testing, a no-op copy backend, a prompt-only SDXL image-to-image
+baseline for AutoDL, explicit pixel similarity, dual-threshold filtering, deterministic triplet
+sampling, CSV export, and unit tests. Diffusers tests inject a mock pipeline and never download a
+model.
 
-Planned for AutoDL: actual diffusers inference, ControlNet or equivalent conditioning, production
-face parsing, pose extraction, DINO/CLIP content similarity, ArcFace identity similarity, and VLM
-style-removal scoring. Their modules intentionally raise `NotImplementedError`; the copy backend is
-only plumbing validation and is not an experimental result.
+Planned for AutoDL: ControlNet or equivalent conditioning, production face parsing, pose
+extraction, DINO/CLIP content similarity, ArcFace identity similarity, and VLM style-removal
+scoring. The copy backend is only plumbing validation and is not an experimental result. The first
+Diffusers baseline is prompt-only and must not be described as a controlled or evaluated method.
 
 ## Installation
 
@@ -69,6 +71,30 @@ python scripts/build_triplets.py --evaluations outputs/filtered.jsonl \
 `smoke_test_similarity` is a normalized pixel similarity, never DINO, ArcFace, CLIP, or VLM. The
 smoke evaluator uses an explicitly labeled, unmeasured style-removal sentinel solely so all stages
 can be exercised. Do not report it as a scientific metric.
+
+## First AutoDL Diffusers baseline
+
+The first GPU baseline uses `stabilityai/stable-diffusion-xl-base-1.0` at revision
+`462165984030d82259a11f4367a4eed129e94a7b` through `AutoPipelineForImage2Image`. It performs
+prompt-only SDXL img2img: no Canny, ControlNet, face mask, pose, refiner, or research metric is
+applied. Read [`docs/autodl_setup.md`](docs/autodl_setup.md) before downloading weights.
+
+Single-image example:
+
+```bash
+python scripts/run_destylization.py \
+  --input /path/to/authorized_comic_face.png \
+  --style-category comic \
+  --record-id demo-001 \
+  --backend diffusers \
+  --config configs/inference.yaml \
+  --styles-config configs/styles.yaml \
+  --output-dir /root/autodl-tmp/face-destyle/outputs/single \
+  --records-output /root/autodl-tmp/face-destyle/outputs/single/record.jsonl
+```
+
+For JSONL batch input, replace `--input`, `--style-category`, and `--record-id` with
+`--metadata /path/to/metadata.jsonl`. Output locations always come from CLI arguments.
 
 ## Data formats
 
