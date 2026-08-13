@@ -1,0 +1,55 @@
+schema_version: 1
+defaults:
+  seed: 42
+  prompt_mode: adaptive
+  generator: sdxl_base
+  resolution: [768, 768]
+  local_files_only: true
+
+# Primary comparisons are predeclared, not reported results. Each GPU run must record its actual
+# model paths, revisions, prompts, runtime, peak VRAM, failures, and manual-audit status.
+experiments:
+  prompt_generic:
+    prompt_mode: generic
+    structural_control: none
+  prompt_adaptive:
+    prompt_mode: adaptive
+    structural_control: none
+  global_canny:
+    structural_control: canny
+    control_model: canny_controlnet
+    face_region_mode: none
+  region_canny:
+    structural_control: region_canny
+    control_model: canny_controlnet
+    face_region_mode: face_parsing
+  canny_plus_pose:
+    structural_control: canny_pose
+    control_models: [canny_controlnet, openpose_controlnet]
+    pose_extractor: dwpose
+
+extensions:
+  depth_control:
+    structural_control: depth
+    control_model: depth_controlnet
+    depth_extractor: depth_anything_v2_large
+  refiner_second_stage:
+    refiner: sdxl_refiner
+  fixed_vae:
+    vae: sdxl_vae_fp16_fix
+  identity_conditioned:
+    identity_control: instantid
+  generator_realvisxl:
+    generator: realvisxl_v5
+
+evaluation:
+  primary:
+    content: dinov2_base
+    semantic: clip_vit_l14
+    identity: insightface_buffalo_l
+    style_removal: qwen25_vl_3b
+  robustness_audit:
+    content: dinov2_large
+    semantic: siglip_so400m
+    style_removal: qwen25_vl_7b
+    caption_audit: florence2_large

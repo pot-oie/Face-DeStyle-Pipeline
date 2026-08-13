@@ -33,6 +33,8 @@ Point caches at the persistent data disk (replace `/data` if the instance uses a
 
 ```bash
 export HF_HOME=/data/cache/huggingface
+export HF_HUB_CACHE="$HF_HOME/hub"
+export HUGGINGFACE_HUB_CACHE="$HF_HUB_CACHE"
 export TORCH_HOME=/data/cache/torch
 export PIP_CACHE_DIR=/data/cache/pip
 ```
@@ -44,7 +46,17 @@ git clone <your-repository-url> ~/code/Face-DeStyle-Pipeline
 cd ~/code/Face-DeStyle-Pipeline
 python -m pip install -e ".[gpu,dev]"
 python scripts/check_environment.py --gpu
+python scripts/check_model_assets.py --config configs/models.yaml
 ```
+
+The optional evaluation runtime is intentionally separate from the first generation baseline:
+
+```bash
+python -m pip install -e ".[gpu,evaluation,dev]"
+```
+
+It adds InsightFace, ONNX Runtime GPU, and Qwen vision helpers. Install it when implementing the
+formal evaluators, not merely to check model files.
 
 Confirm the chosen PyTorch build matches the server CUDA/driver combination. This repository does
 not download models; use the model provider's documented authentication and pin exact revisions.
@@ -73,7 +85,8 @@ The backend refuses to load real weights unless `HF_HOME` is set. If
 ```bash
 export FACE_DESTYLE_ROOT=/root/autodl-tmp/face-destyle
 export HF_HOME="$FACE_DESTYLE_ROOT/cache/huggingface"
-export HUGGINGFACE_HUB_CACHE="$HF_HOME/hub"
+export HF_HUB_CACHE="$HF_HOME/hub"
+export HUGGINGFACE_HUB_CACHE="$HF_HUB_CACHE"
 export TORCH_HOME="$FACE_DESTYLE_ROOT/cache/torch"
 export PIP_CACHE_DIR="$FACE_DESTYLE_ROOT/cache/pip"
 
@@ -87,9 +100,14 @@ python scripts/run_destylization.py \
   --records-output "$FACE_DESTYLE_ROOT/outputs/prompt-only/records.jsonl"
 ```
 
-The first command that uses `backend=diffusers` downloads the pinned model into `HF_HOME`. Run one
-authorized image first, monitor `nvidia-smi`, inspect the output manually, and record peak memory.
-Do not start a batch until that check succeeds. This baseline does not constitute a research result.
+The backend defaults to `local_files_only: true` and loads the pinned snapshot already present in
+`HF_HOME`; it fails instead of downloading if that snapshot is incomplete. Run one authorized image
+first, monitor `nvidia-smi`, inspect the output manually, and record peak memory. Do not start a
+batch until that check succeeds. This baseline does not constitute a research result.
+
+The purchased-data-disk layout used by the current inventory is represented in
+`configs/models.yaml`. Local paths are relative to `FACE_DESTYLE_ROOT`; cached paths use `HF_HOME`.
+See `docs/model_assets.md` for license notes and `docs/HANDOFF_AUTODL.md` for the next GPU session.
 
 ## Synchronization and backup
 

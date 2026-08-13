@@ -31,6 +31,7 @@ class DiffusersSettings:
     batch_size: int = 1
     prompt_mode: str = "adaptive"
     enable_attention_slicing: bool = True
+    local_files_only: bool = True
 
     @classmethod
     def from_mapping(cls, values: dict[str, Any]) -> "DiffusersSettings":
@@ -83,11 +84,16 @@ class DiffusersBackend(DestylizationBackend):
                 "HF_HOME must point to persistent server storage before loading model weights."
             )
         root = Path(hf_home).expanduser().resolve()
-        cache = Path(os.environ.get("HUGGINGFACE_HUB_CACHE", root / "hub")).expanduser().resolve()
+        cache_value = (
+            os.environ.get("HF_HUB_CACHE")
+            or os.environ.get("HUGGINGFACE_HUB_CACHE")
+            or root / "hub"
+        )
+        cache = Path(cache_value).expanduser().resolve()
         try:
             cache.relative_to(root)
         except ValueError as exc:
-            raise RuntimeError("HUGGINGFACE_HUB_CACHE must be located inside HF_HOME") from exc
+            raise RuntimeError("HF_HUB_CACHE must be located inside HF_HOME") from exc
         cache.mkdir(parents=True, exist_ok=True)
         return cache
 
@@ -120,6 +126,7 @@ class DiffusersBackend(DestylizationBackend):
                 "revision": self.settings.revision,
                 "use_safetensors": True,
                 "variant": "fp16",
+                "local_files_only": self.settings.local_files_only,
             }
             self._pipeline = self._pipeline_factory(self.settings.model_id, kwargs)
         return self._pipeline
@@ -188,5 +195,6 @@ class DiffusersBackend(DestylizationBackend):
                 "width": self.settings.width,
                 "dtype": self.settings.dtype,
                 "device": self.settings.device,
+                "local_files_only": self.settings.local_files_only,
             },
         )

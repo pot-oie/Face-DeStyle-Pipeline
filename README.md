@@ -30,10 +30,12 @@ baseline for AutoDL, explicit pixel similarity, dual-threshold filtering, determ
 sampling, CSV export, and unit tests. Diffusers tests inject a mock pipeline and never download a
 model.
 
-Planned for AutoDL: ControlNet or equivalent conditioning, production face parsing, pose
-extraction, DINO/CLIP content similarity, ArcFace identity similarity, and VLM style-removal
-scoring. The copy backend is only plumbing validation and is not an experimental result. The first
-Diffusers baseline is prompt-only and must not be described as a controlled or evaluated method.
+Declared for AutoDL, but not yet GPU-verified: ControlNet conditioning, production face parsing,
+pose/depth extraction, DINO/CLIP/SigLIP content or semantic similarity, ArcFace identity
+similarity, and VLM style-removal scoring. `configs/models.yaml` records expected server assets and
+licenses; `configs/experiments.yaml` declares primary and extension comparisons. The copy backend
+is only plumbing validation and is not an experimental result. The first Diffusers baseline is
+prompt-only and must not be described as a controlled or evaluated method.
 
 ## Installation
 
@@ -51,6 +53,13 @@ python -m pip install -e ".[gpu,dev]"
 
 No command in this repository downloads a model automatically. See
 [`docs/autodl_setup.md`](docs/autodl_setup.md).
+
+To audit already-downloaded server assets without importing Torch or contacting a model host:
+
+```bash
+python scripts/check_model_assets.py --config configs/models.yaml
+python scripts/list_experiments.py --seed 42 --json
+```
 
 ## Quick Start: local no-GPU smoke test
 
@@ -126,7 +135,7 @@ model revisions, prompts, control strengths, and threshold calibration must be r
 ## Repository layout
 
 ```text
-configs/                inference, style, and provisional evaluation settings
+configs/                inference, styles, model registry, and experiment declarations
 scripts/                one CLI per pipeline stage
 src/face_destyle/       schemas, pipelines, controls, metrics, filtering, and data logic
 data/                   documentation, ignored private data, and tiny local samples

@@ -11,7 +11,19 @@ def main() -> int:
     parser.add_argument("--gpu", action="store_true", help="Also report optional GPU packages.")
     args = parser.parse_args()
     required = ["PIL", "cv2", "numpy", "pandas", "pydantic", "yaml", "tqdm"]
-    optional = ["torch", "diffusers", "transformers", "accelerate"] if args.gpu else []
+    optional = (
+        [
+            "torch",
+            "diffusers",
+            "transformers",
+            "accelerate",
+            "safetensors",
+            "onnxruntime",
+            "insightface",
+        ]
+        if args.gpu
+        else []
+    )
     print(f"Python: {platform.python_version()}")
     for package in required + optional:
         status = "available" if importlib.util.find_spec(package) else "missing"

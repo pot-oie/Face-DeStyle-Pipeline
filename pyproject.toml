@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "face-destyle-pipeline"
-version = "0.2.0"
+version = "0.3.0"
 description = "A compact reproducible pipeline for face-domain destylization research"
 readme = "README.md"
 requires-python = ">=3.10,<3.13"
@@ -27,6 +27,12 @@ gpu = [
   "diffusers>=0.30",
   "transformers>=4.44",
   "accelerate>=0.33",
+  "safetensors>=0.4",
+]
+evaluation = [
+  "insightface>=0.7",
+  "onnxruntime-gpu>=1.18",
+  "qwen-vl-utils>=0.0.8",
 ]
 
 [project.scripts]

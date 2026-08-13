@@ -12,3 +12,4 @@ strength: 0.45
 batch_size: 1
 prompt_mode: adaptive
 enable_attention_slicing: true
+local_files_only: true

@@ -57,12 +57,14 @@ def test_mock_pipeline_runs_without_downloading_or_gpu(tmp_path):
     assert len(factory_calls) == 1
     assert factory_calls[0][0] == "stabilityai/stable-diffusion-xl-base-1.0"
     assert factory_calls[0][1]["use_safetensors"] is True
+    assert factory_calls[0][1]["local_files_only"] is True
     assert result.output_path.exists()
     assert result.output_path.suffix == ".png"
     assert result.backend == "diffusers"
     assert result.prompt == "adaptive realistic portrait prompt"
     assert result.extra["baseline"] == "prompt_only_sdxl_img2img"
     assert result.extra["model_id"] == settings.model_id
+    assert result.extra["local_files_only"] is True
     assert fake.calls[0]["negative_prompt"] == "comic, line art"
     assert fake.calls[0]["strength"] == 0.4
     assert fake.calls[0]["image"].size == (64, 64)
@@ -113,6 +115,17 @@ def test_real_cache_requires_hf_home(monkeypatch):
 
 def test_hub_cache_must_be_inside_hf_home(tmp_path, monkeypatch):
     monkeypatch.setenv("HF_HOME", str(tmp_path / "hf-home"))
+    monkeypatch.delenv("HF_HUB_CACHE", raising=False)
     monkeypatch.setenv("HUGGINGFACE_HUB_CACHE", str(tmp_path / "elsewhere"))
     with pytest.raises(RuntimeError, match="inside HF_HOME"):
         DiffusersBackend._hf_cache_dir()
+
+
+def test_official_hf_hub_cache_variable_is_supported(tmp_path, monkeypatch):
+    hf_home = tmp_path / "hf-home"
+    expected = hf_home / "custom-hub"
+    monkeypatch.setenv("HF_HOME", str(hf_home))
+    monkeypatch.setenv("HF_HUB_CACHE", str(expected))
+    monkeypatch.setenv("HUGGINGFACE_HUB_CACHE", str(hf_home / "legacy-hub"))
+
+    assert DiffusersBackend._hf_cache_dir() == expected

@@ -29,7 +29,7 @@ dist/
 *.onnx
 *.bin
 checkpoints/
-models/
+/models/
 huggingface/
 .huggingface/
 hf_cache/

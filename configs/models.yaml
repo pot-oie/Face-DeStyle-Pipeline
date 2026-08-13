@@ -1,0 +1,198 @@
+schema_version: 1
+root_env: FACE_DESTYLE_ROOT
+assets:
+  sdxl_base:
+    role: generator
+    source: huggingface_cache
+    model_id: stabilityai/stable-diffusion-xl-base-1.0
+    revision: 462165984030d82259a11f4367a4eed129e94a7b
+    license: CreativeML Open RAIL++-M
+    required_files:
+      - model_index.json
+      - unet/diffusion_pytorch_model.fp16.safetensors
+      - vae/diffusion_pytorch_model.fp16.safetensors
+  canny_controlnet:
+    role: structural_control
+    source: huggingface_cache
+    model_id: diffusers/controlnet-canny-sdxl-1.0
+    revision: eb115a19a10d14909256db740ed109532ab1483c
+    license: OpenRAIL++
+    required_files:
+      - config.json
+      - diffusion_pytorch_model.fp16.safetensors
+  openpose_controlnet:
+    role: structural_control
+    source: local
+    relative_path: models/controlnet/controlnet-openpose-sdxl-1.0
+    model_id: xinsir/controlnet-openpose-sdxl-1.0
+    license: Apache-2.0
+    required_files:
+      - config.json
+      - diffusion_pytorch_model.safetensors
+  depth_controlnet:
+    role: structural_control
+    source: local
+    relative_path: models/controlnet/controlnet-depth-sdxl-1.0
+    model_id: diffusers/controlnet-depth-sdxl-1.0
+    license: OpenRAIL++
+    required_files:
+      - config.json
+      - diffusion_pytorch_model.fp16.safetensors
+  sdxl_refiner:
+    role: refiner
+    source: local
+    relative_path: models/diffusion/sdxl-refiner-1.0
+    model_id: stabilityai/stable-diffusion-xl-refiner-1.0
+    license: OpenRAIL++
+    required_files:
+      - model_index.json
+      - unet/diffusion_pytorch_model.fp16.safetensors
+      - text_encoder_2/model.fp16.safetensors
+      - vae_1_0/diffusion_pytorch_model.fp16.safetensors
+  sdxl_vae_fp16_fix:
+    role: vae
+    source: local
+    relative_path: models/diffusion/sdxl-vae-fp16-fix
+    model_id: madebyollin/sdxl-vae-fp16-fix
+    license: MIT
+    required_files:
+      - config.json
+      - diffusion_pytorch_model.safetensors
+  realvisxl_v5:
+    role: alternative_generator
+    source: local
+    relative_path: models/diffusion/RealVisXL_V5.0
+    model_id: SG161222/RealVisXL_V5.0
+    license: OpenRAIL++
+    loader: from_single_file
+    required_files:
+      - RealVisXL_V5.0_fp16.safetensors
+  instantid:
+    role: identity_control
+    source: local
+    relative_path: models/identity/InstantID
+    model_id: InstantX/InstantID
+    license: Apache-2.0
+    required_files:
+      - ip-adapter.bin
+      - ControlNetModel/config.json
+      - ControlNetModel/diffusion_pytorch_model.safetensors
+  insightface_buffalo_l:
+    role: identity_metric
+    source: local
+    relative_path: models/insightface/models/buffalo_l
+    license: non-commercial research only
+    required_files:
+      - det_10g.onnx
+      - 2d106det.onnx
+      - 1k3d68.onnx
+      - genderage.onnx
+      - w600k_r50.onnx
+  dwpose:
+    role: pose_extractor
+    source: huggingface_cache
+    model_id: yzd-v/DWPose
+    revision: 1a7144101628d69ee7a3768d1ee3a094070dc388
+    license: Apache-2.0
+    required_files:
+      - dw-ll_ucoco_384.onnx
+      - yolox_l.onnx
+  face_parsing:
+    role: face_segmentation
+    source: huggingface_cache
+    model_id: jonathandinu/face-parsing
+    revision: 758b82e15a0178c9db39c1ff666a8b56e3a550c8
+    license: non-commercial research and education
+    required_files:
+      - config.json
+      - preprocessor_config.json
+      - model.safetensors
+  dinov2_base:
+    role: content_metric
+    source: huggingface_cache
+    model_id: facebook/dinov2-base
+    revision: f9e44c814b77203eaa57a6bdbbd535f21ede1415
+    license: Apache-2.0
+    required_files:
+      - config.json
+      - preprocessor_config.json
+      - model.safetensors
+  dinov2_large:
+    role: content_metric_audit
+    source: local
+    relative_path: models/metrics/dinov2-large
+    model_id: facebook/dinov2-large
+    license: Apache-2.0
+    required_files:
+      - config.json
+      - preprocessor_config.json
+      - model.safetensors
+  clip_vit_l14:
+    role: semantic_metric
+    source: huggingface_cache
+    model_id: openai/clip-vit-large-patch14
+    revision: 32bd64288804d66eefd0ccbe215aa642df71cc41
+    license: review upstream model card
+    required_files:
+      - config.json
+      - preprocessor_config.json
+      - model.safetensors
+  siglip_so400m:
+    role: semantic_metric_audit
+    source: local
+    relative_path: models/metrics/siglip-so400m-patch14-384
+    model_id: google/siglip-so400m-patch14-384
+    license: Apache-2.0
+    required_files:
+      - config.json
+      - preprocessor_config.json
+      - model.safetensors
+  depth_anything_v2_large:
+    role: depth_extractor
+    source: local
+    relative_path: models/metrics/depth-anything-v2-large
+    model_id: depth-anything/Depth-Anything-V2-Large-hf
+    license: CC-BY-NC-4.0
+    required_files:
+      - config.json
+      - preprocessor_config.json
+      - model.safetensors
+  qwen25_vl_3b:
+    role: style_removal_metric
+    source: local
+    relative_path: models/qwen/Qwen2.5-VL-3B-Instruct
+    model_id: Qwen/Qwen2.5-VL-3B-Instruct
+    license: Qwen Research License
+    required_files:
+      - config.json
+      - preprocessor_config.json
+      - model.safetensors.index.json
+      - model-00001-of-00002.safetensors
+      - model-00002-of-00002.safetensors
+  qwen25_vl_7b:
+    role: style_removal_metric_audit
+    source: local
+    relative_path: models/qwen/Qwen2.5-VL-7B-Instruct
+    model_id: Qwen/Qwen2.5-VL-7B-Instruct
+    license: Qwen Research License
+    required_files:
+      - config.json
+      - preprocessor_config.json
+      - model.safetensors.index.json
+      - model-00001-of-00005.safetensors
+      - model-00002-of-00005.safetensors
+      - model-00003-of-00005.safetensors
+      - model-00004-of-00005.safetensors
+      - model-00005-of-00005.safetensors
+  florence2_large:
+    role: vlm_audit
+    source: local
+    relative_path: models/vlm/Florence-2-large
+    model_id: microsoft/Florence-2-large
+    license: MIT
+    trust_remote_code: true
+    required_files:
+      - config.json
+      - configuration_florence2.py
+      - modeling_florence2.py
+      - pytorch_model.bin
