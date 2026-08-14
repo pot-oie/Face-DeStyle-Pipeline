@@ -3,6 +3,13 @@
 A compact, reproducible research scaffold for turning stylized face images into natural-looking
 photographs while retaining identity, pose, composition, and background structure.
 
+## Start here
+
+Agents and contributors should read [`AGENTS.md`](AGENTS.md) first. The detailed research contract
+is in [`docs/research_context.md`](docs/research_context.md), and the approved process for finding,
+licensing, screening, and splitting artistic images is in
+[`docs/data_acquisition.md`](docs/data_acquisition.md).
+
 > “This repository is a compact and independent reproduction developed from an undergraduate
 > innovation project under the same research direction as DeStyle. It focuses on face-domain
 > destylization, structural conditioning, and quality filtering. It is not the official
