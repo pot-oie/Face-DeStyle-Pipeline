@@ -72,6 +72,21 @@ def main() -> int:
         type=float,
         help="Override ControlNet conditioning scale for --backend canny.",
     )
+    parser.add_argument(
+        "--strength",
+        type=float,
+        help="Override img2img strength for --backend diffusers or canny.",
+    )
+    parser.add_argument(
+        "--guidance-scale",
+        type=float,
+        help="Override classifier-free guidance for --backend diffusers or canny.",
+    )
+    parser.add_argument(
+        "--num-inference-steps",
+        type=int,
+        help="Override denoising steps for --backend diffusers or canny.",
+    )
     parser.add_argument("--seed", type=int)
     parser.add_argument("--style-category", help="Required with --input.")
     parser.add_argument("--record-id", help="Optional stable ID override for --input.")
@@ -90,6 +105,24 @@ def main() -> int:
         if backend_name != "canny":
             parser.error("--control-scale is only valid with --backend canny")
         config["controlnet_conditioning_scale"] = args.control_scale
+    diffusion_overrides = {
+        "strength": args.strength,
+        "guidance_scale": args.guidance_scale,
+        "num_inference_steps": args.num_inference_steps,
+    }
+    supplied_diffusion_overrides = [
+        f"--{name.replace('_', '-')}"
+        for name, value in diffusion_overrides.items()
+        if value is not None
+    ]
+    if supplied_diffusion_overrides and backend_name not in {"diffusers", "canny"}:
+        parser.error(
+            f"{', '.join(supplied_diffusion_overrides)} only valid with "
+            "--backend diffusers or canny"
+        )
+    config.update(
+        {name: value for name, value in diffusion_overrides.items() if value is not None}
+    )
     seed = args.seed if args.seed is not None else int(config.get("seed", 42))
     seed_everything(seed)
     backend = make_backend(backend_name, config, styles_config, model_registry)

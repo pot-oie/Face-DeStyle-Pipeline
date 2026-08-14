@@ -159,3 +159,18 @@ Before expanding to a batch, use pilot data to find a viable img2img strength ra
 too conservative on this sample. Keep input, seed, model, scheduler, steps, guidance, and prompts
 fixed while sweeping strength, and do not open calibration/test data for this choice. Recheck
 global Canny only after prompt-only generation demonstrates meaningful style removal.
+
+## Next pilot strength sweep
+
+The private pilot inventory currently contains 20 QC-accepted sources: five each for `comic`,
+`3d_cartoon`, `ink`, and `watercolor`. It is sufficient for the next exploratory sweep; no extra
+demo upload is needed. `scripts/build_runtime_manifest.py` now converts the rich private pilot
+manifest into a strict temporary runtime manifest while verifying transferred image checksums.
+This does not freeze or publish the dataset.
+
+Run adaptive prompt-only at strengths 0.50, 0.60, 0.70, and 0.80 over all 20 pilot sources with
+seed 42. `scripts/run_strength_sweep.py` reuses one loaded SDXL pipeline and creates four isolated
+run directories, for 80 outputs total. Hold guidance 3.5, 28 configured steps, resolution 768×768,
+model revision, scheduler, and prompts fixed. This is parameter-range exploration on pilot data,
+not a primary-method result. Inspect the four matched outputs per source and choose a viable range
+before running Canny; do not generate the full Canny grid yet.

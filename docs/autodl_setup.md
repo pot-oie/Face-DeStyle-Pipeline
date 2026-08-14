@@ -183,6 +183,38 @@ python scripts/run_destylization.py \
 The manifest is safe to commit only after sanitization and split freeze. Its image paths must be
 relative to `FACE_DESTYLE_DATA_ROOT`; raw images remain on the data disk.
 
+Before that freeze, a rich private provenance manifest can be converted into a temporary strict
+runtime manifest. The converter keeps only accepted records in the requested split, derives paths
+below the configured anchor (normally `raw/`), and verifies every SHA-256 against the transferred
+data root. It does not modify the provenance source or create a formal release manifest:
+
+```bash
+python scripts/build_runtime_manifest.py \
+  --input "$FACE_DESTYLE_DATA_ROOT/manifests/pilot_manifest.jsonl" \
+  --data-root "$FACE_DESTYLE_DATA_ROOT" \
+  --output /tmp/face-destyle-pilot-runtime.jsonl
+```
+
+For exploratory pilot tuning, one process can reuse a loaded pipeline across several img2img
+strengths. Each strength still receives a separate image directory and `records.jsonl`; the sweep
+root also retains the exact runtime manifest and a small sweep declaration. Do not use this command
+to tune on calibration or test data:
+
+```bash
+python scripts/run_strength_sweep.py \
+  --manifest /tmp/face-destyle-pilot-runtime.jsonl \
+  --data-root "$FACE_DESTYLE_DATA_ROOT" \
+  --output-root "$FACE_DESTYLE_ROOT/outputs/pilot-strength-sweep" \
+  --backend diffusers \
+  --prompt-mode adaptive \
+  --strength 0.50 0.60 0.70 0.80 \
+  --seed 42
+```
+
+For isolated runs, `run_destylization.py` also accepts `--strength`, `--guidance-scale`, and
+`--num-inference-steps` overrides for the Diffusers and Canny backends. Change one factor at a time
+when interpreting a comparison.
+
 ## Package, download, and clean a completed run
 
 Package each completed experiment before releasing or cloning the GPU instance. Put the archive
