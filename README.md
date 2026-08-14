@@ -18,10 +18,10 @@ licensing, screening, and splitting artistic images is in
 ## Research questions and scope
 
 The planned 1–2 week study asks whether a two-stage destylization pipeline benefits from
-style-adaptive prompts and structural controls. It compares generic versus category-adaptive
-prompts, prompt-only generation, whole-image Canny, face/background region-aware Canny, and an
-optional pose condition. Results will be judged on content preservation, identity preservation,
-style removal, and human pass rate. A dual-threshold gate produces only accepted
+style-adaptive prompts, structural controls, and failure-aware progressive routing. It compares
+generic versus category-adaptive prompts, prompt-only generation, whole-image Canny, and
+face/background region-aware Canny. Results will be judged on content preservation, identity
+preservation, style removal, and human pass rate. A dual-threshold gate produces only accepted
 `<destylized content, style reference, original style target>` triplets.
 
 This repository owns code, small public examples, configuration, tests, and documentation. It
@@ -38,15 +38,14 @@ in the repository.
 
 Implemented: strict Pydantic records, JSONL validation, stable metadata IDs, OpenCV Canny,
 manual/center masks for smoke testing, a no-op copy backend, a prompt-only SDXL image-to-image
-baseline for AutoDL, a global Canny ControlNet backend that saves its condition image, explicit
-pixel similarity, dual-threshold filtering, deterministic triplet sampling, CSV export, and unit
-tests. A face-parsing-aware region Canny backend is locally implemented and saves its global edges,
-mask, and final composite condition, but still awaits GPU verification. Prompt-only and global
-Canny have completed controlled pilot generation; this is not formal metric or quality validation.
+baseline for AutoDL, global and face-parsing-aware region Canny ControlNet backends with saved
+condition artifacts, explicit pixel similarity, dual-threshold filtering, deterministic triplet
+sampling, CSV export, and unit tests. Prompt-only, global Canny, and region-aware Canny have
+completed controlled 20-source pilot generation; this is not formal metric or quality validation.
 Local Diffusers tests inject mock pipelines and never download a model.
 
-Declared for AutoDL, but not yet GPU-verified: region-aware Canny, pose/depth extraction,
-DINO/CLIP/SigLIP content or semantic similarity, ArcFace identity similarity, and VLM style-removal
+Declared for AutoDL, but not yet GPU-verified: pose/depth extraction, DINO/CLIP/SigLIP content or
+semantic similarity, ArcFace identity similarity, and VLM style-removal
 scoring. `configs/models.yaml` records expected server assets and licenses;
 `configs/experiments.yaml` declares primary and extension comparisons. The copy backend is only
 plumbing validation and is not an experimental result. A GPU smoke test must not be described as a
@@ -185,9 +184,10 @@ Formal evaluation will calibrate thresholds against a human-annotated validation
 - VLM style removal;
 - human acceptance rate.
 
-The planned factorial comparisons are generic versus adaptive prompts; prompt-only versus global
-Canny versus face/background region-aware Canny; and the optional addition of pose control. Seeds,
-model revisions, prompts, control strengths, and threshold calibration must be recorded.
+The planned comparisons are generic versus adaptive prompts; prompt-only versus global Canny versus
+face/background region-aware Canny; and predeclared failure-aware routing after uniform methods
+plateau. Seeds, model revisions, prompts, control strengths, and threshold calibration must be
+recorded.
 
 ## Repository layout
 

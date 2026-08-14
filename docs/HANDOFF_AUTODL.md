@@ -299,3 +299,12 @@ head edges at full strength can preserve the same artistic contours that global 
 Do not tune weights from selected examples or run another Region parameter sweep. Freeze these
 outputs, conduct the written paired human rubric, and validate the planned content, identity, and
 style-removal evaluation paths before deciding whether a predeclared failure-aware route is warranted.
+
+## Next-window FLUX handoff
+
+Further SDXL Base tuning is stopped. The next task is an exploratory original-BF16
+FLUX.1-Kontext-dev prompt-editing probe, first on four preselected sources and without Canny or a
+parameter sweep. FLUX work is intentionally handed to a new task. That task must begin with
+`AGENTS.md`, `docs/research_context.md`, `docs/model_assets.md`, and
+`docs/HANDOFF_FLUX_KONTEXT.md`; the dedicated handoff contains the verified ModelScope mirror,
+download checks, license boundary, implementation contract, and stop conditions.

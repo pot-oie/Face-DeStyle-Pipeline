@@ -34,3 +34,20 @@ registry. Repository Apache-2.0 does not relicense weights.
 Florence-2 uses repository-provided Python modeling code. Pin and review that code before enabling
 `trust_remote_code`; the asset audit deliberately does not import it. RealVisXL is a single-file
 checkpoint and needs a separate `from_single_file` backend before it can be executed.
+
+## Planned FLUX.1 Kontext capability probe
+
+The next generator probe requires original BF16 `black-forest-labs/FLUX.1-Kontext-dev`. The verified
+ModelScope mirror ID is exactly `black-forest-labs/FLUX.1-Kontext-dev`, revision `master`. ModelScope
+reports a 57,890,837,493-byte repository with Diffusers, PyTorch, and Safetensors assets whose tensor
+metadata is BF16/F32. Treat `master` as a mutable mirror revision: preserve the retrieval time, full
+file list, and local SHA-256 values. The mirror is a transport source and does not replace the
+official model identity or FLUX.1 dev Non-Commercial License.
+
+Do not use `MusePublic/FLUX.1-Kontext-Dev`: despite its description mentioning BF16, its published
+file metadata identifies FP8 E4M3 weights. Also reject repositories labeled FP8, GGUF, NF4, NVFP4,
+ComfyUI-only, LoRA, or community merge. The first probe must use the unquantized Diffusers tree.
+
+Download and verification commands are maintained in `docs/HANDOFF_FLUX_KONTEXT.md`. Do not add the
+asset to `configs/models.yaml` until the server reports its actual local directory and the expected
+hash manifest passes. File presence and header validation will still not constitute GPU validation.

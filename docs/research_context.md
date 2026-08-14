@@ -42,10 +42,28 @@ Expected comparison: `prompt_adaptive` vs. `global_canny` vs. `region_canny`. Ca
 stylized contours as well as desired geometry, so an improvement is a hypothesis, not an assumed
 fact.
 
-### RQ3 -- Pose as an optional condition
+### RQ3 -- Failure-aware progressive routing
 
-Does pose conditioning improve half-body or non-frontal samples after Canny methods are stable?
-Close-up portraits may receive little benefit. `canny_plus_pose` is secondary to RQ1 and RQ2.
+After uniform prompt-only and structural methods reach a plateau, does routing samples by a
+predeclared failure reason to the next eligible method improve accepted-pair yield relative to
+applying one method to every sample? Routing rules must be fixed before observing the comparison
+outputs. Pose remains a possible later extension for an explicitly justified failure class, not the
+current research question.
+
+### Exploratory generator-capability probe
+
+The SDXL Base pilot reached a practical plateau: prompt adaptation was not consistently better,
+global Canny retained artistic contours, and region-aware Canny did not show a stable improvement.
+This does not establish an SDXL-family limit. Before adding more structural controls, compare the
+existing SDXL Base adaptive prompt-only output with native image editing from original BF16
+`FLUX.1-Kontext-dev` on the same preselected sources. The probe asks whether generator capability
+and image-editing pretraining improve natural reconstruction without unacceptable content drift.
+
+This is an exploratory generator extension, not a strict DeStyle reproduction or a new primary RQ.
+Cross-model seeds do not represent matched noise. Hold source image, task semantics, and resolution
+constant while keeping each generator's configuration fixed and fully recorded. Start with one
+source per primary style; four examples can establish engineering feasibility or a capability signal
+but cannot support a reportable scientific conclusion.
 
 ## 3. Hypotheses and acceptable outcomes
 
@@ -54,7 +72,8 @@ Close-up portraits may receive little benefit. `canny_plus_pose` is secondary to
   artistic contours.
 - **H3:** region-aware Canny improves the content/style Pareto trade-off on faces compared with
   global Canny.
-- **H4:** pose helps samples with visible torso or large pose variation more than tight close-ups.
+- **H4:** a predeclared failure-aware route improves accepted-pair yield over a uniform method
+  without hiding failures or relaxing frozen quality criteria.
 
 Mixed or negative findings are valid. Do not tune or hide samples until all hypotheses appear true.
 The project succeeds if it produces a controlled and interpretable comparison.
@@ -163,8 +182,8 @@ first executable baseline. Inspect outputs before any batch expansion and record
 ### Stage C -- structural ablations
 
 Add global Canny, then production face parsing and region-aware Canny. Visually validate masks and
-control maps. Only then add pose. A central mask is for smoke testing and cannot be reported as face
-segmentation.
+control maps. Pose is only a later extension if an observed, predeclared failure class justifies it.
+A central mask is for smoke testing and cannot be reported as face segmentation.
 
 ### Stage D -- evaluation and filtering
 

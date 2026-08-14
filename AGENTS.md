@@ -83,16 +83,21 @@ or ground-truth appearance.
 
 ## Active milestone
 
-The prompt-only and global-Canny implementations have completed pipeline-level GPU smoke tests.
-Those tests used a style-mismatched demo and are not method comparisons. The next meaningful run
-must compare matched settings on the same QC-accepted source whose declared category matches its
-appearance. Complete the smallest defensible primary matrix before extensions:
+The 20-source SDXL Base pilot now covers generic and adaptive prompt-only generation, global Canny,
+and region-aware Canny. It did not find a stable adaptive-prompt or Region Canny advantage, and
+further SDXL Base prompt, strength, or Canny-weight scanning is stopped. This is a plateau for the
+tested SDXL Base configuration, not a claim about the theoretical limit of the SDXL family.
 
-1. `prompt_generic`;
-2. `prompt_adaptive`;
-3. `global_canny`;
-4. `region_canny`;
-5. `canny_plus_pose` only after the first four are stable.
+The active extension is a generator-capability probe with original BF16
+`FLUX.1-Kontext-dev`. It uses native source-image-plus-instruction editing without Canny or another
+structural condition. First run one preselected source from each of the four pilot styles; only a
+successful fixed four-source probe may justify a fixed 20-source run. Do not scan parameters or add
+FLUX Canny, Depth, Pose, LoRA, or quantization. Quantization is allowed only after a documented BF16
+offload OOM and must be reported as a separate quantized/offloaded method.
+
+The current FLUX.1 dev license prohibits biometric processing. Do not run ArcFace, InsightFace, or
+another biometric metric on Kontext outputs unless a later license review explicitly resolves that
+restriction. This license-specific limit does not turn qualitative inspection into metric validation.
 
 Primary evaluation uses DINOv2 Base, CLIP ViT-L/14, InsightFace where a face is detectable, a
 structured Qwen2.5-VL-3B style-removal rubric, and blinded human review. Depth, Refiner, InstantID,
