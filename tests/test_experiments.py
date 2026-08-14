@@ -16,6 +16,7 @@ def test_repository_experiment_matrix_has_primary_and_extensions():
 
     assert by_name["prompt_generic"].settings["prompt_mode"] == "generic"
     assert by_name["global_canny"].settings["control_model"] == "canny_controlnet"
+    assert by_name["global_canny"].settings["controlnet_conditioning_scale"] == 0.8
     assert by_name["canny_plus_pose"].settings["pose_extractor"] == "dwpose"
     assert by_name["depth_control"].extension
     assert by_name["generator_realvisxl"].settings["generator"] == "realvisxl_v5"

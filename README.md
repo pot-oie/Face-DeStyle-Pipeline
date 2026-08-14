@@ -113,6 +113,23 @@ python scripts/run_destylization.py \
 For JSONL batch input, replace `--input`, `--style-category`, and `--record-id` with
 `--metadata /path/to/metadata.jsonl`. Output locations always come from CLI arguments.
 
+The first structural comparison uses the registered global Canny ControlNet and writes the exact
+conditioning image beside the generated image:
+
+```bash
+python scripts/run_destylization.py \
+  --input /path/to/authorized_comic_face.png \
+  --style-category comic \
+  --prompt-mode adaptive \
+  --record-id demo-canny-001 \
+  --backend canny \
+  --control-scale 0.8 \
+  --output-dir /root/autodl-tmp/face-destyle/outputs/canny \
+  --records-output /root/autodl-tmp/face-destyle/outputs/canny/record.jsonl
+```
+
+This is global edge conditioning only. It is not the later face-region-aware Canny method.
+
 For a frozen portable manifest whose images live outside the code repository:
 
 ```bash

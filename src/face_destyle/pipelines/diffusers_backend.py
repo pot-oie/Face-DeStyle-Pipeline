@@ -14,7 +14,7 @@ from face_destyle.models import ModelAsset, ModelRegistry
 from face_destyle.pipelines.base import DestylizationBackend
 from face_destyle.schemas import DestylizationRecord, ImageRecord
 
-PipelineFactory = Callable[[str, dict[str, Any]], Any]
+PipelineFactory = Callable[..., Any]
 
 
 @dataclass(frozen=True)
@@ -80,7 +80,7 @@ class DiffusersBackend(DestylizationBackend):
         self.styles_config = styles_config
         self.model_registry = model_registry
         self._uses_injected_pipeline = pipeline_factory is not None
-        self._pipeline_factory = pipeline_factory or self._load_real_pipeline
+        self._pipeline_factory = pipeline_factory
         self._pipeline: Any | None = None
         self._resolved_asset: ModelAsset | None = None
         self._resolved_model_path: Path | None = None
@@ -109,7 +109,10 @@ class DiffusersBackend(DestylizationBackend):
         return pipeline
 
     def _resolve_model(self) -> tuple[ModelAsset, Path]:
-        asset = self.model_registry.require(self.settings.model_asset)
+        return self._resolve_registered_model(self.settings.model_asset)
+
+    def _resolve_registered_model(self, name: str) -> tuple[ModelAsset, Path]:
+        asset = self.model_registry.require(name)
         if asset.loader != "from_pretrained":
             raise RuntimeError(
                 f"model asset {asset.name} requires unsupported loader {asset.loader!r}"
@@ -122,6 +125,10 @@ class DiffusersBackend(DestylizationBackend):
             raise RuntimeError(f"model asset {asset.name} is unavailable: {details}")
         return asset, check.location
 
+    def _create_pipeline(self, model_path: Path, load_kwargs: dict[str, Any]) -> Any:
+        factory = self._pipeline_factory or self._load_real_pipeline
+        return factory(str(model_path), load_kwargs)
+
     def _get_pipeline(self) -> Any:
         if self._pipeline is None:
             asset, model_path = self._resolve_model()
@@ -131,7 +138,7 @@ class DiffusersBackend(DestylizationBackend):
                 "local_files_only": self.settings.local_files_only,
             }
             started = time.perf_counter()
-            self._pipeline = self._pipeline_factory(str(model_path), kwargs)
+            self._pipeline = self._create_pipeline(model_path, kwargs)
             self._pipeline_load_seconds = time.perf_counter() - started
             self._resolved_asset = asset
             self._resolved_model_path = model_path
@@ -190,6 +197,37 @@ class DiffusersBackend(DestylizationBackend):
         negative_prompt = str(style.get("negative_prompt", ""))
         return prompt, negative_prompt
 
+    def _inference_arguments(
+        self,
+        record: ImageRecord,
+        initial_image: Image.Image,
+        prompt: str,
+        negative_prompt: str,
+        seed: int,
+        output_dir: Path,
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
+        del record, output_dir
+        return (
+            {
+                "prompt": prompt,
+                "negative_prompt": negative_prompt,
+                "image": initial_image,
+                "strength": self.settings.strength,
+                "num_inference_steps": self.settings.num_inference_steps,
+                "guidance_scale": self.settings.guidance_scale,
+                "generator": self._generator(seed),
+                "height": self.settings.height,
+                "width": self.settings.width,
+            },
+            {},
+        )
+
+    def _baseline_metadata(self) -> dict[str, Any]:
+        return {"baseline": "prompt_only_sdxl_img2img"}
+
+    def _preflight_additional_outputs(self, record: ImageRecord, output_dir: Path) -> None:
+        del record, output_dir
+
     def run(self, record: ImageRecord, output_dir: Path, *, seed: int) -> DestylizationRecord:
         source = Path(record.image_path)
         if not source.exists():
@@ -198,6 +236,7 @@ class DiffusersBackend(DestylizationBackend):
         destination = output_dir / f"{record.id}.png"
         if destination.exists():
             raise FileExistsError(f"Refusing to overwrite existing output: {destination}")
+        self._preflight_additional_outputs(record, output_dir)
         prompt, negative_prompt = self._prompt_for(record)
         with Image.open(source) as image:
             initial_image = ImageOps.fit(
@@ -216,17 +255,15 @@ class DiffusersBackend(DestylizationBackend):
             torch.cuda.synchronize()
             torch.cuda.reset_peak_memory_stats()
         started = time.perf_counter()
-        result = pipeline(
-            prompt=prompt,
-            negative_prompt=negative_prompt,
-            image=initial_image,
-            strength=self.settings.strength,
-            num_inference_steps=self.settings.num_inference_steps,
-            guidance_scale=self.settings.guidance_scale,
-            generator=self._generator(seed),
-            height=self.settings.height,
-            width=self.settings.width,
+        inference_arguments, inference_metadata = self._inference_arguments(
+            record,
+            initial_image,
+            prompt,
+            negative_prompt,
+            seed,
+            output_dir,
         )
+        result = pipeline(**inference_arguments)
         if torch_module is not None:
             torch_module.cuda.synchronize()
             gpu_metadata = {
@@ -251,7 +288,7 @@ class DiffusersBackend(DestylizationBackend):
             seed=seed,
             prompt=prompt,
             extra={
-                "baseline": "prompt_only_sdxl_img2img",
+                **self._baseline_metadata(),
                 "model_asset": self._resolved_asset.name,
                 "model_id": self._resolved_asset.model_id,
                 "revision": self._resolved_asset.revision,
@@ -271,6 +308,7 @@ class DiffusersBackend(DestylizationBackend):
                 "inference_seconds": inference_seconds,
                 "scheduler": self._scheduler_metadata(pipeline),
                 "package_versions": self._package_versions(),
+                **inference_metadata,
                 **gpu_metadata,
             },
         )

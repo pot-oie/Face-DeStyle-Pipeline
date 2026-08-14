@@ -18,6 +18,9 @@ experiments:
   global_canny:
     structural_control: canny
     control_model: canny_controlnet
+    controlnet_conditioning_scale: 0.8
+    control_guidance_start: 0.0
+    control_guidance_end: 1.0
     face_region_mode: none
   region_canny:
     structural_control: region_canny

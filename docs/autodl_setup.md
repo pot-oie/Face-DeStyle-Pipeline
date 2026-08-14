@@ -113,6 +113,25 @@ The model registry resolves the pinned Hugging Face snapshot directory and passe
 directly to Diffusers. Do not copy `configs/inference.yaml` or replace its model setting with a
 host-specific path. `model_asset: sdxl_base` is resolved through `configs/models.yaml`.
 
+After the prompt-only smoke test succeeds, the matched global Canny smoke test is:
+
+```bash
+python scripts/check_model_assets.py --asset sdxl_base --asset canny_controlnet
+python scripts/run_destylization.py \
+  --input "$FACE_DESTYLE_ROOT/data/authorized/demo.png" \
+  --style-category comic \
+  --prompt-mode adaptive \
+  --record-id demo-canny-001 \
+  --backend canny \
+  --control-scale 0.8 \
+  --seed 42 \
+  --output-dir "$FACE_DESTYLE_ROOT/outputs/global-canny/images" \
+  --records-output "$FACE_DESTYLE_ROOT/outputs/global-canny/records.jsonl"
+```
+
+Inspect `demo-canny-001.canny.png` as well as the generated image. This backend applies global
+edges; it does not claim face-region awareness or validated quality improvement.
+
 For a frozen external dataset, set its root separately from model storage:
 
 ```bash

@@ -84,11 +84,22 @@ If `check_model_assets.py` fails only for a cached asset, confirm the pinned sna
 - Review weight licenses independently from this repository's Apache-2.0 license.
 - Florence custom code must be pinned and reviewed before enabling `trust_remote_code`.
 
-## Pending GPU verification after the offline-loader fix
+## Prompt-only GPU verification completed
 
-This pending local change resolves `sdxl_base` through `configs/models.yaml` and passes the pinned
-snapshot directory directly to Diffusers. Local tests use an injected pipeline and do not prove GPU
-loading. After the change is published and pulled, rerun one authorized prompt-only image without
-copying or editing `configs/inference.yaml`. Confirm that the record contains canonical
-model/revision data, resolved snapshot path, scheduler, package versions, inference time, and CUDA
-peak memory fields.
+On 2026-08-14, commit `773d6ce` loaded the pinned local SDXL snapshot and completed one adaptive
+and one generic 768×768 run on an NVIDIA GeForce RTX 4080 SUPER vGPU. Both used seed 42, BF16,
+28 configured steps, strength 0.45, guidance 3.5, and EulerDiscreteScheduler. The records reported
+8,745,006,080 peak allocated bytes and 10,322,182,144 peak reserved bytes. Recorded inference time
+was 3.49 seconds for adaptive and 5.45 seconds for generic; these timings describe that instance
+only and are not method-quality evidence.
+
+Visual inspection found that both outputs retained strong oil-painting texture. The source itself
+visually appears to be an oil painting but was invoked with `--style-category comic`, so this run
+cannot evaluate the adaptive comic prompt. The prompt variants produced visibly different pixels,
+but this is only a working pipeline smoke test, not a positive or negative research result. Use an
+accepted sample whose declared category matches the image for the first meaningful comparison.
+
+The next implementation is global Canny ControlNet. Its first GPU run must use the same authorized
+source, adaptive prompt, seed, resolution, steps, strength, and guidance as the prompt-only run, and
+must inspect the saved `.canny.png` condition before interpreting the generated image. Region-aware
+Canny remains a later stage.

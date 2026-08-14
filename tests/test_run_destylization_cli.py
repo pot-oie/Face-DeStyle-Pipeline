@@ -144,4 +144,4 @@ def test_prompt_mode_is_rejected_for_copy_backend(tmp_path):
     )
 
     assert result.returncode == 2
-    assert "--prompt-mode is only valid with --backend diffusers" in result.stderr
+    assert "--prompt-mode is only valid with --backend diffusers or canny" in result.stderr
