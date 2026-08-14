@@ -185,3 +185,15 @@ Package a completed run with `scripts/package_run.py --cleanup` only after ZIP a
 verification. The handoff must include all four sources and outputs in a non-cherry-picked contact
 sheet, success/failure counts, timing, peak VRAM, content drift, residual style, what the probe can
 and cannot establish, and whether a fixed 20-source run is justified.
+
+## Local probe runner prepared
+
+The repository now has a locally mock-tested `FluxKontextBackend` and
+`scripts/run_flux_kontext_probe.py`. The runner checksum-validates the portable pilot manifest,
+selects the lexicographically first `source_id` in each required style, refuses output overwrite,
+loads only the supplied local Diffusers directory, uses BF16 model CPU offload, and appends one
+success or failure record after every attempted source. Use `--probe-stage first` before
+`--probe-stage remaining`; do not invoke `all` as the first GPU run.
+
+Do not add the model to `configs/models.yaml` until the server download manifest and hash manifest
+paths have been confirmed. Pass those verified paths directly to the probe runner in the meantime.
