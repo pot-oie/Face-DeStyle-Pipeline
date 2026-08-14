@@ -138,3 +138,24 @@ Because the oil-painting demo was still declared as `comic`, this verifies the b
 plausible limitation of dense global edges, but it is not a valid method comparison. The next
 meaningful run must use one accepted source whose declared style matches the image, with matched
 prompt-only and global-Canny settings.
+
+## First category-matched comic pilot
+
+The accepted fictional source `synthetic-comic-001` was run through generic prompt-only, adaptive
+prompt-only, and adaptive global Canny with seed 42. All three used the same SDXL revision,
+768×768 size, EulerDiscreteScheduler, 28 configured steps, strength 0.45, guidance 3.5, BF16, and
+the same style-specific negative prompt. The generic/adaptive factor therefore changed the positive
+prompt only. Global Canny used thresholds 90/190 and conditioning scale 0.8.
+
+All three outputs retained an unmistakable comic appearance, so this pilot does not support a
+successful style-removal claim. Generic and adaptive were visually close. Global Canny preserved
+the source more closely while visibly changing the prompt-only outputs, consistent with active
+structural conditioning but not with improved destylization. Descriptive pixel checks against the
+resized source gave MAE 15.16 for generic, 14.89 for adaptive, and 10.07 for Canny; generic versus
+adaptive MAE was 4.08. The Canny condition had 9.91% nonzero pixels. These are diagnostic pixel
+statistics, not DINO, ArcFace, VLM, or human-evaluation results.
+
+Before expanding to a batch, use pilot data to find a viable img2img strength range; 0.45 appears
+too conservative on this sample. Keep input, seed, model, scheduler, steps, guidance, and prompts
+fixed while sweeping strength, and do not open calibration/test data for this choice. Recheck
+global Canny only after prompt-only generation demonstrates meaningful style removal.
