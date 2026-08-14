@@ -257,6 +257,7 @@ class DiffusersBackend(DestylizationBackend):
                 "revision": self._resolved_asset.revision,
                 "resolved_model_path": str(self._resolved_model_path),
                 "negative_prompt": negative_prompt,
+                "prompt_mode": self.settings.prompt_mode,
                 "strength": self.settings.strength,
                 "num_inference_steps": self.settings.num_inference_steps,
                 "guidance_scale": self.settings.guidance_scale,

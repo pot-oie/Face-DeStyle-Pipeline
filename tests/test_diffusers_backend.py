@@ -106,6 +106,7 @@ def test_mock_pipeline_runs_without_downloading_or_gpu(tmp_path, monkeypatch):
     assert result.extra["revision"] == "pinned123"
     assert result.extra["resolved_model_path"] == str(snapshot)
     assert result.extra["local_files_only"] is True
+    assert result.extra["prompt_mode"] == "adaptive"
     assert result.extra["pipeline_loaded_this_run"] is True
     assert result.extra["inference_seconds"] >= 0
     assert fake.calls[0]["negative_prompt"] == "comic, line art"

@@ -53,6 +53,11 @@ def main() -> int:
     parser.add_argument("--data-root", type=Path, help="Root for relative paths in --manifest.")
     parser.add_argument("--split", choices=("pilot", "calibration", "test", "extension"))
     parser.add_argument("--backend", choices=("copy", "diffusers"))
+    parser.add_argument(
+        "--prompt-mode",
+        choices=("generic", "adaptive"),
+        help="Override the configured prompt mode for a Diffusers run.",
+    )
     parser.add_argument("--seed", type=int)
     parser.add_argument("--style-category", help="Required with --input.")
     parser.add_argument("--record-id", help="Optional stable ID override for --input.")
@@ -63,6 +68,10 @@ def main() -> int:
     styles_config = load_yaml(args.styles_config)
     model_registry = ModelRegistry.from_yaml(args.models_config)
     backend_name = args.backend or str(config.get("backend", "copy"))
+    if args.prompt_mode is not None:
+        if backend_name != "diffusers":
+            parser.error("--prompt-mode is only valid with --backend diffusers")
+        config["prompt_mode"] = args.prompt_mode
     seed = args.seed if args.seed is not None else int(config.get("seed", 42))
     seed_everything(seed)
     backend = make_backend(backend_name, config, styles_config, model_registry)

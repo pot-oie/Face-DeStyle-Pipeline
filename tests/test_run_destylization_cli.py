@@ -116,3 +116,32 @@ def test_portable_manifest_copy_cli(tmp_path):
     record = DestylizationRecord.model_validate_json(records_output.read_text(encoding="utf-8"))
     assert record.source_id == "portable-source"
     assert record.input_path == source
+
+
+def test_prompt_mode_is_rejected_for_copy_backend(tmp_path):
+    source = tmp_path / "input.png"
+    Image.new("RGB", (16, 16)).save(source)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--input",
+            str(source),
+            "--style-category",
+            "comic",
+            "--backend",
+            "copy",
+            "--prompt-mode",
+            "generic",
+            "--output-dir",
+            str(tmp_path / "outputs"),
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert result.returncode == 2
+    assert "--prompt-mode is only valid with --backend diffusers" in result.stderr

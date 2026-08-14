@@ -101,6 +101,7 @@ Single-image example:
 python scripts/run_destylization.py \
   --input /path/to/authorized_comic_face.png \
   --style-category comic \
+  --prompt-mode adaptive \
   --record-id demo-001 \
   --backend diffusers \
   --config configs/inference.yaml \

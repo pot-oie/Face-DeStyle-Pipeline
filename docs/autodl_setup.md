@@ -97,6 +97,7 @@ python scripts/check_environment.py --gpu
 python scripts/run_destylization.py \
   --input "$FACE_DESTYLE_ROOT/data/authorized/demo.png" \
   --style-category comic \
+  --prompt-mode adaptive \
   --record-id demo-001 \
   --backend diffusers \
   --output-dir "$FACE_DESTYLE_ROOT/outputs/prompt-only" \
