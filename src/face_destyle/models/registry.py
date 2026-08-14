@@ -73,22 +73,38 @@ class ModelRegistry:
         except KeyError as exc:
             raise KeyError(f"unknown model asset: {name}") from exc
 
-    def resolve(self, name: str, *, root: str | Path | None = None) -> Path | None:
+    def resolve(self, name: str, *, root: str | Path | None = None) -> Path:
+        """Resolve an asset to a pinned local directory without contacting a model host."""
         asset = self.require(name)
-        if asset.source != "local":
-            return None
-        selected_root = Path(root) if root is not None else self._environment_root()
-        if asset.relative_path is None:
-            raise ValueError(f"local asset {name} has no relative_path")
-        return selected_root.expanduser().resolve() / asset.relative_path
+        if asset.source == "local":
+            selected_root = Path(root) if root is not None else self._environment_root()
+            selected_root = selected_root.expanduser().resolve()
+            if asset.relative_path is None:
+                raise ValueError(f"local asset {name} has no relative_path")
+            location = (selected_root / asset.relative_path).resolve()
+            try:
+                location.relative_to(selected_root)
+            except ValueError as exc:
+                raise ValueError(f"local asset {name} escapes the configured model root") from exc
+            return location
+        if asset.source == "huggingface_cache":
+            if not asset.model_id or not asset.revision:
+                raise ValueError(
+                    f"cached asset {name} requires both model_id and a pinned revision"
+                )
+            repository = "models--" + asset.model_id.replace("/", "--")
+            return self._hub_cache_dir() / repository / "snapshots" / asset.revision
+        raise ValueError(f"asset {name} has unsupported source: {asset.source}")
 
     def check(self, name: str, *, root: str | Path | None = None) -> AssetCheck:
         asset = self.require(name)
-        if asset.source == "huggingface_cache":
-            return self._check_huggingface(asset)
-        location = self.resolve(name, root=root)
-        assert location is not None
+        try:
+            location = self.resolve(name, root=root)
+        except RuntimeError as exc:
+            return AssetCheck(name, None, asset.required_files, False, str(exc))
         missing = tuple(item for item in asset.required_files if not (location / item).is_file())
+        if not location.is_dir():
+            return AssetCheck(name, location, missing, False, "asset directory does not exist")
         return AssetCheck(name, location, missing, not missing)
 
     def check_all(self, *, root: str | Path | None = None) -> list[AssetCheck]:
@@ -101,25 +117,14 @@ class ModelRegistry:
         return Path(value)
 
     @staticmethod
-    def _check_huggingface(asset: ModelAsset) -> AssetCheck:
-        hf_home = os.environ.get("HF_HOME")
-        if not hf_home:
-            return AssetCheck(asset.name, None, asset.required_files, False, "HF_HOME is not set")
-        if not asset.model_id or not asset.revision:
-            return AssetCheck(
-                asset.name,
-                None,
-                asset.required_files,
-                False,
-                "model_id and revision are required for cached assets",
-            )
+    def _hub_cache_dir() -> Path:
         hub_value = (
             os.environ.get("HF_HUB_CACHE")
             or os.environ.get("HUGGINGFACE_HUB_CACHE")
-            or Path(hf_home) / "hub"
         )
-        hub = Path(hub_value)
-        repository = "models--" + asset.model_id.replace("/", "--")
-        snapshot = hub / repository / "snapshots" / asset.revision
-        missing = tuple(item for item in asset.required_files if not (snapshot / item).is_file())
-        return AssetCheck(asset.name, snapshot, missing, not missing)
+        if hub_value:
+            return Path(hub_value).expanduser().resolve()
+        hf_home = os.environ.get("HF_HOME")
+        if not hf_home:
+            raise RuntimeError("HF_HUB_CACHE or HF_HOME must point to the Hugging Face cache")
+        return (Path(hf_home).expanduser().resolve() / "hub").resolve()

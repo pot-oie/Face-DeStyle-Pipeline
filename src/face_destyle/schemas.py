@@ -1,7 +1,7 @@
 """Validated record schemas exchanged between pipeline stages."""
 
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -15,6 +15,25 @@ class ImageRecord(StrictRecord):
     image_path: Path
     style_category: str = Field(min_length=1)
     source_id: str = Field(min_length=1)
+
+
+class DatasetManifestRecord(StrictRecord):
+    """Portable, checksum-pinned input declaration resolved against a separate data root."""
+
+    id: str = Field(min_length=1)
+    source_id: str = Field(min_length=1)
+    source_group_id: str = Field(min_length=1)
+    asset_path: Path
+    style_category: str = Field(min_length=1)
+    split: Literal["pilot", "calibration", "test", "extension"]
+    sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    qc_status: Literal["accepted"] = "accepted"
+
+    @model_validator(mode="after")
+    def validate_asset_path(self) -> "DatasetManifestRecord":
+        if self.asset_path.is_absolute() or ".." in self.asset_path.parts:
+            raise ValueError("asset_path must be a safe path relative to the data root")
+        return self
 
 
 class DestylizationRecord(StrictRecord):

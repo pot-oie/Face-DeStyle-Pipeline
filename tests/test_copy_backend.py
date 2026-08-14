@@ -1,3 +1,4 @@
+import pytest
 from PIL import Image
 
 from face_destyle.pipelines.copy_backend import CopyBackend
@@ -13,3 +14,6 @@ def test_copy_backend_copies_bytes_and_marks_backend(tmp_path):
     assert result.seed == 42
     assert result.output_path.read_bytes() == source.read_bytes()
     assert "smoke testing" in result.extra["warning"]
+
+    with pytest.raises(FileExistsError, match="Refusing to overwrite"):
+        CopyBackend().run(record, tmp_path / "out", seed=42)

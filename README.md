@@ -112,6 +112,22 @@ python scripts/run_destylization.py \
 For JSONL batch input, replace `--input`, `--style-category`, and `--record-id` with
 `--metadata /path/to/metadata.jsonl`. Output locations always come from CLI arguments.
 
+For a frozen portable manifest whose images live outside the code repository:
+
+```bash
+export FACE_DESTYLE_DATA_ROOT=/path/to/Face-DeStyle-Data
+python scripts/run_destylization.py \
+  --manifest data/manifests/formal-v1/inputs.jsonl \
+  --split pilot \
+  --backend diffusers \
+  --output-dir /path/to/outputs/prompt-adaptive \
+  --records-output /path/to/outputs/prompt-adaptive/records.jsonl
+```
+
+Manifest paths are relative to `FACE_DESTYLE_DATA_ROOT` and are checksum-verified before inference.
+The loader rejects source groups assigned across multiple splits. Raw data and private provenance
+remain outside Git; see [`data/manifests/README.md`](data/manifests/README.md).
+
 ## Data formats
 
 Every stage uses one validated JSON object per line. Core types are `ImageRecord`,

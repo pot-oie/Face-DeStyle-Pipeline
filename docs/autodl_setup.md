@@ -79,11 +79,14 @@ Resource planning values below are estimates, not measurements from this reposit
 - an RTX 3090-class 24 GB GPU is a reasonable target, but verify actual peak allocated/reserved
   memory on the selected image and library versions before increasing resolution or batch size.
 
-The backend refuses to load real weights unless `HF_HOME` is set. If
-`HUGGINGFACE_HUB_CACHE` is supplied, it must be inside `HF_HOME`:
+The backend requires either `HF_HUB_CACHE` (the preferred explicit setting) or `HF_HOME`. The
+following keeps all caches together on persistent storage. AutoDL images sometimes supply a
+malformed `OMP_NUM_THREADS`; unset it before Python starts instead of changing it inside the model
+backend:
 
 ```bash
 export FACE_DESTYLE_ROOT=/root/autodl-tmp/face-destyle
+unset OMP_NUM_THREADS
 export HF_HOME="$FACE_DESTYLE_ROOT/cache/huggingface"
 export HF_HUB_CACHE="$HF_HOME/hub"
 export HUGGINGFACE_HUB_CACHE="$HF_HUB_CACHE"
@@ -104,6 +107,25 @@ The backend defaults to `local_files_only: true` and loads the pinned snapshot a
 `HF_HOME`; it fails instead of downloading if that snapshot is incomplete. Run one authorized image
 first, monitor `nvidia-smi`, inspect the output manually, and record peak memory. Do not start a
 batch until that check succeeds. This baseline does not constitute a research result.
+
+The model registry resolves the pinned Hugging Face snapshot directory and passes that local path
+directly to Diffusers. Do not copy `configs/inference.yaml` or replace its model setting with a
+host-specific path. `model_asset: sdxl_base` is resolved through `configs/models.yaml`.
+
+For a frozen external dataset, set its root separately from model storage:
+
+```bash
+export FACE_DESTYLE_DATA_ROOT=/root/autodl-tmp/face-destyle/data/Face-DeStyle-Data
+python scripts/run_destylization.py \
+  --manifest data/manifests/formal-v1/inputs.jsonl \
+  --split pilot \
+  --backend diffusers \
+  --output-dir "$FACE_DESTYLE_ROOT/outputs/prompt-adaptive" \
+  --records-output "$FACE_DESTYLE_ROOT/outputs/prompt-adaptive/records.jsonl"
+```
+
+The manifest is safe to commit only after sanitization and split freeze. Its image paths must be
+relative to `FACE_DESTYLE_DATA_ROOT`; raw images remain on the data disk.
 
 The purchased-data-disk layout used by the current inventory is represented in
 `configs/models.yaml`. Local paths are relative to `FACE_DESTYLE_ROOT`; cached paths use `HF_HOME`.

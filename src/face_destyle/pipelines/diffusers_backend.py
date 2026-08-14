@@ -1,6 +1,7 @@
 """Prompt-only SDXL image-to-image baseline for AutoDL GPU execution."""
 
-import os
+import importlib.metadata
+import time
 from collections.abc import Callable
 from dataclasses import dataclass, fields
 from pathlib import Path
@@ -9,6 +10,7 @@ from typing import Any
 from PIL import Image, ImageOps
 
 from face_destyle.filtering.prompt_rewriter import select_prompt
+from face_destyle.models import ModelAsset, ModelRegistry
 from face_destyle.pipelines.base import DestylizationBackend
 from face_destyle.schemas import DestylizationRecord, ImageRecord
 
@@ -19,8 +21,7 @@ PipelineFactory = Callable[[str, dict[str, Any]], Any]
 class DiffusersSettings:
     """Validated runtime settings for the prompt-only SDXL baseline."""
 
-    model_id: str = "stabilityai/stable-diffusion-xl-base-1.0"
-    revision: str = "462165984030d82259a11f4367a4eed129e94a7b"
+    model_asset: str = "sdxl_base"
     device: str = "cuda"
     dtype: str = "bfloat16"
     height: int = 768
@@ -41,6 +42,8 @@ class DiffusersSettings:
         return settings
 
     def validate(self) -> None:
+        if not self.model_asset:
+            raise ValueError("model_asset must name a registered model")
         if self.device != "cuda":
             raise ValueError("The first Diffusers baseline currently requires device=cuda")
         if self.dtype not in {"float16", "bfloat16"}:
@@ -55,6 +58,8 @@ class DiffusersSettings:
             raise ValueError("This baseline processes one image at a time; batch_size must be 1")
         if self.prompt_mode not in {"generic", "adaptive"}:
             raise ValueError("prompt_mode must be generic or adaptive")
+        if not self.local_files_only:
+            raise ValueError("real model loading must keep local_files_only=true")
 
 
 class DiffusersBackend(DestylizationBackend):
@@ -66,38 +71,22 @@ class DiffusersBackend(DestylizationBackend):
         self,
         settings: DiffusersSettings,
         styles_config: dict[str, Any],
+        model_registry: ModelRegistry,
         *,
         pipeline_factory: PipelineFactory | None = None,
     ) -> None:
         settings.validate()
         self.settings = settings
         self.styles_config = styles_config
+        self.model_registry = model_registry
         self._uses_injected_pipeline = pipeline_factory is not None
         self._pipeline_factory = pipeline_factory or self._load_real_pipeline
         self._pipeline: Any | None = None
+        self._resolved_asset: ModelAsset | None = None
+        self._resolved_model_path: Path | None = None
+        self._pipeline_load_seconds: float | None = None
 
-    @staticmethod
-    def _hf_cache_dir() -> Path:
-        hf_home = os.environ.get("HF_HOME")
-        if not hf_home:
-            raise RuntimeError(
-                "HF_HOME must point to persistent server storage before loading model weights."
-            )
-        root = Path(hf_home).expanduser().resolve()
-        cache_value = (
-            os.environ.get("HF_HUB_CACHE")
-            or os.environ.get("HUGGINGFACE_HUB_CACHE")
-            or root / "hub"
-        )
-        cache = Path(cache_value).expanduser().resolve()
-        try:
-            cache.relative_to(root)
-        except ValueError as exc:
-            raise RuntimeError("HF_HUB_CACHE must be located inside HF_HOME") from exc
-        cache.mkdir(parents=True, exist_ok=True)
-        return cache
-
-    def _load_real_pipeline(self, model_id: str, load_kwargs: dict[str, Any]) -> Any:
+    def _load_real_pipeline(self, model_path: str, load_kwargs: dict[str, Any]) -> Any:
         try:
             import torch
             from diffusers import AutoPipelineForImage2Image
@@ -110,9 +99,8 @@ class DiffusersBackend(DestylizationBackend):
             raise RuntimeError("CUDA is not available; use backend=copy for local smoke tests")
         dtype = getattr(torch, self.settings.dtype)
         pipeline = AutoPipelineForImage2Image.from_pretrained(
-            model_id,
+            model_path,
             torch_dtype=dtype,
-            cache_dir=self._hf_cache_dir(),
             **load_kwargs,
         )
         pipeline.to(self.settings.device)
@@ -120,16 +108,71 @@ class DiffusersBackend(DestylizationBackend):
             pipeline.enable_attention_slicing()
         return pipeline
 
+    def _resolve_model(self) -> tuple[ModelAsset, Path]:
+        asset = self.model_registry.require(self.settings.model_asset)
+        if asset.loader != "from_pretrained":
+            raise RuntimeError(
+                f"model asset {asset.name} requires unsupported loader {asset.loader!r}"
+            )
+        check = self.model_registry.check(asset.name)
+        if not check.available or check.location is None:
+            details = check.reason or "required files are unavailable"
+            if check.missing_files:
+                details = "missing files: " + ", ".join(check.missing_files)
+            raise RuntimeError(f"model asset {asset.name} is unavailable: {details}")
+        return asset, check.location
+
     def _get_pipeline(self) -> Any:
         if self._pipeline is None:
+            asset, model_path = self._resolve_model()
             kwargs: dict[str, Any] = {
-                "revision": self.settings.revision,
                 "use_safetensors": True,
                 "variant": "fp16",
                 "local_files_only": self.settings.local_files_only,
             }
-            self._pipeline = self._pipeline_factory(self.settings.model_id, kwargs)
+            started = time.perf_counter()
+            self._pipeline = self._pipeline_factory(str(model_path), kwargs)
+            self._pipeline_load_seconds = time.perf_counter() - started
+            self._resolved_asset = asset
+            self._resolved_model_path = model_path
         return self._pipeline
+
+    @staticmethod
+    def _package_versions() -> dict[str, str]:
+        versions = {}
+        for package in (
+            "face-destyle-pipeline",
+            "torch",
+            "diffusers",
+            "transformers",
+            "accelerate",
+            "huggingface-hub",
+        ):
+            try:
+                versions[package] = importlib.metadata.version(package)
+            except importlib.metadata.PackageNotFoundError:
+                versions[package] = "not-installed"
+        return versions
+
+    @staticmethod
+    def _scheduler_metadata(pipeline: Any) -> dict[str, Any]:
+        scheduler = getattr(pipeline, "scheduler", None)
+        if scheduler is None:
+            return {"class": "unavailable", "config": {}}
+        config = getattr(scheduler, "config", {})
+        selected = {}
+        for key in (
+            "beta_start",
+            "beta_end",
+            "beta_schedule",
+            "prediction_type",
+            "timestep_spacing",
+            "steps_offset",
+        ):
+            value = config.get(key) if hasattr(config, "get") else None
+            if isinstance(value, str | int | float | bool) or value is None:
+                selected[key] = value
+        return {"class": type(scheduler).__name__, "config": selected}
 
     def _generator(self, seed: int) -> Any:
         if self._uses_injected_pipeline:
@@ -151,6 +194,10 @@ class DiffusersBackend(DestylizationBackend):
         source = Path(record.image_path)
         if not source.exists():
             raise FileNotFoundError(source)
+        output_dir.mkdir(parents=True, exist_ok=True)
+        destination = output_dir / f"{record.id}.png"
+        if destination.exists():
+            raise FileExistsError(f"Refusing to overwrite existing output: {destination}")
         prompt, negative_prompt = self._prompt_for(record)
         with Image.open(source) as image:
             initial_image = ImageOps.fit(
@@ -158,7 +205,18 @@ class DiffusersBackend(DestylizationBackend):
                 (self.settings.width, self.settings.height),
                 method=Image.Resampling.LANCZOS,
             )
-        result = self._get_pipeline()(
+        pipeline_was_loaded = self._pipeline is not None
+        pipeline = self._get_pipeline()
+        torch_module = None
+        gpu_metadata: dict[str, Any] = {}
+        if not self._uses_injected_pipeline:
+            import torch
+
+            torch_module = torch
+            torch.cuda.synchronize()
+            torch.cuda.reset_peak_memory_stats()
+        started = time.perf_counter()
+        result = pipeline(
             prompt=prompt,
             negative_prompt=negative_prompt,
             image=initial_image,
@@ -169,11 +227,20 @@ class DiffusersBackend(DestylizationBackend):
             height=self.settings.height,
             width=self.settings.width,
         )
+        if torch_module is not None:
+            torch_module.cuda.synchronize()
+            gpu_metadata = {
+                "gpu_name": torch_module.cuda.get_device_name(0),
+                "cuda_version": torch_module.version.cuda,
+                "peak_allocated_bytes": torch_module.cuda.max_memory_allocated(),
+                "peak_reserved_bytes": torch_module.cuda.max_memory_reserved(),
+            }
+        inference_seconds = time.perf_counter() - started
         if not getattr(result, "images", None):
             raise RuntimeError("Diffusers pipeline returned no images")
-        output_dir.mkdir(parents=True, exist_ok=True)
-        destination = output_dir / f"{record.id}.png"
         result.images[0].save(destination)
+        assert self._resolved_asset is not None
+        assert self._resolved_model_path is not None
         return DestylizationRecord(
             id=record.id,
             source_id=record.source_id,
@@ -185,8 +252,10 @@ class DiffusersBackend(DestylizationBackend):
             prompt=prompt,
             extra={
                 "baseline": "prompt_only_sdxl_img2img",
-                "model_id": self.settings.model_id,
-                "revision": self.settings.revision,
+                "model_asset": self._resolved_asset.name,
+                "model_id": self._resolved_asset.model_id,
+                "revision": self._resolved_asset.revision,
+                "resolved_model_path": str(self._resolved_model_path),
                 "negative_prompt": negative_prompt,
                 "strength": self.settings.strength,
                 "num_inference_steps": self.settings.num_inference_steps,
@@ -196,5 +265,11 @@ class DiffusersBackend(DestylizationBackend):
                 "dtype": self.settings.dtype,
                 "device": self.settings.device,
                 "local_files_only": self.settings.local_files_only,
+                "pipeline_loaded_this_run": not pipeline_was_loaded,
+                "pipeline_load_seconds": self._pipeline_load_seconds,
+                "inference_seconds": inference_seconds,
+                "scheduler": self._scheduler_metadata(pipeline),
+                "package_versions": self._package_versions(),
+                **gpu_metadata,
             },
         )

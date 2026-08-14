@@ -1,3 +1,5 @@
+import hashlib
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -67,3 +69,50 @@ def test_jsonl_batch_copy_cli(tmp_path):
     rows = records_output.read_text(encoding="utf-8").splitlines()
     assert len(rows) == 1
     assert DestylizationRecord.model_validate_json(rows[0]).backend == "copy"
+
+
+def test_portable_manifest_copy_cli(tmp_path):
+    data_root = tmp_path / "dataset"
+    source = data_root / "raw/comic/portable.png"
+    source.parent.mkdir(parents=True)
+    Image.new("RGB", (16, 16), (7, 8, 9)).save(source)
+    manifest = tmp_path / "manifest.jsonl"
+    row = {
+        "id": "portable",
+        "source_id": "portable-source",
+        "source_group_id": "portable-group",
+        "asset_path": "raw/comic/portable.png",
+        "style_category": "comic",
+        "split": "pilot",
+        "sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+        "qc_status": "accepted",
+    }
+    manifest.write_text(json.dumps(row) + "\n", encoding="utf-8")
+    records_output = tmp_path / "records.jsonl"
+
+    subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--manifest",
+            str(manifest),
+            "--data-root",
+            str(data_root),
+            "--split",
+            "pilot",
+            "--output-dir",
+            str(tmp_path / "outputs"),
+            "--records-output",
+            str(records_output),
+            "--backend",
+            "copy",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    record = DestylizationRecord.model_validate_json(records_output.read_text(encoding="utf-8"))
+    assert record.source_id == "portable-source"
+    assert record.input_path == source

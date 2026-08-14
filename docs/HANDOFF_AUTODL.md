@@ -36,6 +36,7 @@ conda run -n face-destyle pytest
 ```bash
 conda activate face-destyle
 export FACE_DESTYLE_ROOT=/root/autodl-tmp/face-destyle
+unset OMP_NUM_THREADS
 export HF_HOME="$FACE_DESTYLE_ROOT/cache/huggingface"
 export HF_HUB_CACHE="$HF_HOME/hub"
 export HUGGINGFACE_HUB_CACHE="$HF_HUB_CACHE"
@@ -58,7 +59,7 @@ python -m pip install -e ".[gpu,evaluation,dev]"
 ```
 
 If `check_model_assets.py` fails only for a cached asset, confirm the pinned snapshot path and the
-`HF_HOME`/`HUGGINGFACE_HUB_CACHE` values. Do not redownload everything automatically.
+`HF_HUB_CACHE`/`HF_HOME` values. Do not redownload everything automatically.
 
 ## Recommended GPU implementation order
 
@@ -82,3 +83,12 @@ If `check_model_assets.py` fails only for a cached asset, confirm the pinned sna
 - Do not commit models, raw faces, caches, embeddings, bulk outputs, or checkpoints.
 - Review weight licenses independently from this repository's Apache-2.0 license.
 - Florence custom code must be pinned and reviewed before enabling `trust_remote_code`.
+
+## Pending GPU verification after the offline-loader fix
+
+This pending local change resolves `sdxl_base` through `configs/models.yaml` and passes the pinned
+snapshot directory directly to Diffusers. Local tests use an injected pipeline and do not prove GPU
+loading. After the change is published and pulled, rerun one authorized prompt-only image without
+copying or editing `configs/inference.yaml`. Confirm that the record contains canonical
+model/revision data, resolved snapshot path, scheduler, package versions, inference time, and CUDA
+peak memory fields.

@@ -18,6 +18,8 @@ class CopyBackend(DestylizationBackend):
             raise FileNotFoundError(source)
         output_dir.mkdir(parents=True, exist_ok=True)
         destination = output_dir / f"{record.id}{source.suffix.lower()}"
+        if destination.exists():
+            raise FileExistsError(f"Refusing to overwrite existing output: {destination}")
         shutil.copy2(source, destination)
         return DestylizationRecord(
             id=record.id,

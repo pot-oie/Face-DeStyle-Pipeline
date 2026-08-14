@@ -61,11 +61,14 @@ def test_cached_asset_resolves_pinned_snapshot(tmp_path, monkeypatch):
     snapshot.mkdir(parents=True)
     (snapshot / "config.json").write_text("{}", encoding="utf-8")
     monkeypatch.setenv("HF_HOME", str(tmp_path / "hf"))
+    monkeypatch.delenv("HF_HUB_CACHE", raising=False)
+    monkeypatch.delenv("HUGGINGFACE_HUB_CACHE", raising=False)
 
     check = ModelRegistry.from_yaml(config).check("cached_model")
 
     assert check.available
     assert check.location == snapshot
+    assert ModelRegistry.from_yaml(config).resolve("cached_model") == snapshot
 
 
 def test_registry_supports_official_hf_hub_cache_variable(tmp_path, monkeypatch):
@@ -81,13 +84,48 @@ def test_registry_supports_official_hf_hub_cache_variable(tmp_path, monkeypatch)
     assert ModelRegistry.from_yaml(config).check("cached_model").available
 
 
+def test_hf_hub_cache_is_sufficient_without_hf_home(tmp_path, monkeypatch):
+    config = tmp_path / "models.yaml"
+    write_config(config)
+    custom_hub = tmp_path / "custom-hub"
+    snapshot = custom_hub / "models--org--model/snapshots/abc123"
+    snapshot.mkdir(parents=True)
+    (snapshot / "config.json").write_text("{}", encoding="utf-8")
+    monkeypatch.delenv("HF_HOME", raising=False)
+    monkeypatch.setenv("HF_HUB_CACHE", str(custom_hub))
+
+    assert ModelRegistry.from_yaml(config).resolve("cached_model") == snapshot
+
+
 def test_missing_root_environment_is_friendly(tmp_path, monkeypatch):
     config = tmp_path / "models.yaml"
     write_config(config)
     monkeypatch.delenv("TEST_MODEL_ROOT", raising=False)
 
-    with pytest.raises(RuntimeError, match="TEST_MODEL_ROOT"):
-        ModelRegistry.from_yaml(config).check("local_metric")
+    check = ModelRegistry.from_yaml(config).check("local_metric")
+
+    assert not check.available
+    assert check.reason is not None
+    assert "TEST_MODEL_ROOT" in check.reason
+
+
+def test_local_asset_cannot_escape_model_root(tmp_path):
+    config = tmp_path / "models.yaml"
+    config.write_text(
+        """
+root_env: TEST_MODEL_ROOT
+assets:
+  escaped:
+    role: metric
+    source: local
+    relative_path: ../outside
+    license: test-only
+""".strip(),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="escapes"):
+        ModelRegistry.from_yaml(config).resolve("escaped", root=tmp_path / "root")
 
 
 def test_repository_buffalo_l_registry_requires_all_five_onnx_files():
