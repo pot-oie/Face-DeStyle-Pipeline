@@ -15,8 +15,12 @@ The user-supplied final AutoDL inventory reported:
 - all five InsightFace buffalo_l ONNX files;
 - zero temporary files, broken links, bad HFD metadata, or Safetensors validation failures.
 
-This is a file-integrity result, not a GPU inference result. Canny, pose, depth, refiner, InstantID,
-RealVisXL, DINO/CLIP/SigLIP, ArcFace, Florence, and Qwen metric execution remain unverified.
+This inventory is a file-integrity result, not a GPU inference result. Prompt-only SDXL and global
+Canny later completed smoke runs documented below. Pose, depth, refiner, InstantID, RealVisXL,
+DINO/CLIP/SigLIP, ArcFace, Florence, and Qwen metric execution remain unverified.
+
+The repository root `AGENTS.md` is authoritative for the local-macOS versus AutoDL boundary and
+the non-secret network/mirror policy. A new task must read it before issuing server commands.
 
 The experiment extension has been reviewed and prepared for publication on `origin/main`. AutoDL
 should fast-forward from that branch before beginning GPU work.
@@ -50,6 +54,19 @@ python scripts/check_model_assets.py
 python scripts/list_experiments.py --seed 42 --json
 ```
 
+At the start of the server session, explicitly determine whether the instance has a GPU and whether
+a proxy/mirror is active:
+
+```bash
+nvidia-smi || true
+python -c 'import torch; print("CUDA available:", torch.cuda.is_available())'
+env | grep -E '^(HF_HOME|HF_HUB_CACHE|HUGGINGFACE_HUB_CACHE|HF_ENDPOINT)=' | sort
+python -c 'import os; names=("http_proxy","https_proxy","HTTP_PROXY","HTTPS_PROXY","all_proxy","ALL_PROXY"); print("proxy variables set:", [name for name in names if os.environ.get(name)])'
+```
+
+The first command intentionally excludes `HF_TOKEN`; the proxy check prints names, not values.
+Never print credentials while collecting that environment summary.
+
 Install `.[evaluation]` only when implementing the ArcFace/Qwen evaluation stage; it adds
 InsightFace, ONNX Runtime GPU, and Qwen vision utilities and is not required for the first SDXL
 generation smoke test:
@@ -63,10 +80,9 @@ If `check_model_assets.py` fails only for a cached asset, confirm the pinned sna
 
 ## Recommended GPU implementation order
 
-1. Run one authorized 768×768 prompt-only SDXL image with the existing backend and record peak
-   allocated/reserved VRAM, runtime, package versions, scheduler, seed, and output metadata.
-2. Implement one Canny ControlNet backend with injected-pipeline unit tests, then run the same image,
-   seed, prompt, and generation settings.
+1. Completed: run one authorized 768×768 prompt-only SDXL pipeline smoke test.
+2. Completed: implement and smoke-test one global Canny ControlNet backend with injected-pipeline
+   unit tests.
 3. Implement DINOv2 Base and InsightFace pair metrics with explicit no-face/failure policies. Keep
    raw embeddings out of published artifacts unless their privacy implications are addressed.
 4. Implement face parsing and region-aware Canny. Validate masks visually before batch generation.

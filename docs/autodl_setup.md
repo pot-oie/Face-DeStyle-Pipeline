@@ -1,5 +1,9 @@
 # AutoDL setup
 
+This document contains durable, non-secret AutoDL operating context. Root-level `AGENTS.md` gives
+coding agents the same environment boundary. Current machine allocation, live proxy health, SSH
+addresses, tokens, and signed download URLs are session state and must not be committed.
+
 ## Recommended layout
 
 Keep source code separate from persistent bulk storage. Adapt mount names to the purchased image:
@@ -38,6 +42,31 @@ export HUGGINGFACE_HUB_CACHE="$HF_HUB_CACHE"
 export TORCH_HOME=/data/cache/torch
 export PIP_CACHE_DIR=/data/cache/pip
 ```
+
+## Network routes in mainland China
+
+AutoDL may need an acceleration route for GitHub or Hugging Face. Treat route selection as an
+operational decision, not a permanent application setting:
+
+```bash
+# AutoDL documented academic proxy for an interactive shell
+source /etc/network_turbo
+
+# Cancel it when it slows or breaks ordinary access
+unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY all_proxy ALL_PROXY
+```
+
+The public Hugging Face mirror is a separate route:
+
+```bash
+unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY all_proxy ALL_PROXY
+export HF_ENDPOINT=https://hf-mirror.com
+```
+
+Do not assume either route is currently healthy, and do not combine them accidentally. Large-file
+downloads should be resumable and target the data disk. The current server used HFD/aria2 for
+selected Hugging Face repositories and ModelScope for Qwen after direct Xet transfers proved too
+slow. Never commit access tokens, credentials, signed CDN URLs, or SSH connection information.
 
 Clone once or pull subsequent code updates, then install optional GPU dependencies:
 
@@ -94,8 +123,10 @@ export TORCH_HOME="$FACE_DESTYLE_ROOT/cache/torch"
 export PIP_CACHE_DIR="$FACE_DESTYLE_ROOT/cache/pip"
 
 python scripts/check_environment.py --gpu
+export SOURCE_IMAGE=/path/to/qc-accepted-comic-face.png
+test -f "$SOURCE_IMAGE"
 python scripts/run_destylization.py \
-  --input "$FACE_DESTYLE_ROOT/data/authorized/demo.png" \
+  --input "$SOURCE_IMAGE" \
   --style-category comic \
   --prompt-mode adaptive \
   --record-id demo-001 \
@@ -109,6 +140,11 @@ The backend defaults to `local_files_only: true` and loads the pinned snapshot a
 first, monitor `nvidia-smi`, inspect the output manually, and record peak memory. Do not start a
 batch until that check succeeds. This baseline does not constitute a research result.
 
+Do not choose a comparison demo arbitrarily. Use a QC-accepted source whose declared category
+matches its visible style, retain its stable `source_id`, and verify its recorded SHA-256 after
+transfer. Store the image on the persistent data disk, not in Git. Prompt-only and Canny comparisons
+must use the same transferred file and settings.
+
 The model registry resolves the pinned Hugging Face snapshot directory and passes that local path
 directly to Diffusers. Do not copy `configs/inference.yaml` or replace its model setting with a
 host-specific path. `model_asset: sdxl_base` is resolved through `configs/models.yaml`.
@@ -118,7 +154,7 @@ After the prompt-only smoke test succeeds, the matched global Canny smoke test i
 ```bash
 python scripts/check_model_assets.py --asset sdxl_base --asset canny_controlnet
 python scripts/run_destylization.py \
-  --input "$FACE_DESTYLE_ROOT/data/authorized/demo.png" \
+  --input "$SOURCE_IMAGE" \
   --style-category comic \
   --prompt-mode adaptive \
   --record-id demo-canny-001 \

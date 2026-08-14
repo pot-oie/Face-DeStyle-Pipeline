@@ -1,49 +1,89 @@
-# Agent operating context
+# Agent instructions for Face-DeStyle-Pipeline
 
 This file is the required entry point for any agent working in this repository. Read it before
-changing code, configs, data, or documentation. Then read:
+changing code, configs, data, or documentation. Then read `docs/research_context.md`,
+`docs/data_acquisition.md`, `docs/HANDOFF_AUTODL.md`, and the task-specific files and tests.
 
-1. `docs/research_context.md` -- the research question, hypotheses, terminology, claim boundary,
-   active milestone, and definition of done;
-2. `docs/data_acquisition.md` -- how to find, license, screen, record, and split artistic images;
-3. `docs/HANDOFF_AUTODL.md` -- current model inventory and the next GPU execution order;
-4. the task-specific implementation file and its tests.
+## Execution environments
 
-## Mission
+This repository is developed across two distinct environments. Do not assume that the current
+machine has the capabilities of the other environment.
 
-Build a compact, reproducible **face-domain destylization study** that can be completed on one
-AutoDL GPU. The study asks whether style-adaptive prompts and structural conditions improve the
-trade-off between:
+### Local macOS workspace
 
-- removing artistic appearance;
-- preserving subject/scene content;
-- preserving recoverable facial identity and pose.
+- Used only for lightweight development, documentation, mocks, Ruff, and pytest.
+- The Conda environment is named `face-destyle` and uses Python 3.10.
+- Do not install Torch, Diffusers, Transformers, CUDA, ONNX Runtime GPU, InsightFace, or other heavy
+  model runtimes locally unless the user explicitly changes this policy.
+- Never download model weights during local tests. Heavy functionality must use injected mocks,
+  lazy imports, or clear `NotImplementedError`/runtime guidance.
 
-The intended output is an evidence-backed undergraduate reproduction: executable code, a small
-authorized dataset, frozen experiment declarations, calibrated evaluation, ablations, qualitative
-failure cases, and a factual report. A negative or mixed result is acceptable. The project is not
-required to train a state-of-the-art style-transfer model.
+### AutoDL server
 
-## Relationship to the reference paper
+- The persistent project root is normally `/root/autodl-tmp/face-destyle`, supplied through
+  `FACE_DESTYLE_ROOT`. Source code is normally below `code/Face-DeStyle-Pipeline`.
+- AutoDL may be started in no-GPU mode. Always check `nvidia-smi` and `torch.cuda.is_available()`
+  before GPU work; a prepared CUDA environment does not prove that a GPU is currently allocated.
+- Model weights, datasets, caches, checkpoints, and bulk outputs stay on the AutoDL data disk and
+  must not enter Git.
+- Resolve server model paths through `configs/models.yaml`, `FACE_DESTYLE_ROOT`, `HF_HOME`, and
+  `HF_HUB_CACHE`; never hard-code the server path in Python source.
+- Run `python scripts/check_model_assets.py` before assuming a downloaded model is present.
+- Download completion/file integrity is not GPU-load, inference, metric, or scientific validation.
 
-This is an independent, small face-domain study in the same research direction as *Learning to
-Stylize by Learning to Destylize*. It is **not** the official DeStyle implementation and does not
-own or reproduce DeStyle-350K, DeStylePipe, DestyleCoT-Filter, or BCS-Bench at their published
-scale.
+## AutoDL networking
 
-The paper is conceptual context. Do not copy paper claims into results. In particular:
+Mainland access to GitHub and Hugging Face may be slow or unstable. Before downloading anything,
+prefer the provider's current official instructions and the repository documentation. Do not
+silently switch mirrors or download a second copy into another cache.
 
-- a downloaded model is not a verified result;
-- an experiment declaration is not a completed experiment;
-- the copy backend and smoke metric are software tests, never scientific evidence;
-- this repository's triplet builder currently guarantees same style and different `source_id`,
-  not the paper's cross-semantic-category reference selection;
-- face-only samples cannot demonstrate general arbitrary style transfer;
-- a destylized face is a model reconstruction, not the person's true or ground-truth appearance.
+- Persistent Hugging Face cache must be on the data disk:
+  `HF_HOME=$FACE_DESTYLE_ROOT/cache/huggingface` and `HF_HUB_CACHE=$HF_HOME/hub`.
+- AutoDL's documented academic proxy is enabled in an interactive shell with
+  `source /etc/network_turbo`. It is not guaranteed to be stable and should be unset when it harms
+  normal network access.
+- The public Hugging Face mirror uses `HF_ENDPOINT=https://hf-mirror.com`. Do not combine it with
+  stale proxy variables unless deliberately testing that route.
+- For large Hugging Face files, the server has used `hfd.sh` with `aria2c`; rerunning the same
+  command resumes. Audit `.aria2` and `.incomplete` files before deleting them.
+- Qwen weights were obtained from ModelScope because direct Hugging Face Xet downloads were very
+  slow. Local ModelScope directories are valid model sources and need not be duplicated into the
+  Hugging Face cache.
+- Authentication tokens, proxy credentials, SSH endpoints, cookies, and signed URLs are secrets or
+  ephemeral state. Never write them into tracked files, logs, tests, or handoff templates.
+
+## Required safety and reproducibility behavior
+
+- Check the working tree before editing and preserve user changes.
+- Pin upstream revisions when available and record local-file checksums for ModelScope or standalone
+  checkpoints.
+- Review third-party weight licenses independently of this repository's Apache-2.0 license.
+- Do not report copy-backend, smoke-test, mock, downloaded-file, or uncalibrated metric output as a
+  research result.
+- Run Ruff, pytest, and every new script's `--help` locally before handoff.
+- Update `docs/HANDOFF_AUTODL.md` when environment state, model inventory, or next-server commands
+  materially change.
+
+## Mission and claim boundary
+
+Build a compact, reproducible face-domain destylization study that can be completed on one AutoDL
+GPU. The study asks whether style-adaptive prompts and structural conditions improve the trade-off
+between removing artistic appearance and preserving subject, scene, recoverable facial identity,
+and pose. A negative or mixed result is acceptable; training a state-of-the-art model is not the
+goal.
+
+This is an independent undergraduate reproduction in the same research direction as *Learning to
+Stylize by Learning to Destylize*. It is not the official DeStyle implementation and does not own
+or reproduce DeStyle-350K, DeStylePipe, DestyleCoT-Filter, or BCS-Bench at published scale. Do not
+copy paper claims into results. A destylized face is a model reconstruction, not the person's true
+or ground-truth appearance.
 
 ## Active milestone
 
-Complete the smallest defensible primary matrix before implementing extensions:
+The prompt-only and global-Canny implementations have completed pipeline-level GPU smoke tests.
+Those tests used a style-mismatched demo and are not method comparisons. The next meaningful run
+must compare matched settings on the same QC-accepted source whose declared category matches its
+appearance. Complete the smallest defensible primary matrix before extensions:
 
 1. `prompt_generic`;
 2. `prompt_adaptive`;
@@ -52,9 +92,8 @@ Complete the smallest defensible primary matrix before implementing extensions:
 5. `canny_plus_pose` only after the first four are stable.
 
 Primary evaluation uses DINOv2 Base, CLIP ViT-L/14, InsightFace where a face is detectable, a
-structured Qwen2.5-VL-3B style-removal rubric, and blinded human review. Robustness models and
-generation extensions are secondary. Do not begin Depth, Refiner, InstantID, RealVisXL, Florence,
-7B VLM auditing, or LoRA training merely because weights are available.
+structured Qwen2.5-VL-3B style-removal rubric, and blinded human review. Depth, Refiner, InstantID,
+RealVisXL, Florence, 7B VLM auditing, and LoRA training remain secondary.
 
 ## Research discipline
 
@@ -64,62 +103,38 @@ generation extensions are secondary. Do not begin Depth, Refiner, InstantID, Rea
   directories.
 - Record failures as data: OOM, no face, safety rejection, black output, changed subject, structure
   drift, residual style, and corrupted input.
-- Calibrate thresholds on a human-labeled calibration split. Freeze them before opening the test
-  split.
-- Report distributions, paired differences, sample counts, failures, and uncertainty. Do not
-  select only visually attractive examples.
-- Keep pilot, calibration, and test sources disjoint by `source_id`. Near duplicates belong to the
-  same source group.
+- Calibrate thresholds on a human-labeled calibration split and freeze them before opening test.
+- Report distributions, paired differences, sample counts, failures, and uncertainty rather than
+  selecting only visually attractive examples.
+- Keep pilot, calibration, and test sources disjoint by `source_id`; near duplicates share one
+  source group.
 - Do not change the primary matrix after seeing test results without labeling the change as a new
   exploratory experiment.
 
 ## Data rules
 
-- Follow `docs/data_acquisition.md` exactly.
+- Follow `docs/data_acquisition.md` for acquisition, licensing, QC, and split assignment.
 - Do not crawl Pinterest, social media, portfolio sites, search-result thumbnails, or unlicensed
   WikiArt mirrors.
 - Do not commit raw faces, bulk artworks, caches, embeddings, or model weights.
-- For every formal source image, maintain a provenance sidecar keyed by `source_id`, including the
-  landing page, provider/object ID, rights statement, acquisition date, checksum, and QC decision.
-- Existing team archives are useful pilot material but are not automatically formal evaluation
-  data. Reconstruct provenance first; otherwise label them `legacy_private` and exclude them from
-  public release and license-sensitive claims.
-- Avoid real private-person photographs. Prefer CC0/public-domain artworks or explicitly licensed
-  synthetic identities. Never use outputs for identification or claims about true appearance.
+- Maintain provenance keyed by `source_id`, including landing page, provider/object ID, rights
+  statement, acquisition date, checksum, and QC decision.
+- Existing archives are pilot material until provenance is reconstructed; otherwise label them
+  `legacy_private` and exclude them from public release and license-sensitive claims.
+- Prefer CC0/public-domain artworks or explicitly licensed synthetic identities over private-person
+  photographs. Never use outputs for identification or true-appearance claims.
 
 ## Triplet semantics
 
-For an accepted source artwork `A`:
-
-- `destylized_content_path`: generated natural-looking reconstruction of `A`;
-- `original_style_target_path`: unchanged source artwork `A`, which supplies the target appearance;
-- `style_reference_path`: a different source `B` from the same style category.
-
-The style label routes prompts, balancing, and evaluation; it is not the pixel-level target. The
-original artwork is the target. The current face-domain proxy uses a different identity/source as
-the reference. Do not call that cross-semantic matching unless the schema and sampler are extended
-to record and enforce distinct semantic categories.
-
-## Implementation expectations
-
-- Prefer small, tested changes that advance the active milestone.
-- Update schemas/configs/docs/tests together when a record format changes.
-- Inject or mock heavyweight pipelines in unit tests; tests must not download models.
-- Default real loaders to pinned revisions and `local_files_only: true`.
-- Keep device paths in CLI/config/environment variables, never hard-code one AutoDL host path into
-  library code.
-- Before handing off, run `ruff check .`, `pytest`, and `git diff --check`; state which GPU commands
-  were actually run and which remain unverified.
+For an accepted source artwork `A`, `destylized_content_path` is the generated reconstruction,
+`original_style_target_path` is unchanged artwork `A`, and `style_reference_path` is a different
+source `B` in the same style category. The current proxy guarantees a different `source_id`; do not
+call it cross-semantic matching unless the schema and sampler enforce distinct semantic categories.
 
 ## Definition of a reportable result
 
-A result is reportable only when all of the following are true:
-
-- inputs have recorded provenance and a frozen split;
-- the real model loaded and generated outputs on the stated GPU;
-- run metadata records exact model revision and inference settings;
-- formal metrics, not smoke sentinels, were computed;
-- thresholds were calibrated without test leakage;
-- outputs received a manual audit under the written rubric;
-- comparisons use the same source images and controlled settings;
-- limitations and failure counts accompany any summary number.
+A result is reportable only when inputs have recorded provenance and a frozen split; the real model
+ran on the stated GPU; records contain the exact model revision and settings; formal metrics rather
+than smoke sentinels were computed; thresholds were calibrated without test leakage; outputs were
+manually audited under the written rubric; comparisons used matched sources and settings; and any
+summary includes limitations and failure counts.

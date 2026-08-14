@@ -29,20 +29,26 @@ does not contain DeStyle-350K, model weights, full datasets, private faces, cach
 bulk outputs. It is an independent undergraduate reproduction in the same research direction,
 not an official DeStyle or DeStyle-350K implementation.
 
+Development is split between a lightweight local macOS environment and an AutoDL data-disk/GPU
+environment. Durable agent rules, including mainland mirror/proxy cautions, are in `AGENTS.md`;
+server setup is in `docs/autodl_setup.md`. Credentials and live connection details are never stored
+in the repository.
+
 ## Implemented versus planned
 
 Implemented: strict Pydantic records, JSONL validation, stable metadata IDs, OpenCV Canny,
 manual/center masks for smoke testing, a no-op copy backend, a prompt-only SDXL image-to-image
-baseline for AutoDL, explicit pixel similarity, dual-threshold filtering, deterministic triplet
-sampling, CSV export, and unit tests. Diffusers tests inject a mock pipeline and never download a
-model.
+baseline for AutoDL, a global Canny ControlNet backend that saves its condition image, explicit
+pixel similarity, dual-threshold filtering, deterministic triplet sampling, CSV export, and unit
+tests. Prompt-only and global Canny have each completed a single-image GPU smoke test; this is not
+quality validation. Local Diffusers tests inject mock pipelines and never download a model.
 
-Declared for AutoDL, but not yet GPU-verified: ControlNet conditioning, production face parsing,
-pose/depth extraction, DINO/CLIP/SigLIP content or semantic similarity, ArcFace identity
-similarity, and VLM style-removal scoring. `configs/models.yaml` records expected server assets and
-licenses; `configs/experiments.yaml` declares primary and extension comparisons. The copy backend
-is only plumbing validation and is not an experimental result. The first Diffusers baseline is
-prompt-only and must not be described as a controlled or evaluated method.
+Declared for AutoDL, but not yet GPU-verified: production face parsing and region-aware Canny,
+pose/depth extraction, DINO/CLIP/SigLIP content or semantic similarity, ArcFace identity similarity,
+and VLM style-removal scoring. `configs/models.yaml` records expected server assets and licenses;
+`configs/experiments.yaml` declares primary and extension comparisons. The copy backend is only
+plumbing validation and is not an experimental result. A GPU smoke test must not be described as a
+controlled or evaluated method.
 
 ## Installation
 
