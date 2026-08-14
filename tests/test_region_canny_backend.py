@@ -1,4 +1,5 @@
-from types import SimpleNamespace
+import sys
+from types import ModuleType, SimpleNamespace
 
 import numpy as np
 from PIL import Image, ImageDraw
@@ -150,3 +151,45 @@ def test_region_canny_settings_reject_invalid_values():
             assert message in str(exc)
         else:
             raise AssertionError(f"expected invalid settings: {values}")
+
+
+def test_real_parser_loader_does_not_require_auto_processor_metadata(monkeypatch):
+    calls = []
+
+    class FakeProcessor:
+        @classmethod
+        def from_pretrained(cls, path, **kwargs):
+            calls.append(("processor", path, kwargs))
+            return cls()
+
+    class FakeModel:
+        @classmethod
+        def from_pretrained(cls, path, **kwargs):
+            calls.append(("model", path, kwargs))
+            return cls()
+
+        def to(self, device):
+            calls.append(("to", device))
+            return self
+
+        def eval(self):
+            calls.append(("eval",))
+            return self
+
+    fake_torch = ModuleType("torch")
+    fake_transformers = ModuleType("transformers")
+    fake_transformers.SegformerImageProcessor = FakeProcessor
+    fake_transformers.SegformerForSemanticSegmentation = FakeModel
+    monkeypatch.setitem(sys.modules, "torch", fake_torch)
+    monkeypatch.setitem(sys.modules, "transformers", fake_transformers)
+
+    backend = object.__new__(RegionCannyBackend)
+    parser = backend._load_real_face_parser("/models/parser", "cuda")
+
+    assert callable(parser)
+    assert calls == [
+        ("processor", "/models/parser", {"local_files_only": True}),
+        ("model", "/models/parser", {"local_files_only": True}),
+        ("to", "cuda"),
+        ("eval",),
+    ]

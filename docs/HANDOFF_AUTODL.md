@@ -246,3 +246,9 @@ Canny image, face mask, and final composite condition. The global and region Con
 now preselected at 0.4 and img2img strength at 0.70. This is an implementation state, not a GPU or
 quality result. The next AutoDL task is one source-level mask/condition smoke test before any
 20-source region-Canny batch.
+
+The first region-Canny smoke attempt stopped before segmentation because Transformers 5.15 could
+not auto-detect the image processor from the pinned model's older preprocessor metadata. This was
+an API-compatibility failure, not an OOM, inference, or mask-quality result. The backend now uses
+`SegformerImageProcessor` explicitly while keeping the snapshot local and unchanged. Repeat the
+small mask smoke after pulling the compatibility fix.

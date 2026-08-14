@@ -71,13 +71,15 @@ class RegionCannyBackend(CannyControlNetBackend):
     def _load_real_face_parser(self, model_path: str, device: str) -> FaceParser:
         try:
             import torch
-            from transformers import AutoImageProcessor, SegformerForSemanticSegmentation
+            from transformers import SegformerForSemanticSegmentation, SegformerImageProcessor
         except ImportError as exc:
             raise RuntimeError(
                 'Region Canny requires GPU dependencies: pip install -e ".[gpu,dev]"'
             ) from exc
 
-        processor = AutoImageProcessor.from_pretrained(model_path, local_files_only=True)
+        # This pinned model's older preprocessor metadata does not declare image_processor_type.
+        # Use the architecture-specific loader so current Transformers does not need auto-detection.
+        processor = SegformerImageProcessor.from_pretrained(model_path, local_files_only=True)
         model = SegformerForSemanticSegmentation.from_pretrained(
             model_path,
             local_files_only=True,
