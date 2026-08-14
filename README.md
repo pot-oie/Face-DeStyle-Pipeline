@@ -137,8 +137,9 @@ python scripts/run_destylization.py \
 ```
 
 This is global edge conditioning only. The separate `region_canny` backend uses the registered face
-parser and must first be run on one pilot source so its saved mask and composite condition can be
-visually checked before batch execution.
+parser, keeps parsed head-region edges at full strength, and weakens background edges. Its saved
+face mask and composite condition passed a one-source visual smoke check; the next step is the
+fixed-config 20-source pilot comparison.
 
 For a frozen portable manifest whose images live outside the code repository:
 

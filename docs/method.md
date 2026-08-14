@@ -6,12 +6,14 @@ background structure. The experiment varies generic versus style-category prompt
 conditioning: none, global Canny, face/background region-aware Canny, and optional pose.
 
 The current repository implements orchestration, lightweight controls, a prompt-only SDXL img2img
-baseline, global Canny ControlNet, and a region-aware Canny backend awaiting GPU verification.
+baseline, global Canny ControlNet, and a region-aware Canny backend with a completed one-source GPU
+runtime and condition-map smoke test but no completed 20-source method comparison.
 `copy` verifies data flow without changing pixels. Generation uses the configured model revisions,
 input image, positive/negative prompt, strength, steps, guidance, size, and seed. Global Canny saves
 the exact condition image. Region Canny uses registered SegFormer face parsing, retains full-strength
 edges over parsed head labels, attenuates background edges, and saves the global edges, parsed mask,
-and final composite condition. Pose control remains an explicit AutoDL task. Every run records model
+and final composite condition. Pose control remains out of the active experiment until the fixed
+Region Canny pilot has been compared with its matched controls. Every run records model
 revision, seed, resolution, prompts, conditions, and core sampling settings in its
 `DestylizationRecord`.
 

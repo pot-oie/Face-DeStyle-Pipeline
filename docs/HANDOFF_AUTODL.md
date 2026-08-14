@@ -240,15 +240,24 @@ However, all three levels still retained substantial artistic contours on comic,
 watercolor sources. Further global-scale tuning is unlikely to address that failure mode.
 
 The repository now includes a locally tested `region_canny` backend. It loads the registered
-SegFormer face-parsing snapshot only on GPU, builds a parsed head mask from face/hair/neck labels,
-keeps head-region Canny at full intensity, attenuates background edges to 0.25, and saves the global
-Canny image, face mask, and final composite condition. The global and region ControlNet scale is
-now preselected at 0.4 and img2img strength at 0.70. This is an implementation state, not a GPU or
-quality result. The next AutoDL task is one source-level mask/condition smoke test before any
-20-source region-Canny batch.
+SegFormer face-parsing snapshot only on GPU and saves the global Canny image, parsed mask, and final
+composite condition. The global and region ControlNet scale is preselected at 0.4 and img2img
+strength at 0.70. This implementation state alone is not a GPU or quality result.
 
 The first region-Canny smoke attempt stopped before segmentation because Transformers 5.15 could
 not auto-detect the image processor from the pinned model's older preprocessor metadata. This was
 an API-compatibility failure, not an OOM, inference, or mask-quality result. The backend now uses
-`SegformerImageProcessor` explicitly while keeping the snapshot local and unchanged. Repeat the
-small mask smoke after pulling the compatibility fix.
+`SegformerImageProcessor` explicitly while keeping the snapshot local and unchanged. The repeated
+smoke after that fix is recorded below.
+
+The repeated one-source smoke then completed on an RTX 4080 SUPER. The parser loaded from the pinned
+local snapshot, the parsed head occupied 52.05% of this close-up source, and visual inspection found
+that the mask excluded the background and most clothing. The composite condition also attenuated
+the intended background edges. The generated image nevertheless remained unmistakably illustrated
+and was close to the global-Canny result; this is a successful runtime/control-path smoke, not a
+quality improvement or a method comparison. The fixed region representation keeps parsed
+face/hair/neck edges at full strength and attenuates background edges to 0.25. Do not tune this
+representation from the one smoke output. The next GPU task is one fixed-config Region Canny pass
+over all 20 pilot sources, paired against the existing adaptive prompt-only and scale-0.4 global
+Canny results. Hold strength 0.70, ControlNet scale 0.40, seed, prompts, scheduler, steps, guidance,
+resolution, and model revisions fixed; do not add another parameter sweep.
