@@ -197,3 +197,30 @@ run should hold it fixed and add the missing matched groups: generic prompt-only
 Canny over the same 20 sources and seed 42. This yields the first controlled 20-source comparison
 of the three implemented methods. Do not tune on calibration or test data, and do not interpret
 the outputs as formal results until the planned metrics and blinded human rubric are applied.
+
+## Completed three-method pilot comparison
+
+The matched generic prompt-only and adaptive global-Canny runs completed for all 20 pilot sources
+at strength 0.70. Combined with the prior adaptive prompt-only outputs, all three groups used seed
+42, the pinned SDXL revision, Euler scheduler, 28 configured steps, guidance 3.5, 768×768, and BF16.
+Generic used one shared positive prompt; adaptive and Canny used four category prompts. All methods
+used the same four category-specific negative prompts. Canny used conditioning scale 0.8 and the
+declared per-category thresholds.
+
+Mean recorded inference time was 4.14 seconds for generic, 3.72 seconds for adaptive, and 5.52
+seconds for Canny on the RTX 4080 SUPER. Prompt-only peak allocated memory was 8,631,817,216 bytes;
+Canny peak allocated memory was 11,140,951,040 bytes. These are operational diagnostics only.
+
+Visual review did not find a consistent adaptive-prompt advantage over generic. Their outputs were
+usually close, and both still retained substantial comic or 3D-cartoon appearance. Global Canny
+more consistently retained facial geometry, pose, composition, and small scene details, but it also
+retained the source's drawn, inked, or painted contours. On several ink examples its output was
+nearly a reconstruction of the source artwork rather than a destylized photograph. Source/output
+pixel MAE was lower for Canny in every category, which is consistent with stronger source retention
+but is not evidence of better quality or identity.
+
+The scale-0.8 global condition is therefore too restrictive for this pilot. Before committing to a
+region-aware implementation, keep strength 0.70 and all other settings fixed and test global-Canny
+conditioning scales 0.4 and 0.6 over the same 20 sources. Compare those with the existing 0.8 group
+to determine whether weaker global control yields a useful structure/style trade-off. This remains
+pilot tuning, not a formal RQ1 or RQ2 result.
