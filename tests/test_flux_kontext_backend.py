@@ -13,7 +13,7 @@ class FakePipeline:
 
     def __call__(self, **kwargs):
         self.calls.append(kwargs)
-        return SimpleNamespace(images=[Image.new("RGB", (768, 768), (12, 34, 56))])
+        return SimpleNamespace(images=[Image.new("RGB", (1024, 1024), (12, 34, 56))])
 
 
 def make_settings(tmp_path: Path) -> FluxKontextSettings:
@@ -55,7 +55,12 @@ def test_mock_kontext_probe_records_frozen_settings(tmp_path):
     assert result.extra["dtype"] == "bfloat16"
     assert result.extra["offload"] == "enable_model_cpu_offload"
     assert result.extra["transport_source"] == "modelscope_mirror"
-    assert fake.calls[0]["image"].size == (768, 768)
+    assert fake.calls[0]["image"].size == (1024, 1024)
+    assert fake.calls[0]["height"] == 1024
+    assert fake.calls[0]["width"] == 1024
+    assert fake.calls[0]["max_area"] == 1024 * 1024
     assert fake.calls[0]["guidance_scale"] == 2.5
     assert fake.calls[0]["num_inference_steps"] == 28
     assert fake.calls[0]["generator"] == 42
+    assert result.extra["output_height"] == 1024
+    assert result.extra["output_width"] == 1024

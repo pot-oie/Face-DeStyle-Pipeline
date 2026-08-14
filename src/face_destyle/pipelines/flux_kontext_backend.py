@@ -30,14 +30,14 @@ def _file_sha256(path: Path) -> str:
 
 @dataclass(frozen=True)
 class FluxKontextSettings:
-    """Frozen settings for the four-source generator-capability probe."""
+    """Frozen settings for the native-resolution generator-capability probe."""
 
     model_dir: Path
     download_manifest: Path
     hash_manifest: Path
     source_revision: str = "master"
-    height: int = 768
-    width: int = 768
+    height: int = 1024
+    width: int = 1024
     num_inference_steps: int = 28
     guidance_scale: float = 2.5
     dtype: str = "bfloat16"
@@ -67,8 +67,8 @@ class FluxKontextSettings:
             raise ValueError("the initial Kontext probe requires original bfloat16 weights")
         if self.batch_size != 1:
             raise ValueError("the initial Kontext probe requires batch_size=1")
-        if (self.height, self.width) != (768, 768):
-            raise ValueError("the initial Kontext probe is frozen at 768x768")
+        if (self.height, self.width) != (1024, 1024):
+            raise ValueError("the Kontext probe is frozen at native 1024x1024")
         if self.num_inference_steps < 1:
             raise ValueError("num_inference_steps must be positive")
         if not self.local_files_only:
@@ -202,6 +202,7 @@ class FluxKontextBackend(DestylizationBackend):
             generator=self._generator(seed),
             height=self.settings.height,
             width=self.settings.width,
+            max_area=self.settings.height * self.settings.width,
         )
         if torch_module is not None:
             torch_module.cuda.synchronize()
@@ -215,7 +216,8 @@ class FluxKontextBackend(DestylizationBackend):
         memory_after_inference = self._system_memory()
         if not getattr(result, "images", None):
             raise RuntimeError("FluxKontextPipeline returned no images")
-        result.images[0].save(destination)
+        output_image = result.images[0]
+        output_image.save(destination)
         return DestylizationRecord(
             id=record.id,
             source_id=record.source_id,
@@ -240,6 +242,9 @@ class FluxKontextBackend(DestylizationBackend):
                 "batch_size": self.settings.batch_size,
                 "height": self.settings.height,
                 "width": self.settings.width,
+                "max_area": self.settings.height * self.settings.width,
+                "output_height": output_image.height,
+                "output_width": output_image.width,
                 "guidance_scale": self.settings.guidance_scale,
                 "num_inference_steps": self.settings.num_inference_steps,
                 "offload": "enable_model_cpu_offload",

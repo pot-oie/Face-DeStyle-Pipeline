@@ -158,7 +158,7 @@ Do all implementation locally with injected mocks before using a GPU. Add the do
 the registry only after the returned directory and hash manifest are known. The first backend must:
 
 - use `FluxKontextPipeline` from the local Diffusers-format directory only;
-- use BF16, batch size 1, 768×768, and CPU/model offload;
+- use BF16, batch size 1, native 1024×1024, and CPU/model offload;
 - keep text encoders on CPU or release/offload them before denoising;
 - record the exact ModelScope source, mutable revision label, file hashes, local path, package
   versions, prompt, seed, steps, guidance, runtime, RAM, and peak VRAM;
@@ -175,8 +175,10 @@ while reporting each generator's own fixed configuration.
 
 1. Check GPU availability, GPU memory, system RAM, and swap.
 2. Run one of the four preselected sources first.
-3. If BF16 model offload completes, run the remaining three without changing configuration.
-4. Stop after four outputs for review; do not automatically run 20.
+3. If BF16 model offload completes, the operator may run the complete frozen 20-source pilot in one
+   pipeline-loading session because GPU rental time is limited. This is an opportunistic exploratory
+   batch, not a formal cross-model comparison.
+4. Keep every pilot output; do not select examples after generation.
 5. On OOM, record whether it occurred during loading, text encoding, denoising, or VAE decode.
 6. Only a documented BF16/offload OOM may justify a separately named quantized/offloaded probe.
 7. Do not add FLUX Canny, Depth, Pose, LoRA, or a parameter sweep.
@@ -190,10 +192,11 @@ and cannot establish, and whether a fixed 20-source run is justified.
 
 The repository now has a locally mock-tested `FluxKontextBackend` and
 `scripts/run_flux_kontext_probe.py`. The runner checksum-validates the portable pilot manifest,
-selects the lexicographically first `source_id` in each required style, refuses output overwrite,
-loads only the supplied local Diffusers directory, uses BF16 model CPU offload, and appends one
-success or failure record after every attempted source. Use `--probe-stage first` before
-`--probe-stage remaining`; do not invoke `all` as the first GPU run.
+selects records in a deterministic style/source order, refuses output overwrite, loads only the
+supplied local Diffusers directory, uses native 1024×1024 BF16 model CPU offload, and appends one
+success or failure record after every attempted source. `--probe-stage pilot` runs the complete
+frozen pilot with one pipeline load. `--resume` skips successful source IDs already present in the
+records JSONL after an interrupted rental session.
 
 Do not add the model to `configs/models.yaml` until the server download manifest and hash manifest
 paths have been confirmed. Pass those verified paths directly to the probe runner in the meantime.

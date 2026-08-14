@@ -1,4 +1,5 @@
 import importlib.util
+import json
 from pathlib import Path
 
 from face_destyle.schemas import ImageRecord
@@ -44,3 +45,28 @@ def test_probe_selection_is_fixed_by_style_and_source_id():
         "ink-a",
         "watercolor-a",
     ]
+    assert [item.source_id for item in MODULE.select_probe_records(records, "pilot")] == [
+        "3d-a",
+        "3d-b",
+        "comic-a",
+        "comic-z",
+        "ink-a",
+        "watercolor-a",
+    ]
+
+
+def test_resume_reads_completed_source_ids(tmp_path):
+    records = tmp_path / "records.jsonl"
+    records.write_text(
+        "\n".join(
+            [
+                json.dumps({"source_id": "source-a"}),
+                json.dumps({"source_id": "source-b"}),
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    assert MODULE.completed_source_ids(records) == {"source-a", "source-b"}
+    assert MODULE.completed_source_ids(tmp_path / "missing.jsonl") == set()

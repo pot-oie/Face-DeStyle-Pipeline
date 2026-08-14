@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the frozen four-source FLUX.1 Kontext capability probe."""
+"""Run the native-1024 FLUX.1 Kontext capability probe."""
 
 from __future__ import annotations
 
@@ -31,6 +31,12 @@ def select_probe_records(
     missing = [style for style in REQUIRED_STYLES if not grouped[style]]
     if missing:
         raise ValueError("manifest lacks accepted pilot styles: " + ", ".join(missing))
+    if stage == "pilot":
+        style_order = {style: index for index, style in enumerate(REQUIRED_STYLES)}
+        return sorted(
+            records,
+            key=lambda item: (style_order[item.style_category], item.source_id),
+        )
     selected = [
         sorted(grouped[style], key=lambda item: item.source_id)[0]
         for style in REQUIRED_STYLES
@@ -40,6 +46,16 @@ def select_probe_records(
     if stage == "remaining":
         return selected[1:]
     return selected
+
+
+def completed_source_ids(path: Path) -> set[str]:
+    if not path.is_file():
+        return set()
+    completed = set()
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            completed.add(str(json.loads(line)["source_id"]))
+    return completed
 
 
 def append_jsonl(path: Path, payload: object) -> None:
@@ -65,13 +81,22 @@ def main() -> int:
     parser.add_argument("--failures-output", type=Path, required=True)
     parser.add_argument("--styles-config", type=Path, default=Path("configs/styles.yaml"))
     parser.add_argument("--source-revision", default="master")
-    parser.add_argument("--probe-stage", choices=("first", "remaining", "all"), default="first")
+    parser.add_argument(
+        "--probe-stage",
+        choices=("first", "remaining", "all", "pilot"),
+        default="first",
+    )
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="Append to an interrupted run and skip source IDs already in records-output.",
+    )
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--num-inference-steps", type=int, default=28)
     parser.add_argument("--guidance-scale", type=float, default=2.5)
     args = parser.parse_args()
 
-    if args.records_output.exists() or args.failures_output.exists():
+    if not args.resume and (args.records_output.exists() or args.failures_output.exists()):
         parser.error("refusing to append to an existing records or failures file")
     manifest_records = load_dataset_manifest(
         args.manifest,
@@ -79,6 +104,13 @@ def main() -> int:
         split="pilot",
     )
     selected = select_probe_records(manifest_records, args.probe_stage)
+    if args.resume:
+        completed = completed_source_ids(args.records_output)
+        selected = [record for record in selected if record.source_id not in completed]
+        print(f"Resume mode: skipping {len(completed)} completed source IDs", flush=True)
+    if not selected:
+        print("No pending records; probe stage is already complete")
+        return 0
     settings = FluxKontextSettings(
         model_dir=args.model_dir.resolve(),
         download_manifest=args.download_manifest.resolve(),
