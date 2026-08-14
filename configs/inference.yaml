@@ -7,7 +7,11 @@ height: 768
 width: 768
 num_inference_steps: 28
 guidance_scale: 3.5
-strength: 0.45
+strength: 0.70
+controlnet_conditioning_scale: 0.4
+face_parsing_model: face_parsing
+background_edge_scale: 0.25
+face_mask_dilation: 9
 batch_size: 1
 prompt_mode: adaptive
 enable_attention_slicing: true

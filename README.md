@@ -40,12 +40,14 @@ Implemented: strict Pydantic records, JSONL validation, stable metadata IDs, Ope
 manual/center masks for smoke testing, a no-op copy backend, a prompt-only SDXL image-to-image
 baseline for AutoDL, a global Canny ControlNet backend that saves its condition image, explicit
 pixel similarity, dual-threshold filtering, deterministic triplet sampling, CSV export, and unit
-tests. Prompt-only and global Canny have each completed a single-image GPU smoke test; this is not
-quality validation. Local Diffusers tests inject mock pipelines and never download a model.
+tests. A face-parsing-aware region Canny backend is locally implemented and saves its global edges,
+mask, and final composite condition, but still awaits GPU verification. Prompt-only and global
+Canny have completed controlled pilot generation; this is not formal metric or quality validation.
+Local Diffusers tests inject mock pipelines and never download a model.
 
-Declared for AutoDL, but not yet GPU-verified: production face parsing and region-aware Canny,
-pose/depth extraction, DINO/CLIP/SigLIP content or semantic similarity, ArcFace identity similarity,
-and VLM style-removal scoring. `configs/models.yaml` records expected server assets and licenses;
+Declared for AutoDL, but not yet GPU-verified: region-aware Canny, pose/depth extraction,
+DINO/CLIP/SigLIP content or semantic similarity, ArcFace identity similarity, and VLM style-removal
+scoring. `configs/models.yaml` records expected server assets and licenses;
 `configs/experiments.yaml` declares primary and extension comparisons. The copy backend is only
 plumbing validation and is not an experimental result. A GPU smoke test must not be described as a
 controlled or evaluated method.
@@ -129,12 +131,14 @@ python scripts/run_destylization.py \
   --prompt-mode adaptive \
   --record-id demo-canny-001 \
   --backend canny \
-  --control-scale 0.8 \
+  --control-scale 0.4 \
   --output-dir /root/autodl-tmp/face-destyle/outputs/canny \
   --records-output /root/autodl-tmp/face-destyle/outputs/canny/record.jsonl
 ```
 
-This is global edge conditioning only. It is not the later face-region-aware Canny method.
+This is global edge conditioning only. The separate `region_canny` backend uses the registered face
+parser and must first be run on one pilot source so its saved mask and composite condition can be
+visually checked before batch execution.
 
 For a frozen portable manifest whose images live outside the code repository:
 

@@ -17,6 +17,8 @@ from face_destyle.pipelines import (
     CopyBackend,
     DiffusersBackend,
     DiffusersSettings,
+    RegionCannyBackend,
+    RegionCannySettings,
 )
 from face_destyle.schemas import ImageRecord
 from face_destyle.utils.io import load_yaml
@@ -34,6 +36,9 @@ def make_backend(
     if backend_name == "canny":
         settings = CannyControlNetSettings.from_mapping(inference_config)
         return CannyControlNetBackend(settings, styles_config, model_registry)
+    if backend_name == "region_canny":
+        settings = RegionCannySettings.from_mapping(inference_config)
+        return RegionCannyBackend(settings, styles_config, model_registry)
     settings = DiffusersSettings.from_mapping(inference_config)
     return DiffusersBackend(settings, styles_config, model_registry)
 
@@ -61,7 +66,7 @@ def main() -> int:
     parser.add_argument("--models-config", type=Path, default=Path("configs/models.yaml"))
     parser.add_argument("--data-root", type=Path, help="Root for relative paths in --manifest.")
     parser.add_argument("--split", choices=("pilot", "calibration", "test", "extension"))
-    parser.add_argument("--backend", choices=("copy", "diffusers", "canny"))
+    parser.add_argument("--backend", choices=("copy", "diffusers", "canny", "region_canny"))
     parser.add_argument(
         "--prompt-mode",
         choices=("generic", "adaptive"),
@@ -98,12 +103,14 @@ def main() -> int:
     model_registry = ModelRegistry.from_yaml(args.models_config)
     backend_name = args.backend or str(config.get("backend", "copy"))
     if args.prompt_mode is not None:
-        if backend_name not in {"diffusers", "canny"}:
-            parser.error("--prompt-mode is only valid with --backend diffusers or canny")
+        if backend_name not in {"diffusers", "canny", "region_canny"}:
+            parser.error(
+                "--prompt-mode is only valid with --backend diffusers, canny, or region_canny"
+            )
         config["prompt_mode"] = args.prompt_mode
     if args.control_scale is not None:
-        if backend_name != "canny":
-            parser.error("--control-scale is only valid with --backend canny")
+        if backend_name not in {"canny", "region_canny"}:
+            parser.error("--control-scale is only valid with --backend canny or region_canny")
         config["controlnet_conditioning_scale"] = args.control_scale
     diffusion_overrides = {
         "strength": args.strength,
@@ -115,10 +122,14 @@ def main() -> int:
         for name, value in diffusion_overrides.items()
         if value is not None
     ]
-    if supplied_diffusion_overrides and backend_name not in {"diffusers", "canny"}:
+    if supplied_diffusion_overrides and backend_name not in {
+        "diffusers",
+        "canny",
+        "region_canny",
+    }:
         parser.error(
             f"{', '.join(supplied_diffusion_overrides)} only valid with "
-            "--backend diffusers or canny"
+            "--backend diffusers, canny, or region_canny"
         )
     config.update(
         {name: value for name, value in diffusion_overrides.items() if value is not None}

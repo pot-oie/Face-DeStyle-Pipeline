@@ -144,7 +144,10 @@ def test_prompt_mode_is_rejected_for_copy_backend(tmp_path):
     )
 
     assert result.returncode == 2
-    assert "--prompt-mode is only valid with --backend diffusers or canny" in result.stderr
+    assert (
+        "--prompt-mode is only valid with --backend diffusers, canny, or region_canny"
+        in result.stderr
+    )
 
 
 def test_diffusion_overrides_are_rejected_for_copy_backend(tmp_path):
@@ -173,4 +176,4 @@ def test_diffusion_overrides_are_rejected_for_copy_backend(tmp_path):
     )
 
     assert result.returncode == 2
-    assert "--strength only valid with --backend diffusers or canny" in result.stderr
+    assert "--strength only valid with --backend diffusers, canny, or region_canny" in result.stderr

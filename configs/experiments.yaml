@@ -4,6 +4,7 @@ defaults:
   prompt_mode: adaptive
   generator: sdxl_base
   resolution: [768, 768]
+  strength: 0.70
   local_files_only: true
 
 # Primary comparisons are predeclared, not reported results. Each GPU run must record its actual
@@ -18,14 +19,18 @@ experiments:
   global_canny:
     structural_control: canny
     control_model: canny_controlnet
-    controlnet_conditioning_scale: 0.8
+    controlnet_conditioning_scale: 0.4
     control_guidance_start: 0.0
     control_guidance_end: 1.0
     face_region_mode: none
   region_canny:
     structural_control: region_canny
     control_model: canny_controlnet
+    controlnet_conditioning_scale: 0.4
     face_region_mode: face_parsing
+    face_parsing_model: face_parsing
+    background_edge_scale: 0.25
+    face_mask_dilation: 9
   canny_plus_pose:
     structural_control: canny_pose
     control_models: [canny_controlnet, openpose_controlnet]

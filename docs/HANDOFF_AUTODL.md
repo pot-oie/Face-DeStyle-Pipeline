@@ -224,3 +224,25 @@ region-aware implementation, keep strength 0.70 and all other settings fixed and
 conditioning scales 0.4 and 0.6 over the same 20 sources. Compare those with the existing 0.8 group
 to determine whether weaker global control yields a useful structure/style trade-off. This remains
 pilot tuning, not a formal RQ1 or RQ2 result.
+
+## Completed global-Canny scale sweep
+
+The global-Canny scale-0.4 and scale-0.6 runs completed for all 20 pilot sources, with the prior
+scale-0.8 group serving as the third matched level. All non-scale settings matched, and the 20 saved
+condition images were byte-identical across levels. Mean recorded inference times were 5.72, 5.39,
+and 5.52 seconds per image for scales 0.4, 0.6, and 0.8. Scale 0.4 had an unusually slow 46.69-second
+pipeline load on that invocation; this isolated load time is not a method-quality result.
+
+Increasing scale monotonically reduced source/output pixel MAE in every category, confirming
+stronger source retention. Visual review found that 0.4 allowed more reconstruction than 0.6 or
+0.8 while retaining useful structural control, so 0.4 is the selected global-Canny pilot setting.
+However, all three levels still retained substantial artistic contours on comic, ink, and
+watercolor sources. Further global-scale tuning is unlikely to address that failure mode.
+
+The repository now includes a locally tested `region_canny` backend. It loads the registered
+SegFormer face-parsing snapshot only on GPU, builds a parsed head mask from face/hair/neck labels,
+keeps head-region Canny at full intensity, attenuates background edges to 0.25, and saves the global
+Canny image, face mask, and final composite condition. The global and region ControlNet scale is
+now preselected at 0.4 and img2img strength at 0.70. This is an implementation state, not a GPU or
+quality result. The next AutoDL task is one source-level mask/condition smoke test before any
+20-source region-Canny batch.

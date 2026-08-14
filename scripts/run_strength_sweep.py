@@ -17,6 +17,8 @@ from face_destyle.pipelines import (
     CannyControlNetSettings,
     DiffusersBackend,
     DiffusersSettings,
+    RegionCannyBackend,
+    RegionCannySettings,
 )
 from face_destyle.utils.io import load_yaml
 from face_destyle.utils.reproducibility import seed_everything
@@ -32,7 +34,11 @@ def main() -> int:
     parser.add_argument("--data-root", type=Path, required=True)
     parser.add_argument("--output-root", type=Path, required=True)
     parser.add_argument("--strength", type=float, nargs="+", required=True)
-    parser.add_argument("--backend", choices=("diffusers", "canny"), default="diffusers")
+    parser.add_argument(
+        "--backend",
+        choices=("diffusers", "canny", "region_canny"),
+        default="diffusers",
+    )
     parser.add_argument("--prompt-mode", choices=("generic", "adaptive"), default="adaptive")
     parser.add_argument("--split", choices=("pilot", "calibration", "test"), default="pilot")
     parser.add_argument("--seed", type=int, default=42)
@@ -81,6 +87,9 @@ def main() -> int:
     if args.backend == "canny":
         settings = CannyControlNetSettings.from_mapping(config)
         backend = CannyControlNetBackend(settings, styles_config, model_registry)
+    elif args.backend == "region_canny":
+        settings = RegionCannySettings.from_mapping(config)
+        backend = RegionCannyBackend(settings, styles_config, model_registry)
     else:
         settings = DiffusersSettings.from_mapping(config)
         backend = DiffusersBackend(settings, styles_config, model_registry)
