@@ -103,3 +103,19 @@ The next implementation is global Canny ControlNet. Its first GPU run must use t
 source, adaptive prompt, seed, resolution, steps, strength, and guidance as the prompt-only run, and
 must inspect the saved `.canny.png` condition before interpreting the generated image. Region-aware
 Canny remains a later stage.
+
+## Global Canny GPU verification completed
+
+Later on 2026-08-14, commit `fe7ace3` loaded both pinned local snapshots and completed the global
+Canny run on the same RTX 4080 SUPER vGPU. The structured record reported 15.05 seconds to load the
+pipeline, 5.52 seconds for the measured inference section, 11,140,951,040 peak allocated bytes, and
+11,383,341,056 peak reserved bytes. These are single-instance diagnostics, not comparative claims.
+
+The saved condition was a valid binary 768×768 Canny image using thresholds 90/190 and conditioning
+scale 0.8. Analysis of the returned condition copy found 15.16% nonzero edge pixels. It preserved
+the main silhouette but also captured extensive oil-paint brush texture. The generated image still
+looked like an oil painting and visibly redrew facial details, clothing, and background elements.
+Because the oil-painting demo was still declared as `comic`, this verifies the backend and exposes a
+plausible limitation of dense global edges, but it is not a valid method comparison. The next
+meaningful run must use one accepted source whose declared style matches the image, with matched
+prompt-only and global-Canny settings.
