@@ -99,6 +99,9 @@ If `check_model_assets.py` fails only for a cached asset, confirm the pinned sna
 - Do not commit models, raw faces, caches, embeddings, bulk outputs, or checkpoints.
 - Review weight licenses independently from this repository's Apache-2.0 license.
 - Florence custom code must be pinned and reviewed before enabling `trust_remote_code`.
+- At the end of each experiment handoff, provide a `scripts/package_run.py --cleanup` command for
+  the exact run directory. Download and verify the resulting ZIP and `.zip.sha256`; never delete
+  outputs broadly before a verified archive exists.
 
 ## Prompt-only GPU verification completed
 

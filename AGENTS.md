@@ -63,6 +63,9 @@ silently switch mirrors or download a second copy into another cache.
 - Run Ruff, pytest, and every new script's `--help` locally before handoff.
 - Update `docs/HANDOFF_AUTODL.md` when environment state, model inventory, or next-server commands
   materially change.
+- After a server experiment, give the user a `scripts/package_run.py` command that writes and
+  verifies a ZIP plus SHA-256 before `--cleanup` removes only that selected run directory. Never
+  recommend broad wildcard deletion of outputs, models, caches, or datasets.
 
 ## Mission and claim boundary
 

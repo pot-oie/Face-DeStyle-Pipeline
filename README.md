@@ -152,6 +152,10 @@ Manifest paths are relative to `FACE_DESTYLE_DATA_ROOT` and are checksum-verifie
 The loader rejects source groups assigned across multiple splits. Raw data and private provenance
 remain outside Git; see [`data/manifests/README.md`](data/manifests/README.md).
 
+After a completed server run, `scripts/package_run.py` creates and verifies a ZIP and SHA-256 file.
+Its optional `--cleanup` removes only the selected run directory after verification; see the AutoDL
+setup guide for the exact handoff workflow.
+
 ## Data formats
 
 Every stage uses one validated JSON object per line. Core types are `ImageRecord`,

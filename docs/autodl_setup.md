@@ -183,6 +183,32 @@ python scripts/run_destylization.py \
 The manifest is safe to commit only after sanitization and split freeze. Its image paths must be
 relative to `FACE_DESTYLE_DATA_ROOT`; raw images remain on the data disk.
 
+## Package, download, and clean a completed run
+
+Package each completed experiment before releasing or cloning the GPU instance. Put the archive
+outside the run directory. `--cleanup` is deliberately limited to one child of the configured
+outputs root and runs only after the ZIP passes an integrity test and its SHA-256 file is written:
+
+```bash
+export RUN_DIR="$FACE_DESTYLE_ROOT/outputs/matched-synthetic-comic-001-seed-42"
+export ARCHIVE_DIR="$FACE_DESTYLE_ROOT/exports"
+export ARCHIVE="$ARCHIVE_DIR/$(basename "$RUN_DIR").zip"
+
+python scripts/package_run.py \
+  --run-dir "$RUN_DIR" \
+  --archive "$ARCHIVE" \
+  --cleanup
+
+cd "$ARCHIVE_DIR"
+sha256sum -c "$(basename "$ARCHIVE").sha256"
+test ! -e "$RUN_DIR"
+```
+
+Download both the `.zip` and `.zip.sha256` files. The archive contains paths relative to the run
+directory and preserves images, condition images, and JSONL records. The script rejects symlinks,
+existing archives, paths outside `outputs`, the entire `outputs` root, and archives placed inside
+the run being cleaned. It never touches models, caches, datasets, or other runs.
+
 The purchased-data-disk layout used by the current inventory is represented in
 `configs/models.yaml`. Local paths are relative to `FACE_DESTYLE_ROOT`; cached paths use `HF_HOME`.
 See `docs/model_assets.md` for license notes and `docs/HANDOFF_AUTODL.md` for the next GPU session.
