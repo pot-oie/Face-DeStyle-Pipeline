@@ -174,3 +174,26 @@ run directories, for 80 outputs total. Hold guidance 3.5, 28 configured steps, r
 model revision, scheduler, and prompts fixed. This is parameter-range exploration on pilot data,
 not a primary-method result. Inspect the four matched outputs per source and choose a viable range
 before running Canny; do not generate the full Canny grid yet.
+
+## Completed 20-source strength sweep
+
+The adaptive prompt-only sweep completed on the RTX 4080 SUPER with 80/80 records and no recorded
+generation failure. All records used the pinned SDXL revision, seed 42, Euler scheduler, 28
+configured steps, guidance 3.5, 768×768, and BF16. The pipeline loaded once and was reused across
+all four strengths. Mean recorded inference time per image ranged from 3.44 to 3.89 seconds; peak
+allocated and reserved memory were 8,631,817,216 and 8,795,455,488 bytes. These timings are
+instance diagnostics, not quality evidence.
+
+Visual review found 0.50 and 0.60 generally too conservative. At 0.70, watercolor and ink sources
+showed the clearest movement toward photographic rendering before frequent large reconstruction,
+while comic and 3D-cartoon sources still retained substantial stylization. Strength 0.80 produced
+more photographic texture in some outputs but frequently changed identity-bearing facial features,
+age or gender presentation, accessories, hair, pose, and background details. No strength succeeded
+uniformly across all styles. Mean source/output pixel MAE increased monotonically in every category;
+this only confirms increasing pixel change and is not a style-removal or identity metric.
+
+Use 0.70 as the single preselected pilot comparison point, not as a claimed optimum. The next GPU
+run should hold it fixed and add the missing matched groups: generic prompt-only and adaptive global
+Canny over the same 20 sources and seed 42. This yields the first controlled 20-source comparison
+of the three implemented methods. Do not tune on calibration or test data, and do not interpret
+the outputs as formal results until the planned metrics and blinded human rubric are applied.
