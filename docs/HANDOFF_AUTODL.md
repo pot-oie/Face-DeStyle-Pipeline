@@ -261,3 +261,41 @@ representation from the one smoke output. The next GPU task is one fixed-config 
 over all 20 pilot sources, paired against the existing adaptive prompt-only and scale-0.4 global
 Canny results. Hold strength 0.70, ControlNet scale 0.40, seed, prompts, scheduler, steps, guidance,
 resolution, and model revisions fixed; do not add another parameter sweep.
+
+## Completed 20-source Region Canny pilot
+
+The fixed Region Canny pilot completed 20/20 records at commit `dc639ba` on an NVIDIA GeForce RTX
+4080 SUPER with 32,760 MiB reported memory. The run used the same 20 accepted pilot sources as the
+matched adaptive prompt-only and scale-0.4 global-Canny groups: five each from `comic`,
+`3d_cartoon`, `ink`, and `watercolor`. All records used seed 42, the pinned SDXL, Canny ControlNet,
+and face-parsing revisions, EulerDiscreteScheduler, 28 configured steps, strength 0.70, guidance
+3.5, 768×768 BF16 generation, ControlNet scale 0.40, background edge scale 0.25, and the declared
+per-style Canny thresholds. No controlled comparison field differed across the three method groups.
+
+Mean Region Canny inference time was 5.68 seconds per image (range 4.86–8.16 seconds). The pipeline
+and face parser loaded once in 13.42 and 1.82 seconds. Maximum recorded allocated and reserved GPU
+memory were 11,668,694,528 and 13,505,658,880 bytes. These values describe this instance and are not
+method-quality evidence.
+
+All 20 global Canny images, parsed masks, region conditions, and outputs decoded at 768×768. Each
+saved region condition was exactly reproducible as full global-Canny intensity inside the parsed
+head mask and 0.25 intensity outside it. Mean parsed-mask fraction was 36.82%, ranging from 15.07%
+to 52.05%. Visual inspection found broadly plausible masks on the synthetic portraits, but clear
+semantic over-segmentation on `met-459963` and `aic-18667`, where hat, torso, furniture, or stray
+regions entered the full-strength area; `met-12464` was also irregular. File validity and exact
+compositing therefore verify implementation, not parsing quality across stylized domains.
+
+Unblinded paired contact-sheet review did not find a stable Region Canny advantage. The 3D-cartoon
+outputs remained visibly 3D, comic outputs remained illustrated, and ink/watercolor outputs retained
+their source media. Background attenuation caused local reconstruction but did not consistently
+remove artistic contours from the subject. As a software diagnostic only, Region and global-Canny
+outputs were pixel-closer than Region and adaptive outputs on 16/20 sources; none of the Region and
+global outputs were byte-identical. Pixel distance is not a content, identity, or style-removal
+metric.
+
+This pilot does not support H3 as currently represented. It suggests two limitations to analyze:
+the face parser is not reliably semantic on every stylized or historical source, and keeping parsed
+head edges at full strength can preserve the same artistic contours that global Canny preserved.
+Do not tune weights from selected examples or run another Region parameter sweep. Freeze these
+outputs, conduct the written paired human rubric, and validate the planned content, identity, and
+style-removal evaluation paths before deciding whether a predeclared failure-aware route is warranted.
