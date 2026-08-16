@@ -35,9 +35,9 @@ Florence-2 uses repository-provided Python modeling code. Pin and review that co
 `trust_remote_code`; the asset audit deliberately does not import it. RealVisXL is a single-file
 checkpoint and needs a separate `from_single_file` backend before it can be executed.
 
-## Planned FLUX.1 Kontext capability probe
+## Completed FLUX.1 Kontext capability probe
 
-The next generator probe requires original BF16 `black-forest-labs/FLUX.1-Kontext-dev`. The verified
+The completed generator probe used original BF16 `black-forest-labs/FLUX.1-Kontext-dev`. The verified
 ModelScope mirror ID is exactly `black-forest-labs/FLUX.1-Kontext-dev`, revision `master`. ModelScope
 reports a 57,890,837,493-byte repository with Diffusers, PyTorch, and Safetensors assets whose tensor
 metadata is BF16/F32. Treat `master` as a mutable mirror revision: preserve the retrieval time, full
@@ -48,6 +48,9 @@ Do not use `MusePublic/FLUX.1-Kontext-Dev`: despite its description mentioning B
 file metadata identifies FP8 E4M3 weights. Also reject repositories labeled FP8, GGUF, NF4, NVFP4,
 ComfyUI-only, LoRA, or community merge. The first probe must use the unquantized Diffusers tree.
 
-Download and verification commands are maintained in `docs/HANDOFF_FLUX_KONTEXT.md`. Do not add the
-asset to `configs/models.yaml` until the server reports its actual local directory and the expected
-hash manifest passes. File presence and header validation will still not constitute GPU validation.
+Download and verification commands are maintained in `docs/HANDOFF_FLUX_KONTEXT.md`. The model is
+present at `models/diffusion/FLUX.1-Kontext-dev` and completed a 20/20 BF16 inference run. It is not
+yet in `configs/models.yaml` because the operator deliberately used a lightweight configuration
+hash manifest rather than a full 54 GB weight hash. The manifest records
+`large_weight_sha256=not_run_operator_choice`; do not describe that as full cryptographic weight
+verification.

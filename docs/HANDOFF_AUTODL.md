@@ -300,11 +300,32 @@ Do not tune weights from selected examples or run another Region parameter sweep
 outputs, conduct the written paired human rubric, and validate the planned content, identity, and
 style-removal evaluation paths before deciding whether a predeclared failure-aware route is warranted.
 
-## Next-window FLUX handoff
+## Completed FLUX handoff
 
-Further SDXL Base tuning is stopped. The next task is an exploratory original-BF16
-FLUX.1-Kontext-dev prompt-editing probe, first on four preselected sources and without Canny or a
-parameter sweep. FLUX work is intentionally handed to a new task. That task must begin with
-`AGENTS.md`, `docs/research_context.md`, `docs/model_assets.md`, and
-`docs/HANDOFF_FLUX_KONTEXT.md`; the dedicated handoff contains the verified ModelScope mirror,
-download checks, license boundary, implementation contract, and stop conditions.
+Further SDXL Base tuning remains stopped. The exploratory original-BF16 FLUX.1-Kontext-dev probe
+completed 20/20 frozen pilot sources at native 1024x1024 with no Canny or parameter sweep. The run
+used model offload, 28 steps, guidance 2.5, seed 42, and one pipeline-loading session. It recorded
+zero failures, 1849.47 seconds total inference time, 92.47 seconds mean time per image, and
+24,910,057,472 bytes peak allocated VRAM on an RTX 4080 SUPER.
+
+The returned archive passed CRC and image validation; its SHA-256 is
+`163e5e6517e8d48fd280a35f4cd41db2862d37b9a76133ea444080156a6961f5`. The operator intentionally
+used configuration-file hashes instead of a full 54 GB weight SHA-256, and the manifest records
+`large_weight_sha256=not_run_operator_choice`. Successful BF16 pipeline load and complete inference
+serve as operational integrity evidence, not full cryptographic verification of all weight shards.
+
+Unblinded review found a useful generator-capability signal for comic, ink, and watercolor but
+persistent rendered geometry/materials for all five 3D-cartoon sources. This is not formal or
+resolution-controlled evaluation: FLUX used native 1024 while the SDXL pilot used 768. Freeze the
+outputs and proceed to blinded rubric calibration and failure-aware DINO/CLIP evaluation. Optional
+paired ArcFace drift diagnostics are allowed only within the narrow private-research boundary in
+`AGENTS.md`. Full run details and stop conditions are in `docs/HANDOFF_FLUX_KONTEXT.md`.
+
+## Primary evaluation runner prepared
+
+`scripts/evaluate_formal.py` now performs checkpointed, local-only DINOv2 Base, CLIP ViT-L/14,
+paired ArcFace, and structured Qwen2.5-VL-3B evaluation across multiple run-record files while
+loading each model only once. It stores raw cosine/rubric values and explicit failures; it does not
+apply the placeholder thresholds. `scripts/summarize_formal_evaluations.py` writes factual CSV/JSON
+summaries without declaring acceptance. Exact preflight, one-session evaluation, resume, packaging,
+and subsequent experiment commands are in `docs/HANDOFF_EVALUATION.md`.

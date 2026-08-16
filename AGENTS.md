@@ -88,16 +88,21 @@ and region-aware Canny. It did not find a stable adaptive-prompt or Region Canny
 further SDXL Base prompt, strength, or Canny-weight scanning is stopped. This is a plateau for the
 tested SDXL Base configuration, not a claim about the theoretical limit of the SDXL family.
 
-The active extension is a generator-capability probe with original BF16
-`FLUX.1-Kontext-dev`. It uses native source-image-plus-instruction editing without Canny or another
-structural condition. First run one preselected source from each of the four pilot styles; only a
-successful fixed four-source probe may justify a fixed 20-source run. Do not scan parameters or add
-FLUX Canny, Depth, Pose, LoRA, or quantization. Quantization is allowed only after a documented BF16
-offload OOM and must be reported as a separate quantized/offloaded method.
+The original-BF16 `FLUX.1-Kontext-dev` generator-capability probe is complete on the frozen
+20-source pilot. It used native 1024x1024 source-image-plus-instruction editing, CPU/model offload,
+and no structural condition. All 20 records succeeded in one pipeline-loading session. Unblinded
+visual review found a capability signal for comic, ink, and watercolor sources but persistent
+rendered geometry and materials on all five 3D-cartoon sources. This review is exploratory and
+uncalibrated, not formal evaluation or a strict cross-model comparison: the SDXL pilot used 768x768,
+and equal seeds do not imply matched noise across architectures. Freeze these FLUX outputs. Do not
+scan parameters or add FLUX Canny, Depth, Pose, LoRA, or quantization.
 
-The current FLUX.1 dev license prohibits biometric processing. Do not run ArcFace, InsightFace, or
-another biometric metric on Kontext outputs unless a later license review explicitly resolves that
-restriction. This license-specific limit does not turn qualitative inspection into metric validation.
+The operator has adopted a narrow private-research interpretation under which ArcFace/InsightFace
+may be used only as a paired face-drift diagnostic for these fixed experimental inputs and outputs.
+Do not turn it into identity search, identification, authentication, surveillance, enrollment, or a
+real-person recognition system; do not publish reusable face templates. Record no-face failures and
+the operator interpretation with any result. This operational boundary is not legal advice or a
+claim that the license text is unambiguous.
 
 Primary evaluation uses DINOv2 Base, CLIP ViT-L/14, InsightFace where a face is detectable, a
 structured Qwen2.5-VL-3B style-removal rubric, and blinded human review. Depth, Refiner, InstantID,

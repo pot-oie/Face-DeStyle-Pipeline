@@ -39,10 +39,17 @@ in the repository.
 Implemented: strict Pydantic records, JSONL validation, stable metadata IDs, OpenCV Canny,
 manual/center masks for smoke testing, a no-op copy backend, a prompt-only SDXL image-to-image
 baseline for AutoDL, global and face-parsing-aware region Canny ControlNet backends with saved
-condition artifacts, explicit pixel similarity, dual-threshold filtering, deterministic triplet
-sampling, CSV export, and unit tests. Prompt-only, global Canny, and region-aware Canny have
-completed controlled 20-source pilot generation; this is not formal metric or quality validation.
+condition artifacts, an original-BF16 FLUX.1 Kontext native-1024 prompt-editing backend with model
+offload and resumable records, explicit pixel similarity, dual-threshold filtering, deterministic
+triplet sampling, CSV export, and unit tests. Prompt-only, global Canny, region-aware Canny, and the
+exploratory FLUX probe have completed 20-source pilot generation; this is not formal metric or
+quality validation.
 Local Diffusers tests inject mock pipelines and never download a model.
+
+The AutoDL-only formal evaluator is implemented as a checkpointed local-asset runner for DINOv2,
+CLIP, paired ArcFace drift diagnostics, and a structured Qwen2.5-VL rubric. See
+[`docs/HANDOFF_EVALUATION.md`](docs/HANDOFF_EVALUATION.md) before its first real-model run. Raw
+cosines and rubric scores require human calibration; they are not acceptance probabilities.
 
 Declared for AutoDL, but not yet GPU-verified: pose/depth extraction, DINO/CLIP/SigLIP content or
 semantic similarity, ArcFace identity similarity, and VLM style-removal

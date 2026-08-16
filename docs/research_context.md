@@ -60,10 +60,13 @@ existing SDXL Base adaptive prompt-only output with native image editing from or
 and image-editing pretraining improve natural reconstruction without unacceptable content drift.
 
 This is an exploratory generator extension, not a strict DeStyle reproduction or a new primary RQ.
-Cross-model seeds do not represent matched noise. Hold source image, task semantics, and resolution
-constant while keeping each generator's configuration fixed and fully recorded. Start with one
-source per primary style; four examples can establish engineering feasibility or a capability signal
-but cannot support a reportable scientific conclusion.
+The fixed 20-source run completed with original BF16 weights, model offload, 28 steps, guidance 2.5,
+seed 42, and native 1024x1024 output. The earlier SDXL methods used 768x768, so this is deliberately
+not a resolution-controlled cross-model experiment; cross-model seeds also do not represent matched
+noise. Unblinded review showed a generator-capability signal on comic, ink, and watercolor sources,
+while all five 3D-cartoon outputs retained conspicuous rendered geometry or materials. Freeze the
+outputs and treat this as engineering evidence that motivates calibrated evaluation, not as a
+reportable scientific conclusion.
 
 ## 3. Hypotheses and acceptable outcomes
 
@@ -237,8 +240,10 @@ is possible. Final thresholds must be calibrated; the YAML defaults are placehol
 
 - DINOv2: global/structural content similarity; can be influenced by style.
 - CLIP: semantic consistency; not a substitute for geometric alignment.
-- ArcFace: face embedding similarity when both images yield valid detections; log no-face cases
-  rather than silently dropping them.
+- ArcFace: paired face-drift diagnostic when both fixed experimental images yield valid detections;
+  log no-face cases rather than silently dropping them. Under the operator's narrow private-research
+  interpretation, do not reuse this path for identity search, enrollment, authentication,
+  surveillance, or a real-person recognition system, and do not publish reusable face templates.
 - Qwen2.5-VL-3B: structured style-removal and content rubric; output machine-parseable JSON with an
   explanation, but do not expose hidden chain-of-thought or treat the model as ground truth.
 - Human review: calibration authority and final audit.

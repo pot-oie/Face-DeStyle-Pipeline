@@ -69,6 +69,29 @@ class EvaluationRecord(StrictRecord):
         return self
 
 
+class FormalEvaluationRecord(StrictRecord):
+    """Raw formal metric outputs before human calibration and thresholding."""
+
+    id: str = Field(min_length=1)
+    record_id: str = Field(min_length=1)
+    source_id: str = Field(min_length=1)
+    method: str = Field(min_length=1)
+    input_path: Path
+    output_path: Path
+    style_category: str = Field(min_length=1)
+    dinov2_cosine: float | None = Field(default=None, ge=-1.0, le=1.0)
+    clip_cosine: float | None = Field(default=None, ge=-1.0, le=1.0)
+    arcface_cosine: float | None = Field(default=None, ge=-1.0, le=1.0)
+    arcface_status: str | None = None
+    qwen_content_score: int | None = Field(default=None, ge=0, le=5)
+    qwen_style_removal_score: int | None = Field(default=None, ge=0, le=5)
+    qwen_identity_score: int | None = Field(default=None, ge=0, le=5)
+    qwen_evidence: str | None = None
+    qwen_raw_response: str | None = None
+    failures: dict[str, str] = Field(default_factory=dict)
+    evaluator_metadata: dict[str, Any] = Field(default_factory=dict)
+
+
 class TripletRecord(StrictRecord):
     id: str = Field(min_length=1)
     destylized_content_path: Path

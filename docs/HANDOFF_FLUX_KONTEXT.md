@@ -2,10 +2,9 @@
 
 ## Management sentence
 
-> This experiment compares FLUX.1-Kontext-dev prompt editing with SDXL Base adaptive prompt-only,
-> while holding the input sources, resolution, and destylization intent constant, to test whether a
-> stronger native image-editing generator improves natural reconstruction without unacceptable
-> content drift.
+> This experiment probes FLUX.1-Kontext-dev prompt editing on the same frozen sources as the SDXL
+> Base pilot, using each model's recorded operating resolution, to test whether a stronger native
+> image-editing generator improves natural reconstruction without unacceptable content drift.
 
 ## Research position and boundary
 
@@ -13,10 +12,10 @@ The SDXL Base pilot is frozen. Generic versus adaptive prompting did not show a 
 global Canny retained artistic contours; and region-aware Canny completed 20/20 records without a
 stable visual advantage. Do not run another SDXL Base prompt, strength, or Canny-weight scan.
 
-The next method ID is `flux1_kontext_dev_prompt_edit_bf16_offloaded`. Kontext natively consumes a
+The completed method ID is `flux1_kontext_dev_prompt_edit_bf16_offloaded`. Kontext natively consumes a
 source image and editing instruction, so “prompt edit” here means image-conditioned editing without
 an explicit Canny, Depth, or pose condition. This is a generator-capability extension, not a strict
-reproduction of the DeStyle paper. Four outputs are an engineering and capability probe, not a
+reproduction of the DeStyle paper. The 20-output run is engineering and capability evidence, not a
 formal result.
 
 ## Verified ModelScope source
@@ -32,10 +31,12 @@ formal result.
 Do not substitute `MusePublic/FLUX.1-Kontext-Dev`; ModelScope reports that repository as FP8 E4M3.
 Also reject FP8, GGUF, NF4, NVFP4, ComfyUI-only, LoRA, and merged variants.
 
-The BFL license requires separate project review. In particular, do not connect Kontext outputs to
-ArcFace/InsightFace or another biometric-processing path until the license restriction has been
-resolved. Download and a four-image qualitative probe do not establish permission for downstream
-biometric evaluation or training-data use.
+The BFL license requires project-specific interpretation. The operator has chosen a narrow
+private-research interpretation that permits ArcFace/InsightFace only as a paired drift diagnostic
+on these fixed inputs and outputs. Do not use it for identification, search, enrollment,
+authentication, surveillance, or a real-person recognition system, and do not publish reusable face
+templates. Record this interpretation with results; it is not legal advice or a claim that the
+license wording is unambiguous.
 
 ## AutoDL download and verification
 
@@ -184,9 +185,31 @@ while reporting each generator's own fixed configuration.
 7. Do not add FLUX Canny, Depth, Pose, LoRA, or a parameter sweep.
 
 Package a completed run with `scripts/package_run.py --cleanup` only after ZIP and SHA-256
-verification. The handoff must include all four sources and outputs in a non-cherry-picked contact
-sheet, success/failure counts, timing, peak VRAM, content drift, residual style, what the probe can
-and cannot establish, and whether a fixed 20-source run is justified.
+verification. The handoff must include every attempted source and output in non-cherry-picked
+contact sheets, success/failure counts, timing, peak VRAM, content drift, residual style, and what
+the probe can and cannot establish.
+
+## Completed native-1024 pilot
+
+Run `flux-kontext-native1024-pilot-20260815-023158` completed all 20 frozen sources with zero
+failures on an RTX 4080 SUPER. It used BF16, CPU/model offload, 28 steps, guidance 2.5, seed 42,
+native 1024x1024 output, and one pipeline load. Pipeline loading took 21.07 seconds; total recorded
+inference took 1849.47 seconds (mean 92.47, range 87.65--116.40 seconds per image). Peak allocated
+VRAM was 24,910,057,472 bytes and peak reserved VRAM was 26,216,497,152 bytes. The returned ZIP
+passed CRC testing and has SHA-256
+`163e5e6517e8d48fd280a35f4cd41db2862d37b9a76133ea444080156a6961f5`.
+
+The operator deliberately skipped hashing every 54 GB weight shard. The acquisition manifest
+records lightweight configuration hashes and `large_weight_sha256=not_run_operator_choice`; a
+successful local BF16 pipeline load and complete inference run are the operational integrity check.
+Do not retroactively describe this as full weight verification.
+
+An unblinded, uncalibrated contact-sheet review found strong style-removal signal on comic and
+watercolor, mixed results on ink, and residual 3D/cartoon geometry and materials on all five
+3D-cartoon sources. Historical artworks also exposed identity-inference uncertainty. Freeze the
+outputs: do not tune from selected examples. The next stage is blinded human-rubric calibration and
+failure-aware DINO/CLIP evaluation, with optional paired ArcFace drift diagnostics under the narrow
+operator interpretation above.
 
 ## Local probe runner prepared
 

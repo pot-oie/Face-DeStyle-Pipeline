@@ -18,12 +18,15 @@ Canny, so that negative/mixed outcome must be analyzed before any new structural
 run records model revision, seed, resolution, prompts, conditions, and core sampling settings in its
 `DestylizationRecord`.
 
-The next exploratory method is `flux1_kontext_dev_prompt_edit_bf16_offloaded`: original BF16
-FLUX.1 Kontext native image editing with CPU/model offload, batch size 1, and no Canny, Depth, Pose,
-LoRA, or quantization. It is a generator-capability probe against the existing SDXL Base adaptive
-prompt-only output, not a claim that seeds define matched noise across architectures. The first run
-is fixed to one preselected source from each primary style at 768×768. Only successful engineering
-validation and a non-cherry-picked capability signal may justify a fixed 20-source extension.
+The completed exploratory method is `flux1_kontext_dev_prompt_edit_bf16_offloaded`: original BF16
+FLUX.1 Kontext native image editing with CPU/model offload, batch size 1, native 1024x1024 output,
+and no Canny, Depth, Pose, LoRA, or quantization. It completed all 20 frozen pilot sources in one
+pipeline-loading session. It is a generator-capability probe against the existing SDXL Base adaptive
+prompt-only outputs, not a claim that equal seeds define matched noise across architectures. Because
+SDXL used 768x768 and FLUX used its native resolution, the comparison is intentionally exploratory.
+Unblinded review found encouraging media conversion on comic, ink, and watercolor sources and a
+consistent failure to remove rendered 3D geometry/materials. These observations must be checked by
+the frozen human rubric and formal metrics before they are used as results.
 
 Accepted candidates pass content and style-removal thresholds plus an optional identity threshold.
 Triplets use the accepted destylized output as content, a different source in the same category as
