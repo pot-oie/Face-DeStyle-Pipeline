@@ -55,6 +55,10 @@ CLIP, paired ArcFace drift diagnostics, and a structured Qwen2.5-VL rubric. See
 [`docs/HANDOFF_EVALUATION.md`](docs/HANDOFF_EVALUATION.md) before its first real-model run. Raw
 cosines and rubric scores require human calibration; they are not acceptance probabilities.
 
+Method-hidden pilot review can be prepared with `scripts/build_blind_review.py` and summarized only
+after both rounds are frozen with `scripts/summarize_blind_review.py`. The private unblinding key is
+kept outside the reviewer bundle.
+
 Declared for AutoDL, but not yet GPU-verified: pose/depth extraction, DINO/CLIP/SigLIP content or
 semantic similarity, ArcFace identity similarity, and VLM style-removal
 scoring. `configs/models.yaml` records expected server assets and licenses;

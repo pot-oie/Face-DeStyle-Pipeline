@@ -43,6 +43,9 @@ a measured style-removal advantage.
 
 Qwen gives every method the same mean style-removal score of 3.2 and nearly constant content and
 identity scores. It therefore does not distinguish the observed qualitative differences in this
-pilot. The earlier unblinded FLUX review found stronger photographic conversion for comic, ink, and
-watercolor but persistent 3D rendering cues; the automated rubric does not reproduce that pattern.
-Blinded human calibration is required before thresholds, acceptance, routing, or method ranking.
+pilot. More strongly, each source received exactly the same style score across all five methods;
+the score varied by source rather than output method. The earlier unblinded FLUX review found
+stronger photographic conversion for comic, ink, and watercolor but persistent 3D rendering cues;
+the automated rubric does not reproduce that pattern. Blinded human calibration is required before
+thresholds, acceptance, routing, or method ranking. See
+`docs/results/qwen_primary_pilot_audit_20260816.md` for the evaluator audit.
