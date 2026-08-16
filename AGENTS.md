@@ -97,6 +97,13 @@ uncalibrated, not formal evaluation or a strict cross-model comparison: the SDXL
 and equal seeds do not imply matched noise across architectures. Freeze these FLUX outputs. Do not
 scan parameters or add FLUX Canny, Depth, Pose, LoRA, or quantization.
 
+Primary raw metric execution is complete for the four SDXL methods (80 pairs) and FLUX (20 pairs):
+DINO, CLIP, and Qwen completed 100/100 records; ArcFace produced 99 cosine scores plus one explicit
+SDXL no-face result. Global Canny leads source-similarity metrics, consistent with contour retention,
+while Qwen gives all five methods the same mean style-removal score and does not reproduce the visual
+FLUX capability signal. Do not rank or accept methods from these uncalibrated pilot metrics. The
+active task is blinded human calibration plus new source-group-independent calibration/test data.
+
 The operator has adopted a narrow private-research interpretation under which ArcFace/InsightFace
 may be used only as a paired face-drift diagnostic for these fixed experimental inputs and outputs.
 Do not turn it into identity search, identification, authentication, surveillance, enrollment, or a

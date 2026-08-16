@@ -1,32 +1,48 @@
-# SDXL primary-pilot evaluation return audit
+# Primary-pilot evaluation return audit
 
-The returned `evaluation-sdxl-primary-pilot-20260816.zip` passed ZIP CRC verification. Its SHA-256
-is `12829030046a422d2a3adc158c4037144cda1f920f33a3da661a55087f10c83b`.
-The archive remains outside Git because it contains raw per-pair evaluator responses and server
-paths. This document preserves the small, non-sensitive audit result.
+Two completed evaluation archives passed their embedded SHA-256 checks and ZIP CRC verification:
 
-The evaluation covers 80 pairs: four SDXL methods by the same 20 previously observed pilot sources.
-It is not a held-out test.
+- SDXL 80-pair archive: `3986a0c570728e7997df77e799fb42bdd9fc4a046e07a250fe5ebf261d027e42`;
+- FLUX 20-pair archive: `a061880253c883b3d9f84e7ade1fff9923a4a81f27ef35208edcedb6a952df07`.
 
-## First-pass completeness
+The archives remain outside Git because they contain raw per-pair evaluator responses and server
+paths. This document preserves the small, non-sensitive audit result. All 100 pairs use the same
+previously observed 20-source pilot, not held-out test data. FLUX also used native 1024x1024 while
+SDXL used 768x768, so cross-generator values are exploratory rather than a controlled resolution
+comparison.
 
-- DINOv2 Base: 80/80 scores.
-- CLIP ViT-L/14: 0/80 scores. Transformers 5.15 returned a structured pooling object rather than
-  the older tensor shape, exposing a compatibility bug.
-- ArcFace: 79/80 cosine scores and one explicit `no_face_generated` result for
-  `prompt_generic:met-12464`.
-- Qwen2.5-VL-3B: 74/80 parsed rubric records. Six responses used integral floats or digit strings
-  where the initial parser required JSON integers.
+## Completeness
 
-Every first-pass record contains a CLIP failure, so the returned file is an incomplete metric run,
-not a formal result. The evaluator now accepts both CLIP return shapes and safely normalizes
-integral Qwen score representations while retaining the frozen 0--5 bounds. Retry only CLIP and
-failed Qwen entries; do not recompute successful DINO or ArcFace values.
+- DINOv2 Base: 100/100 scores.
+- CLIP ViT-L/14: 100/100 scores.
+- ArcFace: 99/100 cosine scores. `prompt_generic:met-12464` explicitly records
+  `no_face_generated`; every FLUX pair produced a valid largest-face result.
+- Qwen2.5-VL-3B: 100/100 parsed rubric records.
+- Records with an evaluator failure: 0.
 
-## Preliminary diagnostic
+The first SDXL pass exposed a Transformers 5.15 CLIP return-shape incompatibility and six Qwen
+integral-value representation differences. The compatibility retry filled only the missing fields
+and preserved successful DINO and ArcFace values.
 
-Global Canny has the highest DINO and ArcFace means in every style, consistent with its already
-observed tendency to retain source geometry and artistic contours. This is not evidence of better
-style removal. Qwen showed little separation: most parsed records received content 4, identity 4,
-and style removal 3. Blinded human calibration remains necessary, and the raw metrics must not be
-silently averaged into an unexplained composite score.
+## Raw method means
+
+These are descriptive raw values, not calibrated acceptance probabilities.
+
+| Method | DINO cosine | CLIP cosine | ArcFace cosine | Qwen content | Qwen style removal | Qwen identity |
+|---|---:|---:|---:|---:|---:|---:|
+| SDXL generic | 0.646 | 0.735 | 0.265 (19/20) | 3.9 | 3.2 | 3.95 |
+| SDXL adaptive | 0.693 | 0.761 | 0.291 | 4.0 | 3.2 | 4.0 |
+| SDXL global Canny 0.4 | 0.907 | 0.888 | 0.596 | 3.9 | 3.2 | 3.95 |
+| SDXL Region Canny | 0.779 | 0.839 | 0.566 | 4.0 | 3.2 | 4.0 |
+| FLUX Kontext native 1024 | 0.735 | 0.772 | 0.519 | 4.0 | 3.2 | 4.0 |
+
+Global Canny leads all three cosine means, consistent with its already observed tendency to retain
+source geometry and artistic contours. That is content/structure retention, not evidence of better
+style removal. Region Canny reduces this retention relative to global Canny but still does not show
+a measured style-removal advantage.
+
+Qwen gives every method the same mean style-removal score of 3.2 and nearly constant content and
+identity scores. It therefore does not distinguish the observed qualitative differences in this
+pilot. The earlier unblinded FLUX review found stronger photographic conversion for comic, ink, and
+watercolor but persistent 3D rendering cues; the automated rubric does not reproduce that pattern.
+Blinded human calibration is required before thresholds, acceptance, routing, or method ranking.

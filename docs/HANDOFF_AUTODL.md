@@ -329,3 +329,19 @@ loading each model only once. It stores raw cosine/rubric values and explicit fa
 apply the placeholder thresholds. `scripts/summarize_formal_evaluations.py` writes factual CSV/JSON
 summaries without declaring acceptance. Exact preflight, one-session evaluation, resume, packaging,
 and subsequent experiment commands are in `docs/HANDOFF_EVALUATION.md`.
+
+## Primary pilot evaluation completed
+
+The compatibility-fixed run completed all raw fields for 80 SDXL and 20 FLUX pairs. DINO, CLIP,
+and Qwen have 100/100 values. ArcFace has 99 cosine values plus one explicit
+`prompt_generic:met-12464` no-face result; there are zero evaluator failures. The verified archive
+SHA-256 values are `3986a0c570728e7997df77e799fb42bdd9fc4a046e07a250fe5ebf261d027e42`
+for SDXL and `a061880253c883b3d9f84e7ade1fff9923a4a81f27ef35208edcedb6a952df07`
+for FLUX.
+
+Global Canny has the highest DINO, CLIP, and ArcFace means, which agrees with strong source/contour
+retention and is not a style-removal result. Qwen assigns every method the same 3.2 mean
+style-removal score and is not discriminative on this pilot. Freeze these raw values. Do not apply
+placeholder thresholds or claim a winner; proceed to blinded human calibration and independent
+calibration/test sources. The factual aggregate is in
+`docs/results/sdxl_primary_pilot_evaluation_20260816.md`.
