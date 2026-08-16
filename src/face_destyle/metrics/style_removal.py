@@ -50,8 +50,15 @@ class QwenPairRubric:
         payload = json.loads(match.group(0))
         for key in ("content_preservation", "style_removal", "identity_preservation"):
             value = payload.get(key)
+            if isinstance(value, bool):
+                raise ValueError(f"Qwen field {key} must be an integer in [0, 5]")
+            if isinstance(value, float) and value.is_integer():
+                value = int(value)
+            elif isinstance(value, str) and re.fullmatch(r"[0-5]", value.strip()):
+                value = int(value.strip())
             if not isinstance(value, int) or not 0 <= value <= 5:
                 raise ValueError(f"Qwen field {key} must be an integer in [0, 5]")
+            payload[key] = value
         evidence = payload.get("evidence", "")
         if not isinstance(evidence, str):
             raise ValueError("Qwen field evidence must be a string")

@@ -16,6 +16,15 @@ def _device_name(torch: Any, requested: str) -> str:
     return requested
 
 
+def _clip_feature_tensor(output: Any) -> Any:
+    """Normalize old tensor and newer structured Transformers CLIP outputs."""
+    for attribute in ("image_embeds", "pooler_output"):
+        value = getattr(output, attribute, None)
+        if value is not None:
+            return value
+    return output
+
+
 class DinoV2PairMetric:
     name = "dinov2_cosine"
 
@@ -73,7 +82,9 @@ class ClipPairMetric:
         inputs = self.processor(images=images, return_tensors="pt")
         pixel_values = inputs["pixel_values"].to(self.device)
         with self._torch.inference_mode():
-            embeddings = self.model.get_image_features(pixel_values=pixel_values)
+            embeddings = _clip_feature_tensor(
+                self.model.get_image_features(pixel_values=pixel_values)
+            )
             embeddings = self._torch.nn.functional.normalize(embeddings, dim=-1)
             return float((embeddings[0] * embeddings[1]).sum().item())
 

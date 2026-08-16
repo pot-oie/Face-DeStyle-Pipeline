@@ -29,6 +29,10 @@ does not contain DeStyle-350K, model weights, full datasets, private faces, cach
 bulk outputs. It is an independent undergraduate reproduction in the same research direction,
 not an official DeStyle or DeStyle-350K implementation.
 
+Portable checksum-pinned split manifests may be source-controlled under `data/manifests/`; their
+raw images resolve against a separate data root and never enter Git. This keeps code and experiment
+identity reproducible without using Git history as a private/bulk-image backup.
+
 Development is split between a lightweight local macOS environment and an AutoDL data-disk/GPU
 environment. Durable agent rules, including mainland mirror/proxy cautions, are in `AGENTS.md`;
 server setup is in `docs/autodl_setup.md`. Credentials and live connection details are never stored

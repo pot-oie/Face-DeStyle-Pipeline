@@ -3,6 +3,7 @@ from pathlib import Path
 import pytest
 
 from face_destyle.data.metadata import write_jsonl
+from face_destyle.metrics.content import _clip_feature_tensor
 from face_destyle.metrics.formal import apply_scalar_metric, build_formal_records
 from face_destyle.metrics.style_removal import QwenPairRubric
 from face_destyle.schemas import DestylizationRecord, FormalEvaluationRecord
@@ -88,3 +89,20 @@ def test_qwen_rubric_rejects_out_of_range_score() -> None:
             '{"content_preservation": 6, "style_removal": 5, '
             '"identity_preservation": 3, "evidence": "note"}'
         )
+
+
+def test_qwen_rubric_accepts_integral_float_and_digit_string() -> None:
+    parsed = QwenPairRubric._parse_json(
+        '{"content_preservation": 4.0, "style_removal": "5", '
+        '"identity_preservation": 3, "evidence": "note"}'
+    )
+    assert parsed["content_preservation"] == 4
+    assert parsed["style_removal"] == 5
+
+
+def test_clip_feature_tensor_supports_structured_transformers_output() -> None:
+    class Output:
+        pooler_output = "pooled"
+
+    assert _clip_feature_tensor(Output()) == "pooled"
+    assert _clip_feature_tensor("legacy-tensor") == "legacy-tensor"

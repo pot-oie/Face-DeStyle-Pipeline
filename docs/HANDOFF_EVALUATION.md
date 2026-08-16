@@ -82,6 +82,29 @@ stored as a status and is not silently converted to zero. For provider problems,
 alone with `--metric arcface --arcface-provider cpu --resume --retry-failures`; this uses more wall
 time but does not justify stopping the other metrics.
 
+The first SDXL evaluation attempt on Transformers 5.15 completed DINO for 80/80 pairs, ArcFace for
+79/80 pairs with one explicit no-face result, and Qwen for 74/80 pairs. CLIP failed on all 80 pairs
+because that Transformers version returns a structured pooling object rather than the older tensor.
+Six Qwen responses used integral floats or one-character numeric strings instead of JSON integers.
+Commit `HEAD` accepts both documented output shapes without relaxing the 0--5 rubric. After pulling
+the fix, repeat the same `--records` arguments and retry only the failed metrics:
+
+```bash
+python scripts/evaluate_formal.py \
+  --records "prompt_generic=$GENERIC_RECORDS" \
+  --records "prompt_adaptive=$ADAPTIVE_RECORDS" \
+  --records "global_canny_0p4=$GLOBAL_CANNY_RECORDS" \
+  --records "region_canny=$REGION_CANNY_RECORDS" \
+  --output "$EVAL_RUN/formal-evaluations.jsonl" \
+  --metric clip --metric qwen \
+  --resume --retry-failures \
+  2>&1 | tee "$EVAL_RUN/retry-clip-qwen.log"
+```
+
+Do not include FLUX records in this retry unless they were already present in the same evaluation
+JSONL. Resume uses the frozen records in that file; the repeated record arguments document the
+intended input set.
+
 Package the exact evaluation directory only after inspecting `summary/summary.json`:
 
 ```bash
