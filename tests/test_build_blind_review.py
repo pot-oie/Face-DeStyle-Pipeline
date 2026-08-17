@@ -26,7 +26,7 @@ def test_build_blind_review_cli(tmp_path: Path, monkeypatch) -> None:
                 source_group_id="group-one",
                 asset_path=Path("raw/comic/one.png"),
                 style_category="comic",
-                split="pilot",
+                split="calibration",
                 sha256=(
                     "7a5b756c49720c5a3842039d9bc2ce25fbf95312ef4a5d7236e2439f87d9c328"
                 ),
@@ -51,6 +51,8 @@ def test_build_blind_review_cli(tmp_path: Path, monkeypatch) -> None:
             str(manifest),
             "--data-root",
             str(data_root),
+            "--split",
+            "calibration",
             "--method",
             f"method-a={method_dir}",
             "--output-dir",

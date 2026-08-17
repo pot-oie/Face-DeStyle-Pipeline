@@ -79,6 +79,12 @@ def main() -> int:
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--data-root", type=Path, required=True)
     parser.add_argument(
+        "--split",
+        choices=("pilot", "calibration", "test", "extension"),
+        default="pilot",
+        help="Frozen manifest split represented by every method directory.",
+    )
+    parser.add_argument(
         "--method",
         action="append",
         required=True,
@@ -102,7 +108,7 @@ def main() -> int:
     sources = load_dataset_manifest(
         args.manifest,
         data_root=args.data_root,
-        split="pilot",
+        split=args.split,
     )
     candidates: list[dict[str, str]] = []
     for source in sources:

@@ -126,6 +126,9 @@ mistaken for a held-out result.
 2. **Calibrate, then freeze.** Compare DINO/CLIP/ArcFace/Qwen with blinded human labels by style.
    Choose thresholds and missing-face policy on calibration data only. Do not average the metrics
    into an unexplained composite score.
+   `scripts/build_blind_review.py --split calibration` builds two independently shuffled,
+   method-hidden rounds from the frozen calibration manifest after every method directory is
+   complete.
 3. **Audit only disagreements.** Run DINOv2 Large, SigLIP, and Qwen 7B only on cases where primary
    metrics disagree with humans or methods are nearly tied. Florence remains a caption/failure audit,
    not another vote. This avoids paying to run every downloaded model on every pair.
