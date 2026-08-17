@@ -37,12 +37,17 @@ the same model-loading session with repeated `--split calibration --split test`.
 one 100-record run, but do not inspect, score, select, or tune from its test subset before calibration
 thresholds and routing rules are frozen. This compute optimization does not merge the split labels.
 
-The returned FLUX stochastic extension contains a complete seed-43 run (20/20) and the first five
-seed-44 `3d_cartoon` records (5/20). The seed-44 process was interrupted, not recorded as failed.
-If the partial run directory still exists, rerun the identical seed-44 command with `--resume`; the
-runner will skip the five completed records and generate the remaining 15. Do not merge seed 43/44
-into the primary seed-42 evaluation or use them to tune prompts/settings. See
+The FLUX stochastic extension is complete for seed 43 (20/20) and seed 44 (20/20). The returned
+seed-44 ZIP passed CRC, record, and 1024x1024 RGB image validation; its SHA-256 is
+`9c2042df4b4ee81074467b0cc2f395d044421f719e49a5cb3d84140d5fcce591`. Stop adding seeds. Do not
+merge seeds 43/44 into the primary seed-42 evaluation or use them to tune prompts/settings. See
 `docs/results/flux_seed_extension_20260817.md`.
+
+Server inventories generated on 2026-08-17 report that formal generation is also complete: four
+SDXL methods each produced 100/100 calibration+test records, while FLUX produced 40/40 calibration
+records; every run reports zero failures and present output paths. Retrieve and verify all five ZIP
+archives and sidecars before changing or cleaning server outputs. Keep SDXL test outputs sealed
+while calibration-only metrics and blinded human review are performed.
 
 ## Local validation used before publication
 
