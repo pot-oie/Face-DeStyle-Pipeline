@@ -65,7 +65,12 @@ def main() -> int:
     parser.add_argument("--styles-config", type=Path, default=Path("configs/styles.yaml"))
     parser.add_argument("--models-config", type=Path, default=Path("configs/models.yaml"))
     parser.add_argument("--data-root", type=Path, help="Root for relative paths in --manifest.")
-    parser.add_argument("--split", choices=("pilot", "calibration", "test", "extension"))
+    parser.add_argument(
+        "--split",
+        action="append",
+        choices=("pilot", "calibration", "test", "extension"),
+        help="Manifest split to run; repeat to process multiple frozen splits in one model load.",
+    )
     parser.add_argument("--backend", choices=("copy", "diffusers", "canny", "region_canny"))
     parser.add_argument(
         "--prompt-mode",
@@ -141,11 +146,18 @@ def main() -> int:
         if args.records_output is None:
             parser.error("--records-output is required with batch inputs")
         if args.manifest:
-            records = load_dataset_manifest(
-                args.manifest,
-                data_root=args.data_root,
-                split=args.split,
-            )
+            selected_splits = args.split or [None]
+            if len(set(selected_splits)) != len(selected_splits):
+                parser.error("--split values must be unique")
+            records = []
+            for selected_split in selected_splits:
+                records.extend(
+                    load_dataset_manifest(
+                        args.manifest,
+                        data_root=args.data_root,
+                        split=selected_split,
+                    )
+                )
         else:
             if args.data_root is not None or args.split is not None:
                 parser.error("--data-root and --split are only valid with --manifest")

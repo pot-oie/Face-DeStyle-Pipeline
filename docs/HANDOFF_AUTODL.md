@@ -32,6 +32,11 @@ against the common external `Face-DeStyle-Data` root. Calibration contains 40 so
 style); held-out test contains 60 (15 per style). Keep test sealed until pilot blind review,
 calibration generation/annotation, thresholds, and routing rules are complete.
 
+When GPU rental efficiency requires it, one frozen SDXL method may generate calibration and test in
+the same model-loading session with repeated `--split calibration --split test`. Store the result as
+one 100-record run, but do not inspect, score, select, or tune from its test subset before calibration
+thresholds and routing rules are frozen. This compute optimization does not merge the split labels.
+
 The returned FLUX stochastic extension contains a complete seed-43 run (20/20) and the first five
 seed-44 `3d_cartoon` records (5/20). The seed-44 process was interrupted, not recorded as failed.
 If the partial run directory still exists, rerun the identical seed-44 command with `--resume`; the

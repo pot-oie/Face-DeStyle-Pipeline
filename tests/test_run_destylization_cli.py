@@ -118,6 +118,64 @@ def test_portable_manifest_copy_cli(tmp_path):
     assert record.input_path == source
 
 
+def test_portable_manifest_accepts_multiple_splits(tmp_path):
+    data_root = tmp_path / "dataset"
+    manifest = tmp_path / "manifest.jsonl"
+    rows = []
+    for split, color in (("calibration", "red"), ("test", "blue")):
+        source = data_root / "raw" / "comic" / f"{split}.png"
+        source.parent.mkdir(parents=True, exist_ok=True)
+        Image.new("RGB", (16, 16), color).save(source)
+        rows.append(
+            {
+                "id": split,
+                "source_id": split,
+                "source_group_id": split,
+                "asset_path": str(source.relative_to(data_root)),
+                "style_category": "comic",
+                "split": split,
+                "sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                "qc_status": "accepted",
+            }
+        )
+    manifest.write_text(
+        "".join(json.dumps(row) + "\n" for row in rows),
+        encoding="utf-8",
+    )
+    records_output = tmp_path / "records.jsonl"
+
+    subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--manifest",
+            str(manifest),
+            "--data-root",
+            str(data_root),
+            "--split",
+            "calibration",
+            "--split",
+            "test",
+            "--output-dir",
+            str(tmp_path / "outputs"),
+            "--records-output",
+            str(records_output),
+            "--backend",
+            "copy",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    records = [
+        DestylizationRecord.model_validate_json(line)
+        for line in records_output.read_text(encoding="utf-8").splitlines()
+    ]
+    assert [record.source_id for record in records] == ["calibration", "test"]
+
+
 def test_prompt_mode_is_rejected_for_copy_backend(tmp_path):
     source = tmp_path / "input.png"
     Image.new("RGB", (16, 16)).save(source)
