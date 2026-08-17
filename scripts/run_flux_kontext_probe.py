@@ -30,8 +30,8 @@ def select_probe_records(
         grouped[record.style_category].append(record)
     missing = [style for style in REQUIRED_STYLES if not grouped[style]]
     if missing:
-        raise ValueError("manifest lacks accepted pilot styles: " + ", ".join(missing))
-    if stage == "pilot":
+        raise ValueError("manifest lacks required styles: " + ", ".join(missing))
+    if stage in {"batch", "pilot"}:
         style_order = {style: index for index, style in enumerate(REQUIRED_STYLES)}
         return sorted(
             records,
@@ -82,9 +82,16 @@ def main() -> int:
     parser.add_argument("--styles-config", type=Path, default=Path("configs/styles.yaml"))
     parser.add_argument("--source-revision", default="master")
     parser.add_argument(
+        "--split",
+        choices=("pilot", "calibration", "test", "extension"),
+        default="pilot",
+        help="Frozen manifest split to load; test must remain sealed until calibration is frozen.",
+    )
+    parser.add_argument(
         "--probe-stage",
-        choices=("first", "remaining", "all", "pilot"),
+        choices=("first", "remaining", "all", "batch", "pilot"),
         default="first",
+        help="batch runs every record in the selected split; pilot is its legacy alias.",
     )
     parser.add_argument(
         "--resume",
@@ -101,7 +108,7 @@ def main() -> int:
     manifest_records = load_dataset_manifest(
         args.manifest,
         data_root=args.data_root,
-        split="pilot",
+        split=args.split,
     )
     selected = select_probe_records(manifest_records, args.probe_stage)
     if args.resume:

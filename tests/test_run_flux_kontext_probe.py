@@ -53,6 +53,9 @@ def test_probe_selection_is_fixed_by_style_and_source_id():
         "ink-a",
         "watercolor-a",
     ]
+    assert MODULE.select_probe_records(records, "batch") == MODULE.select_probe_records(
+        records, "pilot"
+    )
 
 
 def test_resume_reads_completed_source_ids(tmp_path):

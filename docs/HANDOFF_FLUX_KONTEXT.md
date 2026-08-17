@@ -221,5 +221,10 @@ success or failure record after every attempted source. `--probe-stage pilot` ru
 frozen pilot with one pipeline load. `--resume` skips successful source IDs already present in the
 records JSONL after an interrupted rental session.
 
+For a frozen non-pilot split, pass `--split calibration --probe-stage batch`. This runs every
+calibration record in deterministic style/source order with the same checkpointed failure handling.
+Do not pass `--split test` until human calibration, thresholds, routing rules, and the FLUX expansion
+gate are frozen.
+
 Do not add the model to `configs/models.yaml` until the server download manifest and hash manifest
 paths have been confirmed. Pass those verified paths directly to the probe runner in the meantime.
