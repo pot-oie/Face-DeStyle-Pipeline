@@ -101,8 +101,20 @@ Primary raw metric execution is complete for the four SDXL methods (80 pairs) an
 DINO, CLIP, and Qwen completed 100/100 records; ArcFace produced 99 cosine scores plus one explicit
 SDXL no-face result. Global Canny leads source-similarity metrics, consistent with contour retention,
 while Qwen gives all five methods the same mean style-removal score and does not reproduce the visual
-FLUX capability signal. Do not rank or accept methods from these uncalibrated pilot metrics. The
-active task is blinded human calibration plus new source-group-independent calibration/test data.
+FLUX capability signal. Do not rank or accept methods from these uncalibrated pilot metrics.
+
+The source inventory is now frozen in `data/manifests/formal-v1/inputs.jsonl`: 20 pilot/debug,
+40 calibration, and 60 held-out test sources, balanced 5/10/15 per style. At freeze time all files
+matched their SHA-256 values and `source_id`, `source_group_id`, and file SHA-256 had zero overlap
+between splits. The manifest is private-research runnable metadata, not an image redistribution
+package. The test split remains sealed until blinded human calibration and all thresholds/routing
+rules are frozen. The active task is to finish the pilot blind review, then generate and label only
+the calibration split.
+
+A FLUX seed-stability extension returned 20/20 seed-43 outputs and 5/20 seed-44 outputs. Seed 44 was
+interrupted after the five `3d_cartoon` records; those records are valid and the remaining 15 may be
+resumed with the runner's `--resume` behavior. Keep this extension separate from the primary seed-42
+evaluation and do not use it for parameter tuning.
 
 The operator has adopted a narrow private-research interpretation under which ArcFace/InsightFace
 may be used only as a paired face-drift diagnostic for these fixed experimental inputs and outputs.

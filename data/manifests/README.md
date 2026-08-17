@@ -23,9 +23,11 @@ A frozen version should include:
 - `splits.json` with frozen source-group assignments;
 - `checksums.sha256` using paths relative to the external data root.
 
-Create `formal-v1/` only after the dataset owner confirms the QC decisions, redistribution review,
-and pilot/calibration/test freeze. Later corrections should be a new explicit manifest version or a
-documented amendment, not a silent rewrite after test results are known.
+Create `formal-v1/` only after the QC decisions and pilot/calibration/test assignments are frozen.
+If image redistribution has not been approved, mark the manifest as private-research-only, omit
+raw images and private provenance, and do not describe the metadata declaration as a redistribution
+package. Later corrections should be a new explicit manifest version or a documented amendment,
+not a silent rewrite after test results are known.
 
 `pilot_runtime_manifest.jsonl` is a small checksum-pinned exception for the already frozen 20-source
 pilot used by the completed SDXL and FLUX runs. Its raw images remain in the separate

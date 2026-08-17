@@ -25,6 +25,20 @@ the non-secret network/mirror policy. A new task must read it before issuing ser
 The experiment extension has been reviewed and prepared for publication on `origin/main`. AutoDL
 should fast-forward from that branch before beginning GPU work.
 
+## 2026-08-17 current execution boundary
+
+The 120-source formal inventory is frozen in `data/manifests/formal-v1/inputs.jsonl` and resolves
+against the common external `Face-DeStyle-Data` root. Calibration contains 40 sources (10 per
+style); held-out test contains 60 (15 per style). Keep test sealed until pilot blind review,
+calibration generation/annotation, thresholds, and routing rules are complete.
+
+The returned FLUX stochastic extension contains a complete seed-43 run (20/20) and the first five
+seed-44 `3d_cartoon` records (5/20). The seed-44 process was interrupted, not recorded as failed.
+If the partial run directory still exists, rerun the identical seed-44 command with `--resume`; the
+runner will skip the five completed records and generate the remaining 15. Do not merge seed 43/44
+into the primary seed-42 evaluation or use them to tune prompts/settings. See
+`docs/results/flux_seed_extension_20260817.md`.
+
 ## Local validation used before publication
 
 ```bash

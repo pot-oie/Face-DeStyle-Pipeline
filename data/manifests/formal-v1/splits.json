@@ -1,0 +1,725 @@
+{
+  "schema": "face-destyle-splits/v1",
+  "assignments": [
+    {
+      "source_id": "aic-18667",
+      "source_group_id": "aic-18667",
+      "split": "pilot",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "cma-108522",
+      "source_group_id": "cma-108522",
+      "split": "test",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "cma-119019",
+      "source_group_id": "cma-119019",
+      "split": "test",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "cma-119030",
+      "source_group_id": "cma-119030",
+      "split": "test",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "cma-119033",
+      "source_group_id": "cma-119033",
+      "split": "test",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "cma-120829",
+      "source_group_id": "cma-120829",
+      "split": "test",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "cma-120831",
+      "source_group_id": "cma-120831",
+      "split": "test",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "cma-120839",
+      "source_group_id": "cma-120839",
+      "split": "test",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "cma-120840",
+      "source_group_id": "cma-120840",
+      "split": "test",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "cma-120841",
+      "source_group_id": "cma-120841",
+      "split": "test",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "cma-120843",
+      "source_group_id": "cma-120843",
+      "split": "test",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "cma-120848",
+      "source_group_id": "cma-120848",
+      "split": "test",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "cma-120850",
+      "source_group_id": "cma-120850",
+      "split": "test",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "cma-121265",
+      "source_group_id": "cma-121265",
+      "split": "test",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "cma-121266",
+      "source_group_id": "cma-121266",
+      "split": "test",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "cma-121273",
+      "source_group_id": "cma-121273",
+      "split": "test",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "cma-121281",
+      "source_group_id": "cma-121281",
+      "split": "test",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "cma-121283",
+      "source_group_id": "cma-121283",
+      "split": "test",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "cma-121286",
+      "source_group_id": "cma-121286",
+      "split": "test",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "cma-121287",
+      "source_group_id": "cma-121287",
+      "split": "test",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "cma-160121",
+      "source_group_id": "cma-160121",
+      "split": "test",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "cma-166868",
+      "source_group_id": "cma-166868",
+      "split": "test",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "cma-169341",
+      "source_group_id": "cma-169341",
+      "split": "test",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "cma-170878",
+      "source_group_id": "cma-170878",
+      "split": "test",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "cma-329352",
+      "source_group_id": "cma-329352",
+      "split": "test",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-12464",
+      "source_group_id": "met-12464",
+      "split": "pilot",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-334004",
+      "source_group_id": "met-334004",
+      "split": "pilot",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-335049",
+      "source_group_id": "met-335049",
+      "split": "calibration",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-336317",
+      "source_group_id": "met-336317",
+      "split": "calibration",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-337257",
+      "source_group_id": "met-337257",
+      "split": "calibration",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-337311",
+      "source_group_id": "met-337311",
+      "split": "calibration",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-339012",
+      "source_group_id": "met-339012",
+      "split": "calibration",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-339025",
+      "source_group_id": "met-339025",
+      "split": "calibration",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-339875",
+      "source_group_id": "met-339875",
+      "split": "calibration",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-339919",
+      "source_group_id": "met-339919",
+      "split": "calibration",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-341620",
+      "source_group_id": "met-341620",
+      "split": "calibration",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "met-341941",
+      "source_group_id": "met-341941",
+      "split": "calibration",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-343419",
+      "source_group_id": "met-343419",
+      "split": "calibration",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-376383",
+      "source_group_id": "met-376383",
+      "split": "test",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-389929",
+      "source_group_id": "met-389929",
+      "split": "test",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-415530",
+      "source_group_id": "met-415530",
+      "split": "calibration",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "met-420442",
+      "source_group_id": "met-420442",
+      "split": "calibration",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "met-459195",
+      "source_group_id": "met-459195",
+      "split": "test",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-459232",
+      "source_group_id": "met-459232",
+      "split": "test",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-459963",
+      "source_group_id": "met-459963",
+      "split": "pilot",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-459970",
+      "source_group_id": "met-459970",
+      "split": "calibration",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "met-635819",
+      "source_group_id": "met-635819",
+      "split": "test",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-727789",
+      "source_group_id": "met-727789",
+      "split": "calibration",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "met-747511",
+      "source_group_id": "met-747511",
+      "split": "test",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "met-845725",
+      "source_group_id": "met-845725",
+      "split": "calibration",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "met-906106",
+      "source_group_id": "met-906106",
+      "split": "calibration",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-001",
+      "source_group_id": "synthetic-3d-cartoon-001",
+      "split": "pilot",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-002",
+      "source_group_id": "synthetic-3d-cartoon-002",
+      "split": "pilot",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-003",
+      "source_group_id": "synthetic-3d-cartoon-003",
+      "split": "pilot",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-004",
+      "source_group_id": "synthetic-3d-cartoon-004",
+      "split": "pilot",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-005",
+      "source_group_id": "synthetic-3d-cartoon-005",
+      "split": "pilot",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-006",
+      "source_group_id": "synthetic-3d-cartoon-006",
+      "split": "calibration",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-007",
+      "source_group_id": "synthetic-3d-cartoon-007",
+      "split": "calibration",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-008",
+      "source_group_id": "synthetic-3d-cartoon-008",
+      "split": "calibration",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-009",
+      "source_group_id": "synthetic-3d-cartoon-009",
+      "split": "calibration",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-010",
+      "source_group_id": "synthetic-3d-cartoon-010",
+      "split": "calibration",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-011",
+      "source_group_id": "synthetic-3d-cartoon-011",
+      "split": "calibration",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-012",
+      "source_group_id": "synthetic-3d-cartoon-012",
+      "split": "calibration",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-013",
+      "source_group_id": "synthetic-3d-cartoon-013",
+      "split": "calibration",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-014",
+      "source_group_id": "synthetic-3d-cartoon-014",
+      "split": "calibration",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-015",
+      "source_group_id": "synthetic-3d-cartoon-015",
+      "split": "calibration",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-016",
+      "source_group_id": "synthetic-3d-cartoon-016",
+      "split": "test",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-017",
+      "source_group_id": "synthetic-3d-cartoon-017",
+      "split": "test",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-018",
+      "source_group_id": "synthetic-3d-cartoon-018",
+      "split": "test",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-019",
+      "source_group_id": "synthetic-3d-cartoon-019",
+      "split": "test",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-020",
+      "source_group_id": "synthetic-3d-cartoon-020",
+      "split": "test",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-021",
+      "source_group_id": "synthetic-3d-cartoon-021",
+      "split": "test",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-022",
+      "source_group_id": "synthetic-3d-cartoon-022",
+      "split": "test",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-026",
+      "source_group_id": "synthetic-3d-cartoon-026",
+      "split": "test",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-027",
+      "source_group_id": "synthetic-3d-cartoon-027",
+      "split": "test",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-028",
+      "source_group_id": "synthetic-3d-cartoon-028",
+      "split": "test",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-029",
+      "source_group_id": "synthetic-3d-cartoon-029",
+      "split": "test",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-030",
+      "source_group_id": "synthetic-3d-cartoon-030",
+      "split": "test",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-031",
+      "source_group_id": "synthetic-3d-cartoon-031",
+      "split": "test",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-032",
+      "source_group_id": "synthetic-3d-cartoon-032",
+      "split": "test",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-3d-cartoon-033",
+      "source_group_id": "synthetic-3d-cartoon-033",
+      "split": "test",
+      "style_category": "3d_cartoon"
+    },
+    {
+      "source_id": "synthetic-comic-001",
+      "source_group_id": "synthetic-comic-001",
+      "split": "pilot",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-002",
+      "source_group_id": "synthetic-comic-002",
+      "split": "pilot",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-003",
+      "source_group_id": "synthetic-comic-003",
+      "split": "pilot",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-004",
+      "source_group_id": "synthetic-comic-004",
+      "split": "pilot",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-005",
+      "source_group_id": "synthetic-comic-005",
+      "split": "pilot",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-006",
+      "source_group_id": "synthetic-comic-006",
+      "split": "calibration",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-007",
+      "source_group_id": "synthetic-comic-007",
+      "split": "calibration",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-008",
+      "source_group_id": "synthetic-comic-008",
+      "split": "calibration",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-009",
+      "source_group_id": "synthetic-comic-009",
+      "split": "calibration",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-010",
+      "source_group_id": "synthetic-comic-010",
+      "split": "calibration",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-011",
+      "source_group_id": "synthetic-comic-011",
+      "split": "calibration",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-012",
+      "source_group_id": "synthetic-comic-012",
+      "split": "calibration",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-013",
+      "source_group_id": "synthetic-comic-013",
+      "split": "calibration",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-014",
+      "source_group_id": "synthetic-comic-014",
+      "split": "calibration",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-015",
+      "source_group_id": "synthetic-comic-015",
+      "split": "calibration",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-016",
+      "source_group_id": "synthetic-comic-016",
+      "split": "test",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-017",
+      "source_group_id": "synthetic-comic-017",
+      "split": "test",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-018",
+      "source_group_id": "synthetic-comic-018",
+      "split": "test",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-019",
+      "source_group_id": "synthetic-comic-019",
+      "split": "test",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-020",
+      "source_group_id": "synthetic-comic-020",
+      "split": "test",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-021",
+      "source_group_id": "synthetic-comic-021",
+      "split": "test",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-022",
+      "source_group_id": "synthetic-comic-022",
+      "split": "test",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-023",
+      "source_group_id": "synthetic-comic-023",
+      "split": "test",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-024",
+      "source_group_id": "synthetic-comic-024",
+      "split": "test",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-comic-025",
+      "source_group_id": "synthetic-comic-025",
+      "split": "test",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "synthetic-ink-001",
+      "source_group_id": "synthetic-ink-001",
+      "split": "pilot",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "synthetic-ink-002",
+      "source_group_id": "synthetic-ink-002",
+      "split": "pilot",
+      "style_category": "ink"
+    },
+    {
+      "source_id": "synthetic-watercolor-001",
+      "source_group_id": "synthetic-watercolor-001",
+      "split": "pilot",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "synthetic-watercolor-002",
+      "source_group_id": "synthetic-watercolor-002",
+      "split": "pilot",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "synthetic-watercolor-003",
+      "source_group_id": "synthetic-watercolor-003",
+      "split": "pilot",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "synthetic-watercolor-004",
+      "source_group_id": "synthetic-watercolor-004",
+      "split": "pilot",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "synthetic-watercolor-005",
+      "source_group_id": "synthetic-watercolor-005",
+      "split": "calibration",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "synthetic-watercolor-006",
+      "source_group_id": "synthetic-watercolor-006",
+      "split": "calibration",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "synthetic-watercolor-007",
+      "source_group_id": "synthetic-watercolor-007",
+      "split": "calibration",
+      "style_category": "watercolor"
+    },
+    {
+      "source_id": "wm-wm_carrot-63817815",
+      "source_group_id": "wm-wm_carrot-63817815",
+      "split": "test",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "wm-wm_carrot-64383292",
+      "source_group_id": "wm-wm_carrot-64383292",
+      "split": "test",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "wm-wm_carrot-64417174",
+      "source_group_id": "wm-wm_carrot-64417174",
+      "split": "test",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "wm-wm_carrot-64417379",
+      "source_group_id": "wm-wm_carrot-64417379",
+      "split": "test",
+      "style_category": "comic"
+    },
+    {
+      "source_id": "wm-wm_pepper-64416783",
+      "source_group_id": "wm-wm_pepper-64416783",
+      "split": "test",
+      "style_category": "comic"
+    }
+  ]
+}

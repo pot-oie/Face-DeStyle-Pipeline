@@ -1,0 +1,22 @@
+{
+  "schema": "face-destyle-dataset-manifest/v1",
+  "manifest_id": "formal-private-v1-20260817",
+  "freeze_date": "2026-08-17",
+  "generating_code_commit": "941f337986630d6698cbef950ed1ee458685dcb3",
+  "scope": "private_research",
+  "redistribution_package": false,
+  "counts": {
+    "total": 120,
+    "pilot": 20,
+    "calibration": 40,
+    "test": 60
+  },
+  "styles": [
+    "3d_cartoon",
+    "comic",
+    "ink",
+    "watercolor"
+  ],
+  "test_status": "sealed_not_opened_for_method_inference",
+  "raw_images_in_git": false
+}

@@ -146,6 +146,19 @@ Near-duplicate crops, re-encodes, alternate generations from the same prompt/see
 paired halves from one composite image share one `source_group_id` and must stay in one split.
 Use perceptual hashes as a screening aid, followed by visual verification.
 
+### Frozen formal-v1 inventory
+
+The target inventory was reached and frozen on 2026-08-17 in
+`data/manifests/formal-v1/inputs.jsonl`: 20 pilot/debug, 40 calibration, and 60 held-out test
+sources, balanced 5/10/15 per category. All 120 external files matched their declared SHA-256
+values. Exact `source_id`, `source_group_id`, and file-SHA overlap were all zero between splits,
+and no candidate near-duplicate pair reported during batch-2 curation was jointly selected into
+test. This is a private-research source manifest rather than an image redistribution release.
+
+The test source list is frozen but not open for method inference. Complete pilot blind review,
+generate and label calibration outputs, freeze acceptance thresholds and routing rules, and only
+then run test once.
+
 ## 7. What counts as a suitable source image
 
 Prefer images with:
