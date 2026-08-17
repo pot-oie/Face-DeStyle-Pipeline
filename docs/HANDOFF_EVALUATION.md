@@ -154,3 +154,19 @@ mistaken for a held-out result.
 The narrow ArcFace operator interpretation in `AGENTS.md` applies throughout: paired drift
 diagnostics only, no identity search, enrollment, authentication, surveillance, or publication of
 reusable face templates.
+
+## Formal-v1 calibration-only batch on the remaining host
+
+All five formal generation archives were returned and validated locally on 2026-08-17. The next
+GPU action is one 200-pair calibration evaluation: 40 frozen calibration sources across the four
+SDXL methods and FLUX. Use DINO, CLIP, and paired ArcFace only for this pass. The pilot showed that
+Qwen2.5-VL-3B compressed style-removal scores, so do not spend GPU time running it over all formal
+pairs; reserve larger-VLM review for disagreements after human labels exist. The preparation script
+selects the exact calibration IDs from the complete SDXL record files and refuses missing,
+duplicate, mismatched, or nonexistent paths. It does not emit test records.
+
+Use the complete copy-paste batch in the task handoff after pulling the commit that introduced
+`scripts/prepare_formal_evaluation_records.py`. Package the evaluation directory without cleanup,
+transfer the ZIP and sidecar, and verify them locally before deleting any server output. Build the
+blinded review materials off-GPU from the returned archives; do not spend rented GPU time rendering
+contact sheets.

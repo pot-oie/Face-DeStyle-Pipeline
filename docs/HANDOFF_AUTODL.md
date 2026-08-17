@@ -43,11 +43,21 @@ seed-44 ZIP passed CRC, record, and 1024x1024 RGB image validation; its SHA-256 
 merge seeds 43/44 into the primary seed-42 evaluation or use them to tune prompts/settings. See
 `docs/results/flux_seed_extension_20260817.md`.
 
-Server inventories generated on 2026-08-17 report that formal generation is also complete: four
-SDXL methods each produced 100/100 calibration+test records, while FLUX produced 40/40 calibration
-records; every run reports zero failures and present output paths. Retrieve and verify all five ZIP
-archives and sidecars before changing or cleaning server outputs. Keep SDXL test outputs sealed
-while calibration-only metrics and blinded human review are performed.
+Formal generation is complete: four SDXL methods each produced 100/100 calibration+test records,
+while FLUX produced 40/40 calibration records. The five returned ZIPs and sidecars passed SHA-256,
+ZIP CRC, frozen-manifest membership, unique-record/output-name, image decode, mode, and resolution
+checks locally. The four SDXL archives contain 100 RGB 768x768 main outputs each; FLUX contains 40
+RGB 1024x1024 main outputs. All use seed 42 and the frozen settings. Keep SDXL test outputs sealed
+while calibration-only metrics and blinded human review are performed. Only the `3l8` AutoDL host
+remains active; do not issue cross-host synchronization commands.
+
+Returned formal archive SHA-256 values:
+
+- prompt generic: `f790cbf4c27533f8fd391e3a5285e72794d7607d02fddd321fd09202234509c5`;
+- prompt adaptive: `22a9f02c56f67e7573eb555822a0b8abfa464c292587f94527953490065a854a`;
+- global Canny: `546908606c313c826e7d12f4022a43e1dfa6f841f0a5c0853ee67fb252692f45`;
+- Region Canny: `19e91fb6e89430acf24b7fb393f3790bcc472e210b46ad5582cb077477ac743c`;
+- FLUX calibration: `28c72e7f7d7ca5ca7927a9bfe0cce20e656f8c38bd08860c01ee0df1b51776bd`.
 
 ## Local validation used before publication
 

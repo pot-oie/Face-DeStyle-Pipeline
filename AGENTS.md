@@ -117,12 +117,12 @@ seed-44 archive passed CRC, record, and image validation with SHA-256
 seeds 43/44 separate from the primary seed-42 evaluation and do not select a favorable seed or use
 the extension for parameter tuning.
 
-Formal generation is complete on the server according to clean workspace inventories at commit
-`b5a2f36`: each of the four frozen SDXL methods has 100/100 new calibration+test records with zero
-failures, and FLUX has 40/40 calibration records with zero failures. The four SDXL and one FLUX
-formal archives exist on the servers but are not locally verified until returned with their SHA-256
-sidecars. Do not generate more formal candidates now. Preserve test outputs unopened and proceed to
-returned-archive verification, calibration-only evaluation, and blinded human scoring.
+Formal generation is complete: each of the four frozen SDXL methods has 100/100 new
+calibration+test records with zero failures, and FLUX has 40/40 calibration records with zero
+failures. All five returned archives and SHA-256 sidecars passed checksum, ZIP CRC, manifest-record,
+output-file, decode, mode, and resolution checks locally. Do not generate more formal candidates
+now. Preserve test outputs unopened and proceed to calibration-only evaluation and blinded human
+scoring on the sole remaining AutoDL host.
 
 The operator has adopted a narrow private-research interpretation under which ArcFace/InsightFace
 may be used only as a paired face-drift diagnostic for these fixed experimental inputs and outputs.
