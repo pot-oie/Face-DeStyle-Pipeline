@@ -59,6 +59,13 @@ Returned formal archive SHA-256 values:
 - Region Canny: `19e91fb6e89430acf24b7fb393f3790bcc472e210b46ad5582cb077477ac743c`;
 - FLUX calibration: `28c72e7f7d7ca5ca7927a9bfe0cce20e656f8c38bd08860c01ee0df1b51776bd`.
 
+The calibration-only evaluation archive also passed SHA-256 and ZIP CRC validation locally. Its
+SHA-256 is `3182e87dcbcedcf4d410ff679fce581d3e28b21c2a0264a53a0472b328a29ec2`.
+It contains 200 records: DINO and CLIP completed 200/200; ArcFace produced 197 cosine values plus
+three explicit `no_face_generated` statuses; no evaluator failure was recorded. ArcFace used the
+CPU provider because this environment's ONNX Runtime did not expose CUDA. Do not rerun it merely
+to change provider—the provider affects runtime, not the intended metric definition.
+
 ## Local validation used before publication
 
 ```bash

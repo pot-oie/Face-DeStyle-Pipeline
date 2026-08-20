@@ -108,8 +108,8 @@ The source inventory is now frozen in `data/manifests/formal-v1/inputs.jsonl`: 2
 matched their SHA-256 values and `source_id`, `source_group_id`, and file SHA-256 had zero overlap
 between splits. The manifest is private-research runnable metadata, not an image redistribution
 package. The test split remains sealed until blinded human calibration and all thresholds/routing
-rules are frozen. The active task is to finish the pilot blind review, then generate and label only
-the calibration split.
+rules are frozen. The active task is calibration blind review and threshold/routing design; formal
+generation and calibration source-similarity metric execution are complete.
 
 A FLUX seed-stability extension completed 20/20 outputs for both seed 43 and seed 44. The complete
 seed-44 archive passed CRC, record, and image validation with SHA-256
@@ -121,8 +121,10 @@ Formal generation is complete: each of the four frozen SDXL methods has 100/100 
 calibration+test records with zero failures, and FLUX has 40/40 calibration records with zero
 failures. All five returned archives and SHA-256 sidecars passed checksum, ZIP CRC, manifest-record,
 output-file, decode, mode, and resolution checks locally. Do not generate more formal candidates
-now. Preserve test outputs unopened and proceed to calibration-only evaluation and blinded human
-scoring on the sole remaining AutoDL host.
+now. Preserve test outputs unopened. Calibration-only DINO, CLIP, and paired ArcFace execution is
+complete for 200/200 method-source pairs with no evaluator failures; ArcFace yielded 197 cosine
+values and three explicit generated-output no-face statuses. Proceed to blinded human scoring and
+do not open test or run more broad metrics yet.
 
 The operator has adopted a narrow private-research interpretation under which ArcFace/InsightFace
 may be used only as a paired face-drift diagnostic for these fixed experimental inputs and outputs.
