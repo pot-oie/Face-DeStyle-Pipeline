@@ -123,8 +123,11 @@ failures. All five returned archives and SHA-256 sidecars passed checksum, ZIP C
 output-file, decode, mode, and resolution checks locally. Do not generate more formal candidates
 now. Preserve test outputs unopened. Calibration-only DINO, CLIP, and paired ArcFace execution is
 complete for 200/200 method-source pairs with no evaluator failures; ArcFace yielded 197 cosine
-values and three explicit generated-output no-face statuses. Proceed to blinded human scoring and
-do not open test or run more broad metrics yet.
+values and three explicit generated-output no-face statuses. One complete 200-pair method-hidden
+human round is now frozen and unblinded; FLUX passed 37/40 while each SDXL method passed 1--3/40
+under the all-dimensions-at-least-4 rule. Round B was waived before unblinding, so repeat agreement
+is unavailable. Failure-type blanks mean unreported, not no failure. The frozen test rule uses FLUX
+first and rejects its failures; existing SDXL fallbacks rescued 0/3 FLUX calibration failures.
 
 The operator has adopted a narrow private-research interpretation under which ArcFace/InsightFace
 may be used only as a paired face-drift diagnostic for these fixed experimental inputs and outputs.

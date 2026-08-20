@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate, unblind, and summarize two completed human-review rounds."""
+"""Validate, unblind, and summarize one or two completed human-review rounds."""
 
 from __future__ import annotations
 
@@ -77,7 +77,9 @@ def load_round(path: Path, key: dict[str, dict[str, str]], expected_round: str) 
             accepted = bool(
                 content >= 4
                 and style >= 4
-                and (identity_valid == "no" or (identity is not None and identity >= 4))
+                and identity_valid == "yes"
+                and identity is not None
+                and identity >= 4
             )
             output.append(
                 {
@@ -93,6 +95,7 @@ def load_round(path: Path, key: dict[str, dict[str, str]], expected_round: str) 
                     "identity_judgment_valid": identity_valid,
                     "accepted": accepted,
                     "failure_types": ";".join(failures),
+                    "failure_types_reported": bool(failures),
                     "reviewer_notes": row["reviewer_notes"],
                 }
             )
@@ -128,15 +131,24 @@ def agreement(rows: list[dict]) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--round-a", type=Path, required=True)
-    parser.add_argument("--round-b", type=Path, required=True)
+    parser.add_argument(
+        "--round-b",
+        type=Path,
+        help="Optional second round used only for within-reviewer agreement.",
+    )
     parser.add_argument("--private-key", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     args = parser.parse_args()
 
     key = load_key(args.private_key)
-    rows = load_round(args.round_a, key, "a") + load_round(args.round_b, key, "b")
-    if len(rows) != len(key):
-        raise ValueError(f"expected {len(key)} scored rows from key, received {len(rows)}")
+    selected_rounds = {"a"}
+    rows = load_round(args.round_a, key, "a")
+    if args.round_b is not None:
+        selected_rounds.add("b")
+        rows += load_round(args.round_b, key, "b")
+    expected_rows = sum(row["round"] in selected_rounds for row in key.values())
+    if len(rows) != expected_rows:
+        raise ValueError(f"expected {expected_rows} scored rows from key, received {len(rows)}")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     frame = pd.DataFrame(rows)
     frame.to_csv(args.output_dir / "unblinded-human-scores.csv", index=False)
@@ -152,16 +164,22 @@ def main() -> int:
     failure_counts: Counter[str] = Counter()
     for value in frame["failure_types"]:
         failure_counts.update(item for item in value.split(";") if item)
+    failure_types_reported = int(frame["failure_types_reported"].sum())
     summary = {
         "scored_rows": len(rows),
         "unique_candidates": frame["canonical_id"].nunique(),
         "acceptance_rule": (
-            "content>=4 and style_removal>=4 and "
-            "(identity>=4 when identity_judgment_valid=yes)"
+            "content>=4 and style_removal>=4 and identity_judgment_valid=yes "
+            "and identity>=4"
         ),
-        "failure_counts": dict(sorted(failure_counts.items())),
+        "failure_annotation": {
+            "reported_rows": failure_types_reported,
+            "not_reported_rows": len(rows) - failure_types_reported,
+            "counts_on_reported_rows_only": dict(sorted(failure_counts.items())),
+            "blank_semantics": "not_reported; do not interpret as no observed failure",
+        },
         "round_agreement": agreement(rows),
-        "note": "Pilot human review; not held-out test evidence.",
+        "note": "Human calibration review; not held-out test evidence.",
     }
     (args.output_dir / "human-summary.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"

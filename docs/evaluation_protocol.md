@@ -20,7 +20,13 @@ method-hidden human review first. Qwen 7B is limited to the frozen human/model d
 it is not an automatic replacement evaluator over the whole pilot.
 
 Use `scripts/build_blind_review.py` to create two deterministically shuffled review rounds with
-opaque IDs and equal-size source/candidate panels. Keep `private/private_key.jsonl` closed until both
-rounds are scored. Then use `scripts/summarize_blind_review.py`; the provisional pilot pass rule is
-content >= 4, style removal >= 4, and identity >= 4 whenever identity is judgeable. Report score
-distributions, pass rates, round agreement, and failure categories rather than only means.
+opaque IDs and equal-size source/candidate panels. One complete round may be frozen as the primary
+calibration annotation when reviewer burden prevents a repeat; decide this before unblinding and
+record that within-reviewer agreement is unavailable. A completed second round is otherwise used
+only to estimate repeat agreement. Keep `private/private_key.jsonl` closed until the included rounds
+are frozen, then use `scripts/summarize_blind_review.py`. For the formal face set, the pass rule is
+content >= 4, style removal >= 4, identity judgment valid, and identity >= 4; an output with no
+judgeable face is rejected rather than exempted from the identity gate. Blank failure-type fields
+mean “not reported,” not “no failure”; failure subtypes are secondary diagnostics and do not
+determine the main pass rate. Report score distributions, pass rates, available agreement, and
+failure-label coverage rather than only means.
