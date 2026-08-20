@@ -66,6 +66,13 @@ three explicit `no_face_generated` statuses; no evaluator failure was recorded. 
 CPU provider because this environment's ONNX Runtime did not expose CUDA. Do not rerun it merely
 to change provider—the provider affects runtime, not the intended metric definition.
 
+Calibration blind scoring is now frozen and unblinded. FLUX passed 37/40; the four SDXL methods
+passed between 1/40 and 3/40, and SDXL fallback rescued none of the three FLUX failures. The next
+and only formal-v1 generation task is the frozen 60-source FLUX test batch. Follow
+`docs/HANDOFF_FORMAL_V1_HELDOUT_TEST.md` for the preregistered hypotheses, immutable settings,
+machine validation, 300-pair blind review plus stratified 20% retest, paired statistics, packaging,
+and stop conditions. Do not start another SDXL run or any LoRA/Multi-ControlNet extension.
+
 ## Local validation used before publication
 
 ```bash

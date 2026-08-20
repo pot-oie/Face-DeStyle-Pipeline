@@ -107,9 +107,9 @@ The source inventory is now frozen in `data/manifests/formal-v1/inputs.jsonl`: 2
 40 calibration, and 60 held-out test sources, balanced 5/10/15 per style. At freeze time all files
 matched their SHA-256 values and `source_id`, `source_group_id`, and file SHA-256 had zero overlap
 between splits. The manifest is private-research runnable metadata, not an image redistribution
-package. The test split remains sealed until blinded human calibration and all thresholds/routing
-rules are frozen. The active task is calibration blind review and threshold/routing design; formal
-generation and calibration source-similarity metric execution are complete.
+package. Blinded human calibration and test thresholds/routing rules are now frozen. Test images
+remain visually sealed. The active task is to prepare held-out tooling, generate the missing 60
+FLUX test outputs once, and conduct the preregistered five-method held-out validation.
 
 A FLUX seed-stability extension completed 20/20 outputs for both seed 43 and seed 44. The complete
 seed-44 archive passed CRC, record, and image validation with SHA-256
@@ -117,7 +117,7 @@ seed-44 archive passed CRC, record, and image validation with SHA-256
 seeds 43/44 separate from the primary seed-42 evaluation and do not select a favorable seed or use
 the extension for parameter tuning.
 
-Formal generation is complete: each of the four frozen SDXL methods has 100/100 new
+Formal calibration generation is complete: each of the four frozen SDXL methods has 100/100 new
 calibration+test records with zero failures, and FLUX has 40/40 calibration records with zero
 failures. All five returned archives and SHA-256 sidecars passed checksum, ZIP CRC, manifest-record,
 output-file, decode, mode, and resolution checks locally. Do not generate more formal candidates
@@ -127,7 +127,12 @@ values and three explicit generated-output no-face statuses. One complete 200-pa
 human round is now frozen and unblinded; FLUX passed 37/40 while each SDXL method passed 1--3/40
 under the all-dimensions-at-least-4 rule. Round B was waived before unblinding, so repeat agreement
 is unavailable. Failure-type blanks mean unreported, not no failure. The frozen test rule uses FLUX
-first and rejects its failures; existing SDXL fallbacks rescued 0/3 FLUX calibration failures.
+first and rejects its failures; existing SDXL fallbacks rescued 0/3 FLUX calibration failures. The
+held-out hypothesis, outcomes, missing-data rules, single-rater 300-pair plus stratified 20% retest
+design, paired statistics, and immutable method settings are preregistered in
+`docs/HANDOFF_FORMAL_V1_HELDOUT_TEST.md`. The only remaining formal-v1 generation is the frozen
+60-source FLUX test batch. Do not visually inspect any test output before the prescribed blind
+materials are built and scored; machine-only integrity validation is required and allowed.
 
 The operator has adopted a narrow private-research interpretation under which ArcFace/InsightFace
 may be used only as a paired face-drift diagnostic for these fixed experimental inputs and outputs.
