@@ -290,3 +290,65 @@ contains unexplained files, the model/acquisition manifests differ from calibrat
 would change, a returned archive fails integrity checks, blind IDs or method-source pairs are
 missing/duplicated, or scoring begins before the key can be sealed. Do not solve these conditions by
 regenerating selected samples, changing seeds, relaxing thresholds, or opening test images.
+
+## Known operational pitfalls from earlier runs
+
+These are established project facts. Diagnose them explicitly instead of ending the task after the
+first failed command.
+
+- **Local Mac is not AutoDL.** Codex normally runs in `/Users/pot/Github/Face-DeStyle-Pipeline` on
+  macOS. Never execute `/root/autodl-tmp/...`, `nvidia-smi`, CUDA inference, or the server generation
+  block locally. Locally inspect/edit/test/push; give the server block to the operator to run on
+  `3l8`.
+- **Do not use one opaque fail-fast block for discovery.** Run read-only preflight checks first and
+  print which path/check failed. `set -euo pipefail` is suitable only after paths are resolved. A
+  missing optional file or an inactive GPU is a diagnosis to report, not permission to terminate
+  without examining the state.
+- **Python command differs by environment.** Local validation uses
+  `conda run -n face-destyle python ...`; bare `python` may not exist on macOS. AutoDL uses `python`
+  only after `conda activate face-destyle`.
+- **GitHub needs the AutoDL proxy.** Use `source /etc/network_turbo` for `git pull --ff-only origin
+  main`. Do not print proxy values or credentials. Proxy variables may be unset after the pull when
+  they interfere with local-only model operations.
+- **`OMP_NUM_THREADS` was malformed before.** Always `unset OMP_NUM_THREADS`; the earlier
+  `libgomp: Invalid value` warning was environment configuration, not a model failure.
+- **The manifest loader validates the whole 120-source manifest.** Even with `--split test`, the
+  supplied `--data-root` must resolve every frozen pilot/calibration/test asset and SHA-256. The
+  correct common root is normally `$FACE_DESTYLE_ROOT/data/Face-DeStyle-Data`, containing legacy
+  `raw/` plus `batch1/` and `batch2/`. Do not conclude that test is missing from one unresolved path.
+- **Test IDs and filenames differ.** Test manifest record IDs/output basenames normally carry a
+  `test-` prefix while `source_id` may not. Validate an output by the basename declared in
+  `record.output_path`, never by assuming `SOURCE_ID.png`; this exact assumption previously caused
+  a false missing-image report.
+- **The FLUX acquisition manifest is intentionally lightweight.** The operator chose not to run a
+  full 54 GB SHA-256. The download manifest records
+  `large_weight_sha256=not_run_operator_choice`; the config-file hash manifest plus successful BF16
+  load/inference are the accepted integrity evidence. Do not block test on a new full-weight hash.
+- **Resolve the exact manifest filenames instead of inventing them.** Expected files are
+  `flux1-kontext-dev-modelscope-master.txt` and
+  `flux1-kontext-dev-modelscope-master.config-files.sha256`, but use read-only `find`/`ls` if a
+  preflight path fails. Never substitute another FLUX repository or quantized copy.
+- **FLUX is native 1024.** Diffusers previously adjusted non-native dimensions to 1024. Formal-v1
+  intentionally compares FLUX 1024 with SDXL 768; do not resize FLUX to imitate SDXL or call equal
+  seeds matched noise across architectures.
+- **Generation is slow but normal.** Frozen FLUX inference has taken roughly 90--107 seconds per
+  image with model offload. Sixty images can require around 1.5--2 hours plus loading/packaging. A
+  progress bar moving slowly is not a hang; maintain checkpoint records and communicate status.
+- **An existing run directory is not automatically corruption.** Inspect `records.jsonl`,
+  `failures.jsonl`, output paths, source IDs, and frozen settings. Use the hardened `--resume` only
+  for a valid interrupted run; if 60 successes already exist, validate/package rather than rerun.
+  Never overwrite or delete the directory just to restart cleanly.
+- **Zero failures may mean no `failures.jsonl`.** Absence of that optional file is valid when no
+  failure was recorded. If present, it must be parsed and counted.
+- **Package and verify before cleanup.** `package_run.py` refuses overwrite and writes a sidecar
+  using the archive basename. Run `sha256sum -c` from the package directory, transfer ZIP and
+  sidecar, verify locally, and omit `--cleanup` until that succeeds.
+- **Machine validation is not visual inspection.** Pillow decode, dimensions, mode, record parsing,
+  CRC, and SHA checks are allowed while test is sealed. `view_image`, screenshots, raw output
+  browsing, unblinded contact sheets, and metric-result inspection are not.
+- **ArcFace provider warnings are not a rerun trigger.** ONNX Runtime previously exposed only CPU
+  and fell back from requested CUDA. That changes runtime, not the paired metric definition. Record
+  explicit no-face status and do not silently convert it to zero.
+- **Do not redo completed tooling.** Commit `441640a` added the held-out archive validator, blind
+  builder, statistical analyzer, and hardened FLUX resume checks. Inspect and test these files;
+  preserve them unless a concrete bug is demonstrated.
