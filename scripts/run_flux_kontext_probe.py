@@ -11,11 +11,12 @@ from collections import defaultdict
 from pathlib import Path
 
 from face_destyle.data.manifests import load_dataset_manifest
+from face_destyle.filtering.prompt_rewriter import select_prompt
 from face_destyle.pipelines.flux_kontext_backend import (
     FluxKontextBackend,
     FluxKontextSettings,
 )
-from face_destyle.schemas import ImageRecord
+from face_destyle.schemas import DestylizationRecord, ImageRecord
 from face_destyle.utils.io import load_yaml
 from face_destyle.utils.reproducibility import seed_everything
 
@@ -48,14 +49,97 @@ def select_probe_records(
     return selected
 
 
-def completed_source_ids(path: Path) -> set[str]:
-    if not path.is_file():
-        return set()
-    completed = set()
-    for line in path.read_text(encoding="utf-8").splitlines():
-        if line.strip():
-            completed.add(str(json.loads(line)["source_id"]))
-    return completed
+def validate_resume_state(
+    *,
+    records_path: Path,
+    failures_path: Path,
+    output_dir: Path,
+    selected: list[ImageRecord],
+    settings: FluxKontextSettings,
+    styles_config: dict,
+    seed: int,
+) -> set[str]:
+    """Validate every persisted success and failure before resuming an interrupted run."""
+    expected = {record.source_id: record for record in selected}
+    completed: dict[str, DestylizationRecord] = {}
+    if records_path.is_file():
+        for line_number, line in enumerate(
+            records_path.read_text(encoding="utf-8").splitlines(), start=1
+        ):
+            if not line.strip():
+                continue
+            try:
+                record = DestylizationRecord.model_validate_json(line)
+            except ValueError as exc:
+                raise ValueError(f"invalid resume record at line {line_number}") from exc
+            if record.source_id not in expected:
+                raise ValueError(f"resume record is outside selected split: {record.source_id}")
+            if record.source_id in completed:
+                raise ValueError(f"duplicate resume success record: {record.source_id}")
+            source = expected[record.source_id]
+            destination = Path(record.output_path).resolve()
+            required_extra = {
+                "resolved_model_path": str(settings.model_dir.resolve()),
+                "download_manifest": str(settings.download_manifest.resolve()),
+                "hash_manifest": str(settings.hash_manifest.resolve()),
+                "source_revision": settings.source_revision,
+                "dtype": settings.dtype,
+                "batch_size": settings.batch_size,
+                "height": settings.height,
+                "width": settings.width,
+                "guidance_scale": settings.guidance_scale,
+                "num_inference_steps": settings.num_inference_steps,
+                "offload": "enable_model_cpu_offload",
+                "local_files_only": settings.local_files_only,
+            }
+            if (
+                record.id != source.id
+                or Path(record.input_path).resolve() != Path(source.image_path).resolve()
+                or destination.parent != output_dir.resolve()
+                or destination.name != f"{source.id}.png"
+                or not destination.is_file()
+                or record.style_category != source.style_category
+                or record.backend != FluxKontextBackend.name
+                or record.seed != seed
+                or record.prompt
+                != select_prompt(source.style_category, styles_config, adaptive=True)
+                or any(record.extra.get(key) != value for key, value in required_extra.items())
+            ):
+                raise ValueError(
+                    f"resume success record failed frozen validation: {record.source_id}"
+                )
+            completed[record.source_id] = record
+
+    declared_outputs = {Path(record.output_path).resolve() for record in completed.values()}
+    if output_dir.exists():
+        unexplained = [
+            path
+            for path in output_dir.iterdir()
+            if not path.is_file() or path.resolve() not in declared_outputs
+        ]
+        if unexplained:
+            raise ValueError(f"resume output directory contains unexplained path: {unexplained[0]}")
+
+    if failures_path.is_file():
+        for line_number, line in enumerate(
+            failures_path.read_text(encoding="utf-8").splitlines(), start=1
+        ):
+            if not line.strip():
+                continue
+            try:
+                failure = json.loads(line)
+            except json.JSONDecodeError as exc:
+                raise ValueError(f"invalid resume failure at line {line_number}") from exc
+            source_id = str(failure.get("source_id", ""))
+            if (
+                source_id not in expected
+                or failure.get("backend") != FluxKontextBackend.name
+                or failure.get("seed") != seed
+                or not failure.get("failure_stage")
+                or not failure.get("exception_type")
+            ):
+                raise ValueError(f"resume failure record failed validation at line {line_number}")
+    return set(completed)
 
 
 def append_jsonl(path: Path, payload: object) -> None:
@@ -111,13 +195,6 @@ def main() -> int:
         split=args.split,
     )
     selected = select_probe_records(manifest_records, args.probe_stage)
-    if args.resume:
-        completed = completed_source_ids(args.records_output)
-        selected = [record for record in selected if record.source_id not in completed]
-        print(f"Resume mode: skipping {len(completed)} completed source IDs", flush=True)
-    if not selected:
-        print("No pending records; probe stage is already complete")
-        return 0
     settings = FluxKontextSettings(
         model_dir=args.model_dir.resolve(),
         download_manifest=args.download_manifest.resolve(),
@@ -126,8 +203,30 @@ def main() -> int:
         num_inference_steps=args.num_inference_steps,
         guidance_scale=args.guidance_scale,
     )
+    styles_config = load_yaml(args.styles_config)
+    if args.resume:
+        try:
+            completed = validate_resume_state(
+                records_path=args.records_output,
+                failures_path=args.failures_output,
+                output_dir=args.output_dir,
+                selected=selected,
+                settings=settings,
+                styles_config=styles_config,
+                seed=args.seed,
+            )
+        except ValueError as exc:
+            parser.error(str(exc))
+        selected = [record for record in selected if record.source_id not in completed]
+        print(
+            f"Resume validation passed; skipping {len(completed)} completed source IDs",
+            flush=True,
+        )
+    if not selected:
+        print("No pending records; probe stage is already complete")
+        return 0
     seed_everything(args.seed)
-    backend = FluxKontextBackend(settings, load_yaml(args.styles_config))
+    backend = FluxKontextBackend(settings, styles_config)
     failures = 0
     for record in selected:
         started = time.perf_counter()

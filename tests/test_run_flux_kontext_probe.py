@@ -2,6 +2,8 @@ import importlib.util
 import json
 from pathlib import Path
 
+from PIL import Image
+
 from face_destyle.schemas import ImageRecord
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -58,18 +60,93 @@ def test_probe_selection_is_fixed_by_style_and_source_id():
     )
 
 
-def test_resume_reads_completed_source_ids(tmp_path):
+def test_resume_validates_success_record_and_output(tmp_path):
+    source = tmp_path / "source.png"
+    output_dir = tmp_path / "images"
+    output = output_dir / "source-a.png"
+    output_dir.mkdir()
+    Image.new("RGB", (8, 8), "red").save(source)
+    Image.new("RGB", (1024, 1024), "blue").save(output)
+    selected = [
+        ImageRecord(
+            id="source-a",
+            source_id="source-a",
+            image_path=source,
+            style_category="comic",
+        )
+    ]
+    settings = MODULE.FluxKontextSettings(
+        model_dir=tmp_path / "model",
+        download_manifest=tmp_path / "download.txt",
+        hash_manifest=tmp_path / "hashes.txt",
+    )
+    styles = {"styles": {"comic": {"stage1_prompt": "comic prompt"}}}
     records = tmp_path / "records.jsonl"
     records.write_text(
-        "\n".join(
-            [
-                json.dumps({"source_id": "source-a"}),
-                json.dumps({"source_id": "source-b"}),
-            ]
+        json.dumps(
+            {
+                "id": "source-a",
+                "source_id": "source-a",
+                "input_path": str(source),
+                "output_path": str(output),
+                "style_category": "comic",
+                "backend": MODULE.FluxKontextBackend.name,
+                "seed": 42,
+                "prompt": "comic prompt",
+                "extra": {
+                    "resolved_model_path": str(settings.model_dir.resolve()),
+                    "download_manifest": str(settings.download_manifest.resolve()),
+                    "hash_manifest": str(settings.hash_manifest.resolve()),
+                    "source_revision": "master",
+                    "dtype": "bfloat16",
+                    "batch_size": 1,
+                    "height": 1024,
+                    "width": 1024,
+                    "guidance_scale": 2.5,
+                    "num_inference_steps": 28,
+                    "offload": "enable_model_cpu_offload",
+                    "local_files_only": True,
+                },
+            }
         )
         + "\n",
         encoding="utf-8",
     )
 
-    assert MODULE.completed_source_ids(records) == {"source-a", "source-b"}
-    assert MODULE.completed_source_ids(tmp_path / "missing.jsonl") == set()
+    completed = MODULE.validate_resume_state(
+        records_path=records,
+        failures_path=tmp_path / "failures.jsonl",
+        output_dir=output_dir,
+        selected=selected,
+        settings=settings,
+        styles_config=styles,
+        seed=42,
+    )
+
+    assert completed == {"source-a"}
+
+
+def test_resume_rejects_unexplained_output(tmp_path):
+    output_dir = tmp_path / "images"
+    output_dir.mkdir()
+    Image.new("RGB", (8, 8), "red").save(output_dir / "stray.png")
+    settings = MODULE.FluxKontextSettings(
+        model_dir=tmp_path / "model",
+        download_manifest=tmp_path / "download.txt",
+        hash_manifest=tmp_path / "hashes.txt",
+    )
+
+    try:
+        MODULE.validate_resume_state(
+            records_path=tmp_path / "records.jsonl",
+            failures_path=tmp_path / "failures.jsonl",
+            output_dir=output_dir,
+            selected=[record("source-a", "comic")],
+            settings=settings,
+            styles_config={"styles": {"comic": {"stage1_prompt": "comic prompt"}}},
+            seed=42,
+        )
+    except ValueError as exc:
+        assert "unexplained" in str(exc)
+    else:
+        raise AssertionError("unexplained resume output was accepted")

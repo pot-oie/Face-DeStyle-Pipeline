@@ -73,6 +73,27 @@ and only formal-v1 generation task is the frozen 60-source FLUX test batch. Foll
 machine validation, 300-pair blind review plus stratified 20% retest, paired statistics, packaging,
 and stop conditions. Do not start another SDXL run or any LoRA/Multi-ControlNet extension.
 
+## Formal-v1 held-out tooling prepared
+
+The local-only held-out toolchain is now implemented and synthetic-tested before test GPU work:
+
+- `scripts/build_heldout_blind_review.py` validates the exact five-method by 60-source test matrix,
+  builds the 300-candidate primary round with seed 20260821, and selects/orders exactly three of 15
+  candidates in every method-by-style cell for the 60-candidate repeat with seed 20260822. Method,
+  source ID, filenames, generation metadata, and automatic metrics remain in the sealed private key.
+- `scripts/validate_flux_test_archive.py` checks the ZIP sidecar, CRC, exact frozen test membership,
+  unique records and outputs, prompts/settings, explicit failure records, and all 60 RGB 1024x1024
+  decodes without displaying an image.
+- `scripts/analyze_heldout_test.py` applies the frozen human pass rule and preregistered paired
+  statistics, missing-data policy, per-style descriptions, metric-alignment diagnostics, and
+  single-rater test-retest agreement. It does not select test thresholds or build a composite score.
+- `scripts/run_flux_kontext_probe.py --resume` now validates existing success records, output files,
+  failure records, paths, prompts, and frozen settings before skipping any completed source.
+
+These tools do not authorize opening test images outside the method-hidden scoring materials. The
+next server action remains only the frozen 60-source FLUX test generation on `3l8`, followed by
+machine validation and `package_run.py` without `--cleanup`.
+
 ## Local validation used before publication
 
 ```bash
