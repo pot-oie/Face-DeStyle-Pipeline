@@ -334,10 +334,34 @@ first failed command.
 - **Generation is slow but normal.** Frozen FLUX inference has taken roughly 90--107 seconds per
   image with model offload. Sixty images can require around 1.5--2 hours plus loading/packaging. A
   progress bar moving slowly is not a hang; maintain checkpoint records and communicate status.
+- **A process can disappear without a Python traceback.** `SIGKILL` from GPU or host-RAM pressure
+  cannot be caught by the runner and therefore may leave no `failures.jsonl` entry. Previous FLUX
+  records reached roughly 24.9 GB peak allocated GPU memory, 26.2 GB peak reserved memory, and about
+  38--40 GiB process RSS. Before retrying, record `nvidia-smi`, `free -h`, `df -h`, the last log
+  lines, and any readable kernel OOM message. These historical values are diagnostics, not a
+  guaranteed minimum for another host.
+- **Do not start a second runner blindly.** A disconnected terminal does not prove inference
+  stopped. Check `pgrep -af run_flux_kontext_probe.py` and GPU processes first. Never kill a process
+  merely because the prompt returned; confirm its PID and run directory.
+- **Use a persistent terminal for the long batch.** Run generation inside `tmux` (or the provider's
+  equivalent persistent terminal), detach rather than closing it, and reattach to read progress.
+  An ordinary SSH/web-terminal disconnect can terminate a foreground process or hide its exit
+  status.
+- **Capture the pipeline exit code instead of letting `set -e` hide it.** During diagnosis use
+  `set +e`, pipe through `tee`, save `${PIPESTATUS[0]}`, print it, and only then decide whether to
+  package, resume, or stop. The runner intentionally returns nonzero when any record failed; a
+  fail-fast wrapper will otherwise exit before showing the recovery branch.
+- **Do not reinstall the environment as a first response.** Completed calibration used the existing
+  Torch/Diffusers/Transformers/Accelerate stack. Record package versions and the traceback first.
+  An unrequested upgrade can change the frozen runtime and invalidate comparison.
 - **An existing run directory is not automatically corruption.** Inspect `records.jsonl`,
   `failures.jsonl`, output paths, source IDs, and frozen settings. Use the hardened `--resume` only
   for a valid interrupted run; if 60 successes already exist, validate/package rather than rerun.
   Never overwrite or delete the directory just to restart cleanly.
+- **A killed process can leave an orphan image.** The backend writes the PNG before appending its
+  success record. Hardened resume deliberately rejects an unexplained image rather than silently
+  skipping or overwriting it. If this occurs, stop and report the exact path; do not delete, rename,
+  reconstruct a record, or resume until the state is audited.
 - **Zero failures may mean no `failures.jsonl`.** Absence of that optional file is valid when no
   failure was recorded. If present, it must be parsed and counted.
 - **Package and verify before cleanup.** `package_run.py` refuses overwrite and writes a sidecar
