@@ -90,9 +90,26 @@ The local-only held-out toolchain is now implemented and synthetic-tested before
 - `scripts/run_flux_kontext_probe.py --resume` now validates existing success records, output files,
   failure records, paths, prompts, and frozen settings before skipping any completed source.
 
-These tools do not authorize opening test images outside the method-hidden scoring materials. The
-next server action remains only the frozen 60-source FLUX test generation on `3l8`, followed by
-machine validation and `package_run.py` without `--cleanup`.
+These tools do not authorize opening test images outside the method-hidden scoring materials. At
+tooling freeze, the sole remaining server action was the frozen 60-source FLUX test generation on
+`3l8`, followed by machine validation and packaging without `--cleanup`; its completion is recorded
+below.
+
+## 2026-08-21 formal-v1 test generation complete
+
+The frozen 60-source FLUX test runner completed with exit code 0. Machine-only local inspection of
+the returned ZIP found 60 unique frozen test records, 60 decodable RGB 1024x1024 outputs, consistent
+BF16/offload/seed-42/28-step/guidance-2.5 settings, zero recorded failures, and a passing ZIP CRC.
+No test image was displayed. The operator explicitly waives further hash and sidecar verification
+for this specific archive and personally attests its provenance; report this as operator-attested,
+not as a cryptographically verified transfer.
+
+The exact 300-candidate primary blind round and 60-candidate stratified repeat are now built locally
+with the frozen seeds. Reviewer-visible materials contain no method name, source ID, generation
+path, or automatic metric, and the private key remains sealed. Do not run FLUX test generation
+again. The next task is to complete and freeze the primary human scores, then the delayed repeat,
+before unblinding or running held-out metrics/statistics. No LoRA, Multi-ControlNet, Qwen full pass,
+or v2 experiment is authorized.
 
 ## Local validation used before publication
 

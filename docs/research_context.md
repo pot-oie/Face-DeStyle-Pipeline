@@ -159,6 +159,25 @@ The test source list is frozen but not open for method inference. Complete pilot
 generate and label calibration outputs, freeze acceptance thresholds and routing rules, and only
 then run test once.
 
+### Formal-v1 FLUX test archive operator attestation
+
+On 2026-08-21 the frozen 60-source FLUX test run completed with runner exit code 0. Local
+machine-only inspection of the returned ZIP found 60 unique test records, 60 RGB 1024x1024 outputs,
+zero recorded failures, consistent frozen backend/settings, and a passing ZIP CRC without displaying
+any test image. The operator explicitly waives all further hash and sidecar verification for this
+specific returned archive and personally attests that it is the intended AutoDL artifact. Do not
+block the remaining formal-v1 blind-review workflow on a missing SHA-256 sidecar.
+
+This attestation replaces cryptographic transfer verification only for this archive. Report it as
+operator-attested integrity rather than a SHA-256-verified transfer, and do not generalize the waiver
+to other archives or alter the frozen generation, evaluation, or sealing rules.
+
+After that attestation, the frozen held-out builder completed the exact five-method by 60-source
+matrix: 300 opaque primary pairs under seed 20260821 and 60 method-by-style-stratified repeat pairs
+under seed 20260822. Reviewer-visible text contains no method name, source ID, generation path, or
+automatic metric. The private key remains sealed. Complete and freeze the 300-row primary score file
+before opening the repeat pairs; freeze the repeat scores before any unblinding or test analysis.
+
 ## 7. What counts as a suitable source image
 
 Prefer images with:
