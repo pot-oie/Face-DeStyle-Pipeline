@@ -12,6 +12,7 @@ MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
 
 DESTYLIZE_INSTRUCTION = MODULE.DESTYLIZE_INSTRUCTION
+STYLIZE_INSTRUCTION = MODULE.STYLIZE_INSTRUCTION
 natural_prompt = MODULE.natural_prompt
 parse_indices = MODULE.parse_indices
 selected_indices = MODULE.selected_indices
@@ -36,6 +37,12 @@ def test_natural_prompts_are_fictional_and_distinct() -> None:
     prompts = [natural_prompt(index) for index in range(1, 25)]
     assert len(set(prompts)) == 24
     assert all("fictional person" in prompt for prompt in prompts)
+
+
+def test_3d_condition_prompt_moves_style_signal_away_from_anatomy() -> None:
+    assert "exact eye size" in STYLIZE_INSTRUCTION
+    assert "not through exaggerated anatomy" in STYLIZE_INSTRUCTION
+    assert "dry matte diffuse" in STYLIZE_INSTRUCTION
 
 
 def test_write_metadata_uses_two_image_columns(tmp_path: Path) -> None:
