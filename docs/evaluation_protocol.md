@@ -1,5 +1,18 @@
 # Evaluation protocol
 
+## Superseding operator amendment for the formal-v1 test (2026-08-22)
+
+The planned 300-candidate primary review and 60-candidate repeat were not completed. The operator
+explicitly replaced them with a reduced post-unblinding replication: 32 test sources, eight per
+style, with all five methods retained for source-level pairing (160 candidates). Source selection
+used existing score-completion count and seed `20260822` for ties; 99 scores were inherited and 61
+were completed afterward. Repeat reliability is unavailable by operator decision.
+
+Apply the same pass rule, no-imputation rule, `not_reported` semantics, no-composite rule, and ban on
+test-set threshold selection. Report this analysis as exploratory and completion-informed; it is not
+an equivalent substitute for the preregistered full held-out test. The original protocol below is
+retained as historical documentation of the design that was not completed.
+
 Build a held-out, human-annotated calibration set before choosing thresholds. Freeze its split and
 document inter-annotator instructions. Tune `configs/evaluation.yaml` only on calibration data, then
 evaluate once on the held-out test split.

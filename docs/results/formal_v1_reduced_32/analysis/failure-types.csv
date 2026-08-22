@@ -1,0 +1,8 @@
+failure_type,candidate_count
+artistic_contour_residual,115
+background_drift,36
+identity_drift,43
+material_render_residual,61
+no_usable_face,1
+not_reported,26
+structure_drift,22

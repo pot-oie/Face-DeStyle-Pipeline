@@ -1,5 +1,20 @@
 # Research context and execution contract
 
+## Operator amendment: reduced held-out replication (2026-08-22)
+
+The operator ended the preregistered 300-candidate scoring plan and its 60-candidate repeat round.
+The completed test analysis instead uses 32 sources selected after method unblinding, balanced at
+eight sources per style and retaining all five methods per source (160 candidates). Selection
+prioritized sources with the most already-complete human scores; ties used seed `20260822`. The
+analysis inherited 99 complete scores and added 61 scores after selection. Original 300-candidate
+review materials remain preserved and were not overwritten.
+
+This result must be called a **reduced post-unblinding replication analysis** (精简复刻评估), not
+the original formal-v1 confirmatory held-out test. It is completion-informed, has no repeat
+reliability estimate, and is exploratory. The original pass rule and missing-value policies remain
+unchanged. See `docs/results/formal_v1_reduced_heldout_20260822.md` and the immutable input record at
+`docs/results/formal_v1_reduced_32/freeze.json`.
+
 ## 1. Why this project exists
 
 Supervised style transfer needs three pieces of information:

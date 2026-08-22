@@ -1,0 +1,5 @@
+baseline,complete_source_pairs,flux_only_pass,baseline_only_pass,mcnemar_exact_two_sided_p,paired_pass_rate_difference,bootstrap_95_low,bootstrap_95_high,bootstrap_resamples,bootstrap_seed,holm_adjusted_p
+global_canny_0p4,32,22,0,4.76837158203125e-07,0.6875,0.53125,0.84375,20000,20260821,1.9073486328125e-06
+prompt_adaptive,32,22,0,4.76837158203125e-07,0.6875,0.53125,0.84375,20000,20260821,1.9073486328125e-06
+prompt_generic,32,21,0,9.5367431640625e-07,0.65625,0.5,0.8125,20000,20260821,1.9073486328125e-06
+region_canny,32,21,0,9.5367431640625e-07,0.65625,0.5,0.8125,20000,20260821,1.9073486328125e-06

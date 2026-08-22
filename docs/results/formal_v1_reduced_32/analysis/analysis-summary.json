@@ -1,0 +1,36 @@
+{
+  "schema": "face-destyle-reduced-post-unblinding-analysis/v1",
+  "analysis_label": "reduced post-unblinding replication analysis",
+  "candidate_count": 160,
+  "source_count": 32,
+  "methods": [
+    "flux_kontext_native1024",
+    "global_canny_0p4",
+    "prompt_adaptive",
+    "prompt_generic",
+    "region_canny"
+  ],
+  "repeat_reliability": "not_available_operator_cancelled_repeat",
+  "selection_disclosure": "Sources were selected after unblinding and selection prioritized existing human score completion, with seed 20260822 for ties.",
+  "interpretation": "Exploratory reduced replication; not equivalent to the preregistered 300-candidate confirmatory held-out test.",
+  "acceptance_rule": "content>=4 and style_removal>=4 and identity_judgment_valid=yes and identity>=4",
+  "bootstrap": {
+    "resamples": 20000,
+    "seed": 20260821
+  },
+  "multiple_testing": {
+    "pass": "Holm across four exact two-sided McNemar comparisons",
+    "ordinal": "Holm across four Wilcoxon comparisons separately per dimension"
+  },
+  "automatic_metrics": {
+    "status": "not_run_no_complete_existing_test_metric_mapping_supplied",
+    "new_metric_computation": "not performed",
+    "threshold_selection": "not performed",
+    "composite_score": "not constructed"
+  },
+  "private_key_unblinding_verification": {
+    "private_key_rows": 360,
+    "selected_rows_verified": 160,
+    "mapping_errors": 0
+  }
+}

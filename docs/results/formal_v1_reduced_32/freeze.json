@@ -1,0 +1,273 @@
+{
+  "schema": "face-destyle-reduced-post-unblinding-freeze/v1",
+  "frozen_at_utc": "2026-08-21T19:32:43.643646+00:00",
+  "analysis_label": "reduced post-unblinding replication analysis",
+  "status": "complete_reduced_human_scores_frozen",
+  "review_root": "/Users/pot/Documents/大创/实验归档/formal-v1-heldout-review-20260821/blind-review-reduced-32",
+  "input_sha256": {
+    "readme": "1759ae7114c50438b11c3263b6b07085fc4692d6589e5906e2526bcf0f25f4ff",
+    "selected_scores": "2d22f971e49494258fc5015d32aa8a4320a9b9468a57fb07f97acd902d6ccb13",
+    "remaining_scores": "415fa7c3b0444fcf08323566b3843521e925d6fda72af79324e84daafcd9d506",
+    "selection": "8e11b2b1484aa413775b27c735d5072a566cf7f59152f90230170f809023fac7",
+    "selected_sources": "be47f0c24383764bfa02bc566772989c384797ce9239e53bf6961a8e16c6319e",
+    "review_app": "6bb457459526424ea554a0fc778e48f7e7ba0650c2599ea73c2f8f4e6323368d"
+  },
+  "matrix": {
+    "candidate_count": 160,
+    "source_count": 32,
+    "method_count": 5,
+    "methods": [
+      "flux_kontext_native1024",
+      "global_canny_0p4",
+      "prompt_adaptive",
+      "prompt_generic",
+      "region_canny"
+    ],
+    "source_style_counts": {
+      "3d_cartoon": 8,
+      "comic": 8,
+      "ink": 8,
+      "watercolor": 8
+    },
+    "candidate_style_counts": {
+      "3d_cartoon": 40,
+      "comic": 40,
+      "ink": 40,
+      "watercolor": 40
+    },
+    "method_counts": {
+      "flux_kontext_native1024": 32,
+      "global_canny_0p4": 32,
+      "prompt_adaptive": 32,
+      "prompt_generic": 32,
+      "region_canny": 32
+    },
+    "complete_at_reduction": 99,
+    "completed_after_reduction": 61,
+    "identity_valid_counts": {
+      "no": 10,
+      "yes": 150
+    },
+    "failure_types_not_reported": 26
+  },
+  "selection": {
+    "timing": "after method unblinding",
+    "source_count": 32,
+    "sources_per_style": 8,
+    "methods_per_source": 5,
+    "selection_priority": "highest existing human-score completion count",
+    "tie_break_seed": 20260822,
+    "inherited_complete_scores": 99,
+    "completed_after_selection": 61,
+    "selected_sources": [
+      {
+        "source_id": "synthetic-3d-cartoon-016",
+        "style_category": "3d_cartoon",
+        "completed_candidates_at_reduction": 3,
+        "completed_after_reduction": 2
+      },
+      {
+        "source_id": "synthetic-3d-cartoon-019",
+        "style_category": "3d_cartoon",
+        "completed_candidates_at_reduction": 2,
+        "completed_after_reduction": 3
+      },
+      {
+        "source_id": "synthetic-3d-cartoon-027",
+        "style_category": "3d_cartoon",
+        "completed_candidates_at_reduction": 2,
+        "completed_after_reduction": 3
+      },
+      {
+        "source_id": "synthetic-3d-cartoon-028",
+        "style_category": "3d_cartoon",
+        "completed_candidates_at_reduction": 3,
+        "completed_after_reduction": 2
+      },
+      {
+        "source_id": "synthetic-3d-cartoon-029",
+        "style_category": "3d_cartoon",
+        "completed_candidates_at_reduction": 2,
+        "completed_after_reduction": 3
+      },
+      {
+        "source_id": "synthetic-3d-cartoon-030",
+        "style_category": "3d_cartoon",
+        "completed_candidates_at_reduction": 2,
+        "completed_after_reduction": 3
+      },
+      {
+        "source_id": "synthetic-3d-cartoon-032",
+        "style_category": "3d_cartoon",
+        "completed_candidates_at_reduction": 5,
+        "completed_after_reduction": 0
+      },
+      {
+        "source_id": "synthetic-3d-cartoon-033",
+        "style_category": "3d_cartoon",
+        "completed_candidates_at_reduction": 4,
+        "completed_after_reduction": 1
+      },
+      {
+        "source_id": "synthetic-comic-016",
+        "style_category": "comic",
+        "completed_candidates_at_reduction": 3,
+        "completed_after_reduction": 2
+      },
+      {
+        "source_id": "synthetic-comic-022",
+        "style_category": "comic",
+        "completed_candidates_at_reduction": 2,
+        "completed_after_reduction": 3
+      },
+      {
+        "source_id": "synthetic-comic-023",
+        "style_category": "comic",
+        "completed_candidates_at_reduction": 3,
+        "completed_after_reduction": 2
+      },
+      {
+        "source_id": "synthetic-comic-024",
+        "style_category": "comic",
+        "completed_candidates_at_reduction": 5,
+        "completed_after_reduction": 0
+      },
+      {
+        "source_id": "synthetic-comic-025",
+        "style_category": "comic",
+        "completed_candidates_at_reduction": 3,
+        "completed_after_reduction": 2
+      },
+      {
+        "source_id": "wm-wm_carrot-63817815",
+        "style_category": "comic",
+        "completed_candidates_at_reduction": 3,
+        "completed_after_reduction": 2
+      },
+      {
+        "source_id": "wm-wm_carrot-64417174",
+        "style_category": "comic",
+        "completed_candidates_at_reduction": 2,
+        "completed_after_reduction": 3
+      },
+      {
+        "source_id": "wm-wm_carrot-64417379",
+        "style_category": "comic",
+        "completed_candidates_at_reduction": 3,
+        "completed_after_reduction": 2
+      },
+      {
+        "source_id": "cma-120841",
+        "style_category": "ink",
+        "completed_candidates_at_reduction": 3,
+        "completed_after_reduction": 2
+      },
+      {
+        "source_id": "cma-120848",
+        "style_category": "ink",
+        "completed_candidates_at_reduction": 3,
+        "completed_after_reduction": 2
+      },
+      {
+        "source_id": "cma-166868",
+        "style_category": "ink",
+        "completed_candidates_at_reduction": 4,
+        "completed_after_reduction": 1
+      },
+      {
+        "source_id": "cma-169341",
+        "style_category": "ink",
+        "completed_candidates_at_reduction": 2,
+        "completed_after_reduction": 3
+      },
+      {
+        "source_id": "cma-329352",
+        "style_category": "ink",
+        "completed_candidates_at_reduction": 3,
+        "completed_after_reduction": 2
+      },
+      {
+        "source_id": "met-376383",
+        "style_category": "ink",
+        "completed_candidates_at_reduction": 3,
+        "completed_after_reduction": 2
+      },
+      {
+        "source_id": "met-459195",
+        "style_category": "ink",
+        "completed_candidates_at_reduction": 3,
+        "completed_after_reduction": 2
+      },
+      {
+        "source_id": "met-459232",
+        "style_category": "ink",
+        "completed_candidates_at_reduction": 5,
+        "completed_after_reduction": 0
+      },
+      {
+        "source_id": "cma-108522",
+        "style_category": "watercolor",
+        "completed_candidates_at_reduction": 4,
+        "completed_after_reduction": 1
+      },
+      {
+        "source_id": "cma-119033",
+        "style_category": "watercolor",
+        "completed_candidates_at_reduction": 5,
+        "completed_after_reduction": 0
+      },
+      {
+        "source_id": "cma-120839",
+        "style_category": "watercolor",
+        "completed_candidates_at_reduction": 3,
+        "completed_after_reduction": 2
+      },
+      {
+        "source_id": "cma-120840",
+        "style_category": "watercolor",
+        "completed_candidates_at_reduction": 2,
+        "completed_after_reduction": 3
+      },
+      {
+        "source_id": "cma-121265",
+        "style_category": "watercolor",
+        "completed_candidates_at_reduction": 3,
+        "completed_after_reduction": 2
+      },
+      {
+        "source_id": "cma-121283",
+        "style_category": "watercolor",
+        "completed_candidates_at_reduction": 4,
+        "completed_after_reduction": 1
+      },
+      {
+        "source_id": "cma-121286",
+        "style_category": "watercolor",
+        "completed_candidates_at_reduction": 2,
+        "completed_after_reduction": 3
+      },
+      {
+        "source_id": "cma-121287",
+        "style_category": "watercolor",
+        "completed_candidates_at_reduction": 3,
+        "completed_after_reduction": 2
+      }
+    ]
+  },
+  "operator_amendment": {
+    "original_300_candidate_scoring_abandoned": true,
+    "original_60_candidate_repeat_abandoned": true,
+    "repeat_reliability_available": false,
+    "original_review_materials_preserved": true,
+    "original_review_materials_overwritten": false
+  },
+  "acceptance_rule": "content_score>=4 and style_removal_score>=4 and identity_judgment_valid=yes and identity_score>=4",
+  "policies": {
+    "identity_unjudgeable": "fail",
+    "missing_core": "no imputation",
+    "blank_failure_types": "not_reported",
+    "composite_score": "not_constructed",
+    "test_threshold_selection": "not_permitted"
+  },
+  "interpretation": "Post-unblinding, completion-informed reduced replication/exploratory analysis; not an equivalent substitute for the preregistered 300-candidate confirmatory held-out test."
+}

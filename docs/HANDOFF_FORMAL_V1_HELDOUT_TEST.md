@@ -1,5 +1,21 @@
 # Formal-v1 held-out test handoff and frozen analysis plan
 
+## Superseding operator amendment: reduced replication completed
+
+As of 2026-08-22, the operator explicitly abandoned the 300-candidate full scoring round and the
+60-candidate repeat round. Do not request that those rounds be restored. The delivered analysis set
+contains 32 sources selected after unblinding, eight per style, with all five methods retained per
+source (160 complete candidate ratings). Selection prioritized existing rating completion and used
+seed `20260822` for ties; 99 ratings were inherited and 61 were completed after selection.
+
+The authoritative label is **reduced post-unblinding replication analysis** / **精简复刻评估**.
+Because selection was post-unblinding and completion-informed and no repeat reliability estimate is
+available, it is exploratory and cannot be presented as an equivalent replacement for the frozen
+confirmatory plan documented below. The original 300-candidate materials remain preserved. The
+frozen reduced inputs, reproducible outputs, and report are under
+`docs/results/formal_v1_reduced_32/` and
+`docs/results/formal_v1_reduced_heldout_20260822.md`.
+
 ## Start here
 
 This document is the execution contract for the next task. Read `AGENTS.md`,

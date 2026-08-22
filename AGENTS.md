@@ -4,6 +4,22 @@ This file is the required entry point for any agent working in this repository. 
 changing code, configs, data, or documentation. Then read `docs/research_context.md`,
 `docs/data_acquisition.md`, `docs/HANDOFF_AUTODL.md`, and the task-specific files and tests.
 
+## Current formal-v1 test status: operator-amended reduced replication
+
+The operator explicitly ended the preregistered 300-candidate scoring round and 60-candidate repeat.
+The completed human test analysis is a **reduced post-unblinding replication analysis**: 32 sources
+(eight per style), all five methods per source, and 160 complete candidate ratings. Sources were
+selected after unblinding by prioritizing existing rating completion, with seed `20260822` for ties;
+99 ratings were inherited and 61 were completed afterward. Repeat reliability is unavailable.
+
+Never call this the original confirmatory formal-v1 held-out test or ask the operator to restore the
+abandoned rounds. It is an exploratory, completion-informed reduced replication and not an
+equivalent replacement for the frozen 300-candidate design. Original review materials remain
+preserved. The authoritative amendment, freeze, and results are in
+`docs/HANDOFF_FORMAL_V1_HELDOUT_TEST.md`, `docs/results/formal_v1_reduced_32/`, and
+`docs/results/formal_v1_reduced_heldout_20260822.md`. Do not start additional formal-v1 generation
+or visually inspect test images for this analysis.
+
 ## Execution environments
 
 This repository is developed across two distinct environments. Do not assume that the current
