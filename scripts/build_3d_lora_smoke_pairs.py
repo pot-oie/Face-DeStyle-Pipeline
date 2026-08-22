@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import gc
 import json
 from pathlib import Path
 
@@ -106,6 +107,9 @@ def generate_targets(
         ).images[0]
         image.convert("RGB").save(destination)
         print(f"OK target {destination.name}", flush=True)
+    del pipeline
+    gc.collect()
+    torch.cuda.empty_cache()
 
 
 def generate_conditions(
@@ -146,6 +150,9 @@ def generate_conditions(
         ).images[0]
         result.convert("RGB").save(destination)
         print(f"OK condition {destination.name}", flush=True)
+    del pipeline
+    gc.collect()
+    torch.cuda.empty_cache()
 
 
 def write_metadata(*, output_dir: Path, indices: range) -> Path:
