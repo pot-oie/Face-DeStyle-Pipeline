@@ -97,6 +97,12 @@ def validate_resume_state(
                 "num_inference_steps": settings.num_inference_steps,
                 "offload": "enable_model_cpu_offload",
                 "local_files_only": settings.local_files_only,
+                "lora_weights": (
+                    str(settings.lora_weights.resolve())
+                    if settings.lora_weights is not None
+                    else None
+                ),
+                "lora_scale": settings.lora_scale,
             }
             if (
                 record.id != source.id
@@ -212,6 +218,12 @@ def main() -> int:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--num-inference-steps", type=int, default=28)
     parser.add_argument("--guidance-scale", type=float, default=2.5)
+    parser.add_argument(
+        "--lora-weights",
+        type=Path,
+        help="Optional local Kontext LoRA file or directory for an exploratory adapted run.",
+    )
+    parser.add_argument("--lora-scale", type=float, default=1.0)
     args = parser.parse_args()
 
     if not args.resume and (args.records_output.exists() or args.failures_output.exists()):
@@ -237,6 +249,8 @@ def main() -> int:
         source_revision=args.source_revision,
         num_inference_steps=args.num_inference_steps,
         guidance_scale=args.guidance_scale,
+        lora_weights=args.lora_weights.resolve() if args.lora_weights else None,
+        lora_scale=args.lora_scale,
     )
     styles_config = load_yaml(args.styles_config)
     if args.resume:

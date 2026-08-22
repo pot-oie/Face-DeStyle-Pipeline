@@ -106,6 +106,8 @@ def test_resume_validates_success_record_and_output(tmp_path):
                     "num_inference_steps": 28,
                     "offload": "enable_model_cpu_offload",
                     "local_files_only": True,
+                    "lora_weights": None,
+                    "lora_scale": 1.0,
                 },
             }
         )

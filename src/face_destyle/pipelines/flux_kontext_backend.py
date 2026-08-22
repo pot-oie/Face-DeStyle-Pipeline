@@ -43,6 +43,8 @@ class FluxKontextSettings:
     dtype: str = "bfloat16"
     batch_size: int = 1
     local_files_only: bool = True
+    lora_weights: Path | None = None
+    lora_scale: float = 1.0
 
     def validate(self) -> None:
         if not self.model_dir.is_dir():
@@ -73,6 +75,10 @@ class FluxKontextSettings:
             raise ValueError("num_inference_steps must be positive")
         if not self.local_files_only:
             raise ValueError("Kontext must load from the verified local directory only")
+        if self.lora_weights is not None and not self.lora_weights.exists():
+            raise ValueError(f"LoRA weights do not exist: {self.lora_weights}")
+        if self.lora_scale <= 0:
+            raise ValueError("LoRA scale must be positive")
 
 
 class FluxKontextBackend(DestylizationBackend):
@@ -114,6 +120,15 @@ class FluxKontextBackend(DestylizationBackend):
             torch_dtype=torch.bfloat16,
             local_files_only=True,
         )
+        if self.settings.lora_weights is not None:
+            weights = self.settings.lora_weights
+            if weights.is_file():
+                pipeline.load_lora_weights(
+                    str(weights.parent), weight_name=weights.name, adapter_name="destyle_3d"
+                )
+            else:
+                pipeline.load_lora_weights(str(weights), adapter_name="destyle_3d")
+            pipeline.set_adapters(["destyle_3d"], adapter_weights=[self.settings.lora_scale])
         pipeline.enable_model_cpu_offload()
         return pipeline
 
@@ -258,6 +273,12 @@ class FluxKontextBackend(DestylizationBackend):
                 "num_inference_steps": self.settings.num_inference_steps,
                 "offload": "enable_model_cpu_offload",
                 "local_files_only": self.settings.local_files_only,
+                "lora_weights": (
+                    str(self.settings.lora_weights.resolve())
+                    if self.settings.lora_weights is not None
+                    else None
+                ),
+                "lora_scale": self.settings.lora_scale,
                 "pipeline_loaded_this_run": not pipeline_was_loaded,
                 "pipeline_load_seconds": self._pipeline_load_seconds,
                 "inference_seconds": inference_seconds,
