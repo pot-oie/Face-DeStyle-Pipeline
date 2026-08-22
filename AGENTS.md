@@ -4,7 +4,31 @@ This file is the required entry point for any agent working in this repository. 
 changing code, configs, data, or documentation. Then read `docs/research_context.md`,
 `docs/data_acquisition.md`, `docs/HANDOFF_AUTODL.md`, and the task-specific files and tests.
 
-## Current formal-v1 test status: operator-amended reduced replication
+## Operator policy: do not over-process experiments
+
+This project now prioritizes useful experimentation and a clear research narrative over formal
+evaluation ceremony. This applies to exploratory runs **and** to work previously described as a
+formal, frozen, blinded, held-out, or confirmatory evaluation. Unless the operator explicitly asks
+for one in a future task, do not require or propose blind testing, visual sealing, acceptance gates,
+freeze markers, preregistration, repeat-rating rounds, formal archive validation, cryptographic
+hashes, checksum sidecars, ZIP CRC checks, elaborate preflight blocks, complex log audits, or formal
+statistical testing.
+
+Older documents describing those procedures are historical records, not active execution contracts.
+They may explain how earlier results were produced, but they must not be used to block, slow, or
+expand current work. In particular, do not insist that the operator rescore candidates, preserve a
+blind, perform an acceptance review, verify an operator-provided archive, or restore an abandoned
+held-out protocol. Do not call a lightweight result more rigorous than it is, but a plain exploratory
+label and an honest sample count are sufficient.
+
+For the operator's own machines and inputs, including 5--10 image extensions, keep only what helps
+the experiment: the input set, model/settings, prompt variant, separate output directory, and a short
+qualitative or quantitative summary. A simple file count, decode check, or runtime log is optional
+when it answers a concrete doubt, not a mandatory ritual. Safety checks for a duplicate GPU process,
+destructive deletion, inadequate resources, or accidental overwrite still apply, but keep them
+short and targeted. Prefer running and learning from the experiment over building process machinery.
+
+## Historical formal-v1 status: operator-amended reduced replication
 
 The operator explicitly ended the preregistered 300-candidate scoring round and 60-candidate repeat.
 The completed human test analysis is a **reduced post-unblinding replication analysis**: 32 sources
@@ -15,10 +39,10 @@ selected after unblinding by prioritizing existing rating completion, with seed 
 Never call this the original confirmatory formal-v1 held-out test or ask the operator to restore the
 abandoned rounds. It is an exploratory, completion-informed reduced replication and not an
 equivalent replacement for the frozen 300-candidate design. Original review materials remain
-preserved. The authoritative amendment, freeze, and results are in
+preserved. The historical amendment, freeze, and results are in
 `docs/HANDOFF_FORMAL_V1_HELDOUT_TEST.md`, `docs/results/formal_v1_reduced_32/`, and
-`docs/results/formal_v1_reduced_heldout_20260822.md`. Do not start additional formal-v1 generation
-or visually inspect test images for this analysis.
+`docs/results/formal_v1_reduced_heldout_20260822.md`. This history does not impose an active blind,
+visual seal, acceptance gate, or prohibition on new exploratory work directed by the operator.
 
 ## Execution environments
 
@@ -71,17 +95,17 @@ silently switch mirrors or download a second copy into another cache.
 ## Required safety and reproducibility behavior
 
 - Check the working tree before editing and preserve user changes.
-- Pin upstream revisions when available and record local-file checksums for ModelScope or standalone
-  checkpoints.
+- Pin upstream revisions when it is useful. Record local-file checksums only when the operator
+  explicitly requests transfer or integrity verification; do not impose hash work by default.
 - Review third-party weight licenses independently of this repository's Apache-2.0 license.
 - Do not report copy-backend, smoke-test, mock, downloaded-file, or uncalibrated metric output as a
   research result.
 - Run Ruff, pytest, and every new script's `--help` locally before handoff.
 - Update `docs/HANDOFF_AUTODL.md` when environment state, model inventory, or next-server commands
   materially change.
-- After a server experiment, give the user a `scripts/package_run.py` command that writes and
-  verifies a ZIP plus SHA-256 before `--cleanup` removes only that selected run directory. Never
-  recommend broad wildcard deletion of outputs, models, caches, or datasets.
+- Offer `scripts/package_run.py`, ZIP verification, or SHA-256 only when the operator explicitly
+  requests packaging or integrity verification. They are not default completion requirements for
+  any experiment. Never recommend broad wildcard deletion of outputs, models, caches, or datasets.
 
 ## Mission and claim boundary
 
@@ -97,7 +121,11 @@ or reproduce DeStyle-350K, DeStylePipe, DestyleCoT-Filter, or BCS-Bench at publi
 copy paper claims into results. A destylized face is a model reconstruction, not the person's true
 or ground-truth appearance.
 
-## Active milestone
+## Historical milestone record
+
+The material below records how earlier work was scoped and interpreted. It is useful provenance,
+but its freezes, stopping rules, seals, and prescribed next steps are no longer active operator
+requirements. The operator policy at the top of this file governs current execution.
 
 The 20-source SDXL Base pilot now covers generic and adaptive prompt-only generation, global Canny,
 and region-aware Canny. It did not find a stable adaptive-prompt or Region Canny advantage, and
@@ -161,7 +189,10 @@ Primary evaluation uses DINOv2 Base, CLIP ViT-L/14, InsightFace where a face is 
 structured Qwen2.5-VL-3B style-removal rubric, and blinded human review. Depth, Refiner, InstantID,
 RealVisXL, Florence, 7B VLM auditing, and LoRA training remain secondary.
 
-## Research discipline
+## Optional research discipline
+
+Use the following practices when they improve the current experiment; they are not automatic gates
+and do not reinstate blind testing, formal acceptance, freezing, or statistical requirements.
 
 - Hold input image, seed, resolution, scheduler, steps, guidance, and strength constant when
   comparing one experimental factor.
@@ -199,8 +230,9 @@ call it cross-semantic matching unless the schema and sampler enforce distinct s
 
 ## Definition of a reportable result
 
-A result is reportable only when inputs have recorded provenance and a frozen split; the real model
-ran on the stated GPU; records contain the exact model revision and settings; formal metrics rather
-than smoke sentinels were computed; thresholds were calibrated without test leakage; outputs were
-manually audited under the written rubric; comparisons used matched sources and settings; and any
-summary includes limitations and failure counts.
+A small result is reportable as an exploratory finding when the real model ran, the input count and
+main settings are stated, and the summary honestly describes what was observed and its limitations.
+It does not require a frozen split, blind review, calibrated threshold, acceptance test, repeat
+rating, formal metric suite, archive audit, or inferential statistics. Do not inflate exploratory
+evidence into a large-scale or confirmatory claim, but do not withhold a useful result merely because
+formal evaluation machinery was not used.
