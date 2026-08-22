@@ -42,13 +42,12 @@ DESTYLIZE_INSTRUCTION = (
 )
 
 STYLIZE_INSTRUCTION = (
-    "Transform this portrait into an unmistakable but restrained high-quality 3D animated-film "
-    "render. Keep the exact eye size, facial landmark positions, head proportions, age, and "
-    "identity. Express the 3D style through subtly simplified mesh geometry, dry matte diffuse "
-    "materials, simplified hair and clothing strands, soft ambient occlusion, and controlled CGI "
-    "lighting, not through exaggerated anatomy. Avoid oily, glossy, waxy, or plastic highlights. "
-    "Do not add, remove, or emphasize glasses, facial hair, jewelry, or hairstyle. Preserve the "
-    "pose, expression, clothing, composition, colors, and background."
+    "Transform this portrait into a restrained high-quality 3D animated-film portrait with "
+    "near-human facial proportions, subtle geometric simplification, dry matte skin material, "
+    "soft diffuse CGI lighting, and no oily, glossy, waxy, or plastic highlights. Do not enlarge "
+    "or emphasize the eyes, eyebrows, nose, or mouth. Do not add, remove, or emphasize glasses, "
+    "facial hair, jewelry, or hairstyle. Preserve the person's age, identity, pose, expression, "
+    "clothing, composition, colors, and background."
 )
 
 

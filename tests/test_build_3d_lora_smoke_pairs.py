@@ -39,10 +39,10 @@ def test_natural_prompts_are_fictional_and_distinct() -> None:
     assert all("fictional person" in prompt for prompt in prompts)
 
 
-def test_3d_condition_prompt_moves_style_signal_away_from_anatomy() -> None:
-    assert "exact eye size" in STYLIZE_INSTRUCTION
-    assert "not through exaggerated anatomy" in STYLIZE_INSTRUCTION
-    assert "dry matte diffuse" in STYLIZE_INSTRUCTION
+def test_3d_condition_prompt_uses_restrained_v2_style() -> None:
+    assert "near-human facial proportions" in STYLIZE_INSTRUCTION
+    assert "Do not enlarge" in STYLIZE_INSTRUCTION
+    assert "dry matte skin material" in STYLIZE_INSTRUCTION
 
 
 def test_write_metadata_uses_two_image_columns(tmp_path: Path) -> None:
