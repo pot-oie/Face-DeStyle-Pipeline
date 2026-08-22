@@ -1,0 +1,28 @@
+Compare the source material-style portrait with the candidate natural reconstruction.
+Return one JSON object only. Do not provide hidden reasoning or prose outside JSON.
+
+Score each dimension from 0 to 5:
+- content_preservation: depicted subject, pose, expression, composition, clothing, and background;
+- style_removal: absence of the source's 3D-cartoon, clay, ceramic, or needle-felt appearance;
+- identity_preservation: preservation of identity-bearing facial geometry supported by the source;
+- material_removal: replacement of synthetic, sculpted, ceramic, or fibrous surfaces with plausible
+  natural skin, hair, fabric, and photographic lighting.
+
+Set identity_judgment_valid to "no" if the source or candidate lacks enough facial evidence. Do not
+invent a real identity for a sculpture or doll; judge only the recoverable depicted face. Select all
+visible residual_types from the declared evaluation configuration. Give concise observable evidence.
+
+Required schema:
+{
+  "content_preservation": 0,
+  "style_removal": 0,
+  "identity_preservation": 0,
+  "identity_judgment_valid": "yes",
+  "material_removal": 0,
+  "residual_types": [],
+  "evidence": {
+    "content": "",
+    "identity": "",
+    "material": ""
+  }
+}

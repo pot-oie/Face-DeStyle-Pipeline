@@ -13,6 +13,13 @@ styles:
     negative_prompt: "3d render, cartoon, plastic skin, illustration, changed identity, changed pose, altered composition"
     canny_low: 80
     canny_high: 180
+  clay:
+    display_name: Clay
+    stage1_prompt: "Convert this clay-sculpted portrait into a natural realistic photograph while preserving identity, pose, composition, and background structure."
+    stage2_prompt: "Remove clay and terracotta material cues and refine realistic skin, hair, and lighting without changing identity, pose, composition, or background structure."
+    negative_prompt: "clay sculpture, terracotta, ceramic, pottery, molded surface, statue, changed identity, changed pose, altered composition"
+    canny_low: 70
+    canny_high: 160
   comic:
     display_name: Comic
     stage1_prompt: "Convert this comic portrait into a natural realistic photograph while preserving identity, pose, composition, and background structure."
@@ -27,6 +34,13 @@ styles:
     negative_prompt: "ink drawing, brush strokes, monochrome illustration, changed identity, changed pose, altered composition"
     canny_low: 70
     canny_high: 160
+  needle_felt:
+    display_name: Needle Felt
+    stage1_prompt: "Convert this needle-felted wool portrait into a natural realistic photograph while preserving identity, pose, composition, and background structure."
+    stage2_prompt: "Remove wool-fiber and handmade felt cues and refine realistic skin, hair, and lighting without changing identity, pose, composition, or background structure."
+    negative_prompt: "needle felt, wool fibers, fuzzy textile, handmade doll, soft sculpture, changed identity, changed pose, altered composition"
+    canny_low: 60
+    canny_high: 150
   watercolor:
     display_name: Watercolor
     stage1_prompt: "Convert this watercolor portrait into a natural realistic photograph while preserving identity, pose, composition, and background structure."

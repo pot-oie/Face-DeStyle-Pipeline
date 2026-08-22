@@ -150,3 +150,20 @@ def test_resume_rejects_unexplained_output(tmp_path):
         assert "unexplained" in str(exc)
     else:
         raise AssertionError("unexplained resume output was accepted")
+
+
+def test_material_extension_selection_accepts_two_declared_styles():
+    records = [
+        record("felt-b", "needle_felt"),
+        record("clay-a", "clay"),
+        record("felt-a", "needle_felt"),
+        record("unrelated", "comic"),
+    ]
+
+    selected = MODULE.select_probe_records(
+        records,
+        "batch",
+        required_styles=("clay", "needle_felt"),
+    )
+
+    assert [item.source_id for item in selected] == ["clay-a", "felt-a", "felt-b"]

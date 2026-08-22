@@ -1,0 +1,90 @@
+{
+  "schema": "face-destyle-material-extension-input-validation/v1",
+  "status": "passed",
+  "candidate_count": 10,
+  "style_counts": {
+    "clay": 5,
+    "needle_felt": 5
+  },
+  "unique_source_ids": 10,
+  "unique_source_groups": 10,
+  "unique_file_hashes": 10,
+  "minimum_short_side": 1254,
+  "formal_v1_overlap": {
+    "source_id": 0,
+    "source_group_id": 0,
+    "file_hash": 0
+  },
+  "images": [
+    {
+      "source_id": "cma-clay-1917-98",
+      "style_category": "clay",
+      "mode_after_decode": "RGB",
+      "width": 3400,
+      "height": 3240
+    },
+    {
+      "source_id": "cma-clay-1930-627",
+      "style_category": "clay",
+      "mode_after_decode": "RGB",
+      "width": 3186,
+      "height": 3400
+    },
+    {
+      "source_id": "cma-clay-1944-462",
+      "style_category": "clay",
+      "mode_after_decode": "RGB",
+      "width": 2589,
+      "height": 3400
+    },
+    {
+      "source_id": "cma-clay-1951-27",
+      "style_category": "clay",
+      "mode_after_decode": "RGB",
+      "width": 2662,
+      "height": 3400
+    },
+    {
+      "source_id": "cma-clay-1968-101",
+      "style_category": "clay",
+      "mode_after_decode": "RGB",
+      "width": 2954,
+      "height": 3400
+    },
+    {
+      "source_id": "synthetic-needle-felt-006",
+      "style_category": "needle_felt",
+      "mode_after_decode": "RGB",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "source_id": "synthetic-needle-felt-009",
+      "style_category": "needle_felt",
+      "mode_after_decode": "RGB",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "source_id": "synthetic-needle-felt-010",
+      "style_category": "needle_felt",
+      "mode_after_decode": "RGB",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "source_id": "synthetic-needle-felt-011",
+      "style_category": "needle_felt",
+      "mode_after_decode": "RGB",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "source_id": "synthetic-needle-felt-012",
+      "style_category": "needle_felt",
+      "mode_after_decode": "RGB",
+      "width": 1254,
+      "height": 1254
+    }
+  ]
+}

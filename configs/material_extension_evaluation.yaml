@@ -1,0 +1,37 @@
+schema: face-destyle-material-extension-evaluation-v1
+dimensions:
+  content_preservation:
+    range: [0, 5]
+    pass_minimum: 4
+  style_removal:
+    range: [0, 5]
+    pass_minimum: 4
+  identity_preservation:
+    range: [0, 5]
+    pass_minimum: 4
+    requires_judgment_valid: true
+  material_removal:
+    range: [0, 5]
+    pass_minimum: 4
+residual_types:
+  - cgi_rendering
+  - plastic_or_waxy_skin
+  - toy_like_material
+  - exaggerated_cartoon_geometry
+  - synthetic_lighting
+  - clay_or_terracotta_surface
+  - ceramic_or_molded_surface
+  - wool_fiber
+  - fuzzy_textile
+  - handmade_doll_geometry
+  - other
+routes:
+  accept: "all four dimensions pass and identity_judgment_valid is yes"
+  retry_prompt: "stage1 content and identity pass, but style or material removal fails"
+  route_lora: "stage2 content and identity pass, but style or material removal fails"
+  reject: "identity is unjudgeable, or content or identity preservation fails"
+policies:
+  blank_residual_types: not_reported
+  missing_core_scores: reject_no_imputation
+  composite_score: not_constructed
+  scorer_role: diagnostic_and_routing

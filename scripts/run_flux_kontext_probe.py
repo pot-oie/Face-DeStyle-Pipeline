@@ -11,7 +11,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from face_destyle.data.manifests import load_dataset_manifest
-from face_destyle.filtering.prompt_rewriter import select_prompt
+from face_destyle.filtering.prompt_rewriter import select_stage_prompt
 from face_destyle.pipelines.flux_kontext_backend import (
     FluxKontextBackend,
     FluxKontextSettings,
@@ -24,23 +24,28 @@ REQUIRED_STYLES = ("3d_cartoon", "comic", "ink", "watercolor")
 
 
 def select_probe_records(
-    records: list[ImageRecord], stage: str
+    records: list[ImageRecord],
+    stage: str,
+    *,
+    required_styles: tuple[str, ...] = REQUIRED_STYLES,
 ) -> list[ImageRecord]:
     grouped: defaultdict[str, list[ImageRecord]] = defaultdict(list)
     for record in records:
         grouped[record.style_category].append(record)
-    missing = [style for style in REQUIRED_STYLES if not grouped[style]]
+    if not required_styles or len(set(required_styles)) != len(required_styles):
+        raise ValueError("required styles must be non-empty and unique")
+    missing = [style for style in required_styles if not grouped[style]]
     if missing:
         raise ValueError("manifest lacks required styles: " + ", ".join(missing))
     if stage in {"batch", "pilot"}:
-        style_order = {style: index for index, style in enumerate(REQUIRED_STYLES)}
+        style_order = {style: index for index, style in enumerate(required_styles)}
         return sorted(
-            records,
+            (record for record in records if record.style_category in style_order),
             key=lambda item: (style_order[item.style_category], item.source_id),
         )
     selected = [
         sorted(grouped[style], key=lambda item: item.source_id)[0]
-        for style in REQUIRED_STYLES
+        for style in required_styles
     ]
     if stage == "first":
         return selected[:1]
@@ -58,6 +63,7 @@ def validate_resume_state(
     settings: FluxKontextSettings,
     styles_config: dict,
     seed: int,
+    prompt_stage: str = "stage1",
 ) -> set[str]:
     """Validate every persisted success and failure before resuming an interrupted run."""
     expected = {record.source_id: record for record in selected}
@@ -102,7 +108,12 @@ def validate_resume_state(
                 or record.backend != FluxKontextBackend.name
                 or record.seed != seed
                 or record.prompt
-                != select_prompt(source.style_category, styles_config, adaptive=True)
+                != select_stage_prompt(
+                    source.style_category,
+                    styles_config,
+                    stage=prompt_stage,
+                )
+                or record.extra.get("prompt_stage", "stage1") != prompt_stage
                 or any(record.extra.get(key) != value for key, value in required_extra.items())
             ):
                 raise ValueError(
@@ -135,6 +146,7 @@ def validate_resume_state(
                 source_id not in expected
                 or failure.get("backend") != FluxKontextBackend.name
                 or failure.get("seed") != seed
+                or failure.get("prompt_stage", "stage1") != prompt_stage
                 or not failure.get("failure_stage")
                 or not failure.get("exception_type")
             ):
@@ -164,6 +176,21 @@ def main() -> int:
     parser.add_argument("--records-output", type=Path, required=True)
     parser.add_argument("--failures-output", type=Path, required=True)
     parser.add_argument("--styles-config", type=Path, default=Path("configs/styles.yaml"))
+    parser.add_argument(
+        "--required-style",
+        action="append",
+        dest="required_styles",
+        help=(
+            "Style required and selected from the manifest; repeat for multiple styles. "
+            "Defaults to the four legacy formal-v1 styles."
+        ),
+    )
+    parser.add_argument(
+        "--prompt-stage",
+        choices=("stage1", "stage2"),
+        default="stage1",
+        help="Use the declared stage1 or stage2 prompt for every selected source.",
+    )
     parser.add_argument("--source-revision", default="master")
     parser.add_argument(
         "--split",
@@ -194,7 +221,15 @@ def main() -> int:
         data_root=args.data_root,
         split=args.split,
     )
-    selected = select_probe_records(manifest_records, args.probe_stage)
+    required_styles = tuple(args.required_styles or REQUIRED_STYLES)
+    try:
+        selected = select_probe_records(
+            manifest_records,
+            args.probe_stage,
+            required_styles=required_styles,
+        )
+    except ValueError as exc:
+        parser.error(str(exc))
     settings = FluxKontextSettings(
         model_dir=args.model_dir.resolve(),
         download_manifest=args.download_manifest.resolve(),
@@ -214,6 +249,7 @@ def main() -> int:
                 settings=settings,
                 styles_config=styles_config,
                 seed=args.seed,
+                prompt_stage=args.prompt_stage,
             )
         except ValueError as exc:
             parser.error(str(exc))
@@ -226,7 +262,11 @@ def main() -> int:
         print("No pending records; probe stage is already complete")
         return 0
     seed_everything(args.seed)
-    backend = FluxKontextBackend(settings, styles_config)
+    backend = FluxKontextBackend(
+        settings,
+        styles_config,
+        prompt_stage=args.prompt_stage,
+    )
     failures = 0
     for record in selected:
         started = time.perf_counter()
@@ -244,6 +284,7 @@ def main() -> int:
                     "style_category": record.style_category,
                     "backend": backend.name,
                     "seed": args.seed,
+                    "prompt_stage": args.prompt_stage,
                     "failure_stage": (
                         "pipeline_inference" if backend.pipeline_loaded else "model_load"
                     ),

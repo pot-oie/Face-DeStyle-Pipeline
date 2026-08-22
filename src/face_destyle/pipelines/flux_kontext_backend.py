@@ -13,7 +13,7 @@ from typing import Any
 
 from PIL import Image, ImageOps
 
-from face_destyle.filtering.prompt_rewriter import select_prompt
+from face_destyle.filtering.prompt_rewriter import select_stage_prompt
 from face_destyle.pipelines.base import DestylizationBackend
 from face_destyle.schemas import DestylizationRecord, ImageRecord
 
@@ -85,11 +85,15 @@ class FluxKontextBackend(DestylizationBackend):
         settings: FluxKontextSettings,
         styles_config: dict[str, Any],
         *,
+        prompt_stage: str = "stage1",
         pipeline_factory: PipelineFactory | None = None,
     ) -> None:
         settings.validate()
+        if prompt_stage not in {"stage1", "stage2"}:
+            raise ValueError(f"unknown prompt stage: {prompt_stage}")
         self.settings = settings
         self.styles_config = styles_config
+        self.prompt_stage = prompt_stage
         self._pipeline_factory = pipeline_factory
         self._uses_injected_pipeline = pipeline_factory is not None
         self._pipeline: Any | None = None
@@ -174,7 +178,11 @@ class FluxKontextBackend(DestylizationBackend):
         destination = output_dir / f"{record.id}.png"
         if destination.exists():
             raise FileExistsError(f"Refusing to overwrite existing output: {destination}")
-        prompt = select_prompt(record.style_category, self.styles_config, adaptive=True)
+        prompt = select_stage_prompt(
+            record.style_category,
+            self.styles_config,
+            stage=self.prompt_stage,
+        )
         with Image.open(source) as image:
             initial_image = ImageOps.fit(
                 ImageOps.exif_transpose(image).convert("RGB"),
@@ -229,6 +237,7 @@ class FluxKontextBackend(DestylizationBackend):
             prompt=prompt,
             extra={
                 "probe": "flux1_kontext_dev_generator_capability",
+                "prompt_stage": self.prompt_stage,
                 "official_model_id": "black-forest-labs/FLUX.1-Kontext-dev",
                 "transport_source": "modelscope_mirror",
                 "transport_model_id": "black-forest-labs/FLUX.1-Kontext-dev",

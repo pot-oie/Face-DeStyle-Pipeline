@@ -77,6 +77,12 @@ category definition.
   nightlife photographs with color grading.
 - `animation` extension: cel/painted animation appearance. Use a generic label in reports; avoid
   implying affiliation with a studio or living artist.
+- `clay` extension: visibly modeled clay, terracotta, or earthenware portrait sculpture with
+  material grain and three-dimensional hand-shaped or molded surfaces; exclude stone, metal,
+  glossy plastic, and ordinary skin-toned 3D renders.
+- `needle_felt` extension: visibly needle-punched wool portrait or doll sculpture with fibrous,
+  fuzzy, handmade soft-sculpture surfaces; exclude fabric clothing on an otherwise photographic
+  person and images whose only felt cue is a texture overlay.
 
 If two reviewers cannot distinguish a category from a natural photo or from another category, mark
 the sample ambiguous and exclude it from the primary set.

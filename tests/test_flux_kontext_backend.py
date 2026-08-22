@@ -64,3 +64,32 @@ def test_mock_kontext_probe_records_frozen_settings(tmp_path):
     assert fake.calls[0]["generator"] == 42
     assert result.extra["output_height"] == 1024
     assert result.extra["output_width"] == 1024
+
+
+def test_mock_kontext_probe_uses_declared_stage2_prompt(tmp_path):
+    source = tmp_path / "source.png"
+    Image.new("RGB", (700, 900)).save(source)
+    fake = FakePipeline()
+    backend = FluxKontextBackend(
+        make_settings(tmp_path),
+        {
+            "styles": {
+                "clay": {
+                    "stage1_prompt": "generic clay conversion",
+                    "stage2_prompt": "remove persistent terracotta material",
+                }
+            }
+        },
+        prompt_stage="stage2",
+        pipeline_factory=lambda _path: fake,
+    )
+
+    result = backend.run(
+        ImageRecord(id="clay-a", source_id="clay-a", image_path=source, style_category="clay"),
+        tmp_path / "outputs",
+        seed=42,
+    )
+
+    assert result.prompt == "remove persistent terracotta material"
+    assert result.extra["prompt_stage"] == "stage2"
+    assert fake.calls[0]["prompt"] == "remove persistent terracotta material"
