@@ -42,9 +42,12 @@ DESTYLIZE_INSTRUCTION = (
 )
 
 STYLIZE_INSTRUCTION = (
-    "Transform this portrait into a polished 3D animated-film character with clearly exaggerated "
-    "facial geometry, slightly oversized expressive eyes, smooth plastic-like skin, and cinematic "
-    "CGI lighting. Preserve the person, pose, expression, clothing, composition, and background."
+    "Transform this portrait into a restrained high-quality 3D animated-film portrait with "
+    "near-human facial proportions, subtle geometric simplification, dry matte skin material, "
+    "soft diffuse CGI lighting, and no oily, glossy, waxy, or plastic highlights. Do not enlarge "
+    "or emphasize the eyes, eyebrows, nose, or mouth. Do not add, remove, or emphasize glasses, "
+    "facial hair, jewelry, or hairstyle. Preserve the person's age, identity, pose, expression, "
+    "clothing, composition, colors, and background."
 )
 
 
@@ -55,6 +58,18 @@ def selected_indices(start_index: int, count: int) -> range:
     if stop > len(PORTRAIT_SPECS) + 1:
         raise ValueError(f"requested portraits exceed the available {len(PORTRAIT_SPECS)} specs")
     return range(start_index, stop)
+
+
+def parse_indices(value: str) -> tuple[int, ...]:
+    try:
+        indices = tuple(int(item.strip()) for item in value.split(",") if item.strip())
+    except ValueError as exc:
+        raise ValueError("indices must be comma-separated integers") from exc
+    if not indices or len(set(indices)) != len(indices):
+        raise ValueError("indices must be non-empty and unique")
+    if min(indices) < 1 or max(indices) > len(PORTRAIT_SPECS):
+        raise ValueError(f"indices must be between 1 and {len(PORTRAIT_SPECS)}")
+    return indices
 
 
 def portrait_name(index: int) -> str:
@@ -113,7 +128,12 @@ def generate_targets(
 
 
 def generate_conditions(
-    *, model_path: Path, output_dir: Path, indices: range, seed: int
+    *,
+    model_path: Path,
+    output_dir: Path,
+    indices: range | tuple[int, ...],
+    seed: int,
+    target_dir: Path | None = None,
 ) -> None:
     import torch
     from diffusers import FluxKontextPipeline
@@ -123,7 +143,7 @@ def generate_conditions(
         str(model_path), torch_dtype=torch.bfloat16, local_files_only=True
     )
     pipeline.enable_model_cpu_offload()
-    target_dir = output_dir / "train" / "target"
+    target_dir = target_dir or output_dir / "train" / "target"
     condition_dir = output_dir / "train" / "condition"
     condition_dir.mkdir(parents=True, exist_ok=True)
     for index in indices:
@@ -190,12 +210,25 @@ def main() -> int:
     )
     parser.add_argument("--start-index", type=int, default=1)
     parser.add_argument("--count", type=int, default=24)
+    parser.add_argument(
+        "--indices",
+        help="Optional comma-separated portrait indices; overrides --start-index and --count.",
+    )
+    parser.add_argument(
+        "--target-dir",
+        type=Path,
+        help="Optional existing natural-target directory used for condition generation.",
+    )
     parser.add_argument("--target-seed", type=int, default=20260823)
     parser.add_argument("--condition-seed", type=int, default=20260824)
     args = parser.parse_args()
 
     try:
-        indices = selected_indices(args.start_index, args.count)
+        indices = (
+            parse_indices(args.indices)
+            if args.indices
+            else selected_indices(args.start_index, args.count)
+        )
     except ValueError as exc:
         parser.error(str(exc))
     if args.stage in {"targets", "all"}:
@@ -215,6 +248,7 @@ def main() -> int:
             output_dir=args.output_dir,
             indices=indices,
             seed=args.condition_seed,
+            target_dir=args.target_dir,
         )
     if args.stage in {"metadata", "all"}:
         write_metadata(output_dir=args.output_dir, indices=indices)

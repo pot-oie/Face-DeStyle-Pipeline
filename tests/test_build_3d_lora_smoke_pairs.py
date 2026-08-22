@@ -13,6 +13,7 @@ SPEC.loader.exec_module(MODULE)
 
 DESTYLIZE_INSTRUCTION = MODULE.DESTYLIZE_INSTRUCTION
 natural_prompt = MODULE.natural_prompt
+parse_indices = MODULE.parse_indices
 selected_indices = MODULE.selected_indices
 write_metadata = MODULE.write_metadata
 
@@ -21,6 +22,14 @@ def test_selected_indices_rejects_out_of_range() -> None:
     assert list(selected_indices(1, 24)) == list(range(1, 25))
     with pytest.raises(ValueError, match="exceed"):
         selected_indices(20, 6)
+
+
+def test_parse_indices_supports_sparse_preview_selection() -> None:
+    assert parse_indices("1, 10,21") == (1, 10, 21)
+    with pytest.raises(ValueError, match="unique"):
+        parse_indices("1,1")
+    with pytest.raises(ValueError, match="between"):
+        parse_indices("25")
 
 
 def test_natural_prompts_are_fictional_and_distinct() -> None:
