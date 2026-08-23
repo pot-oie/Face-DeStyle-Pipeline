@@ -28,8 +28,17 @@ class PairBankSource:
         )
 
 
-def load_pair_bank_source_list(path: Path, data_root: Path) -> list[PairBankSource]:
+def load_pair_bank_source_list(
+    path: Path,
+    data_root: Path,
+    *,
+    roles: set[str] | None = None,
+) -> list[PairBankSource]:
     """Load a human-readable CSV without imposing formal-manifest ceremony."""
+    if roles is not None:
+        unknown_roles = roles - PAIR_BANK_ROLES
+        if unknown_roles:
+            raise ValueError("unknown requested roles: " + ", ".join(sorted(unknown_roles)))
     rows: list[PairBankSource] = []
     source_ids: set[str] = set()
     root = data_root.expanduser().resolve()
@@ -48,6 +57,9 @@ def load_pair_bank_source_list(path: Path, data_root: Path) -> list[PairBankSour
                 raise ValueError(f"invalid source-list row at line {line_number}")
             if source_id in source_ids:
                 raise ValueError(f"duplicate source_id in source list: {source_id}")
+            source_ids.add(source_id)
+            if roles is not None and role not in roles:
+                continue
             relative = Path(raw_asset)
             if relative.is_absolute() or ".." in relative.parts:
                 raise ValueError(f"unsafe asset_path for {source_id}: {relative}")
@@ -58,7 +70,6 @@ def load_pair_bank_source_list(path: Path, data_root: Path) -> list[PairBankSour
                 raise ValueError(f"asset_path escapes data root: {relative}") from exc
             if not asset.is_file():
                 raise FileNotFoundError(f"missing source image: {asset}")
-            source_ids.add(source_id)
             rows.append(
                 PairBankSource(
                     source_id=source_id,
@@ -69,5 +80,5 @@ def load_pair_bank_source_list(path: Path, data_root: Path) -> list[PairBankSour
                 )
             )
     if not rows:
-        raise ValueError("source list is empty")
+        raise ValueError("source list contains no rows for the requested roles")
     return rows

@@ -296,14 +296,14 @@ def main() -> int:
         if args.data_root is None:
             parser.error("--data-root is required with --source-list")
         try:
-            pair_bank_rows = load_pair_bank_source_list(args.source_list, args.data_root)
+            pair_bank_rows = load_pair_bank_source_list(
+                args.source_list,
+                args.data_root,
+                roles={"candidate"},
+            )
         except (FileNotFoundError, ValueError) as exc:
             parser.error(str(exc))
-        manifest_records = [
-            row.as_image_record() for row in pair_bank_rows if row.role == "candidate"
-        ]
-        if not manifest_records:
-            parser.error("source list contains no role=candidate rows")
+        manifest_records = [row.as_image_record() for row in pair_bank_rows]
     else:
         if args.data_root is None:
             parser.error("--data-root is required with --manifest")

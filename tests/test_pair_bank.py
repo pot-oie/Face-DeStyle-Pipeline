@@ -48,6 +48,37 @@ def test_pair_bank_source_list_loads_lightweight_roles(tmp_path):
     assert rows[0].as_image_record().style_category == "3d_cartoon"
 
 
+def test_pair_bank_role_filter_does_not_require_rejected_assets(tmp_path):
+    data_root = tmp_path / "data"
+    candidate = data_root / "raw" / "candidate.png"
+    candidate.parent.mkdir(parents=True)
+    Image.new("RGB", (16, 16), "green").save(candidate)
+    source_list = tmp_path / "sources.csv"
+    write_source_list(
+        source_list,
+        [
+            {
+                "source_id": "candidate",
+                "asset_path": "raw/candidate.png",
+                "style_category": "3d_cartoon",
+                "role": "candidate",
+                "notes": "",
+            },
+            {
+                "source_id": "rejected",
+                "asset_path": "raw/not-transferred.png",
+                "style_category": "3d_cartoon",
+                "role": "rejected",
+                "notes": "inventory only",
+            },
+        ],
+    )
+
+    rows = load_pair_bank_source_list(source_list, data_root, roles={"candidate"})
+
+    assert [row.source_id for row in rows] == ["candidate"]
+
+
 def test_pair_bank_review_builds_layout_and_four_column_sheet(tmp_path):
     data_root = tmp_path / "data"
     source = data_root / "raw" / "one.png"
