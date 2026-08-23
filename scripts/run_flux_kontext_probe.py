@@ -11,6 +11,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from face_destyle.data.manifests import load_dataset_manifest
+from face_destyle.data.pair_bank import load_pair_bank_source_list
 from face_destyle.filtering.prompt_rewriter import select_stage_prompt
 from face_destyle.pipelines.flux_kontext_backend import (
     FluxKontextBackend,
@@ -171,10 +172,64 @@ def append_jsonl(path: Path, payload: object) -> None:
         handle.flush()
 
 
+def load_sequential_inputs(records_path: Path) -> list[ImageRecord]:
+    """Use successful Stage 1 outputs as explicit inputs to a sequential edit."""
+    if not records_path.is_file():
+        raise FileNotFoundError(f"Stage 1 records file does not exist: {records_path}")
+    records: list[ImageRecord] = []
+    source_ids: set[str] = set()
+    for line_number, line in enumerate(
+        records_path.read_text(encoding="utf-8").splitlines(), start=1
+    ):
+        if not line.strip():
+            continue
+        try:
+            parent = DestylizationRecord.model_validate_json(line)
+        except ValueError as exc:
+            raise ValueError(f"invalid Stage 1 record at line {line_number}") from exc
+        if parent.source_id in source_ids:
+            raise ValueError(f"duplicate Stage 1 source_id: {parent.source_id}")
+        if parent.extra.get("prompt_stage", "stage1") != "stage1":
+            raise ValueError(
+                f"sequential input is not a Stage 1 record: {parent.source_id}"
+            )
+        output_path = Path(parent.output_path).expanduser().resolve()
+        if not output_path.is_file():
+            raise FileNotFoundError(
+                f"missing Stage 1 output for {parent.source_id}: {output_path}"
+            )
+        source_ids.add(parent.source_id)
+        records.append(
+            ImageRecord(
+                id=parent.id,
+                source_id=parent.source_id,
+                image_path=output_path,
+                style_category=parent.style_category,
+            )
+        )
+    if not records:
+        raise ValueError("Stage 1 records file contains no successful outputs")
+    return records
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--manifest", type=Path, required=True)
-    parser.add_argument("--data-root", type=Path, required=True)
+    inputs = parser.add_mutually_exclusive_group(required=True)
+    inputs.add_argument("--manifest", type=Path)
+    inputs.add_argument(
+        "--source-list",
+        type=Path,
+        help="Lightweight pair-bank CSV; only rows with role=candidate are generated.",
+    )
+    inputs.add_argument(
+        "--input-records",
+        type=Path,
+        help=(
+            "Successful Stage 1 DestylizationRecord JSONL. Its output images become the "
+            "explicit inputs for a true sequential Stage 2 run."
+        ),
+    )
+    parser.add_argument("--data-root", type=Path)
     parser.add_argument("--model-dir", type=Path, required=True)
     parser.add_argument("--download-manifest", type=Path, required=True)
     parser.add_argument("--hash-manifest", type=Path, required=True)
@@ -228,11 +283,35 @@ def main() -> int:
 
     if not args.resume and (args.records_output.exists() or args.failures_output.exists()):
         parser.error("refusing to append to an existing records or failures file")
-    manifest_records = load_dataset_manifest(
-        args.manifest,
-        data_root=args.data_root,
-        split=args.split,
-    )
+    if args.input_records:
+        if args.prompt_stage != "stage2":
+            parser.error("--input-records requires --prompt-stage stage2")
+        if args.data_root is not None:
+            parser.error("--data-root cannot be used with --input-records")
+        try:
+            manifest_records = load_sequential_inputs(args.input_records)
+        except (FileNotFoundError, ValueError) as exc:
+            parser.error(str(exc))
+    elif args.source_list:
+        if args.data_root is None:
+            parser.error("--data-root is required with --source-list")
+        try:
+            pair_bank_rows = load_pair_bank_source_list(args.source_list, args.data_root)
+        except (FileNotFoundError, ValueError) as exc:
+            parser.error(str(exc))
+        manifest_records = [
+            row.as_image_record() for row in pair_bank_rows if row.role == "candidate"
+        ]
+        if not manifest_records:
+            parser.error("source list contains no role=candidate rows")
+    else:
+        if args.data_root is None:
+            parser.error("--data-root is required with --manifest")
+        manifest_records = load_dataset_manifest(
+            args.manifest,
+            data_root=args.data_root,
+            split=args.split,
+        )
     required_styles = tuple(args.required_styles or REQUIRED_STYLES)
     try:
         selected = select_probe_records(
@@ -286,6 +365,10 @@ def main() -> int:
         started = time.perf_counter()
         try:
             result = backend.run(record, args.output_dir, seed=args.seed)
+            if args.input_records:
+                result.extra["sequential_parent_records"] = str(
+                    args.input_records.resolve()
+                )
             append_jsonl(args.records_output, result)
             print(f"OK {record.source_id} -> {result.output_path}", flush=True)
         except Exception as exc:  # noqa: BLE001 - failures are experimental records

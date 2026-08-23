@@ -64,6 +64,12 @@ remain a prompt-only success/control unless a larger source set disproves that o
 
 ## Existing material inventory
 
+Operator update (2026-08-23): the hard-style source banks are still being filled. The counts below
+are a snapshot, not a final curation target, and the 67 raw 3D-category files include non-portrait
+animation frames and other unusable candidates. Do not freeze a final selected list yet. The
+source-independent generation and review tooling is documented in
+`docs/MULTISTYLE_PAIR_BANK_WORKFLOW.md` and can be completed while acquisition continues.
+
 The local dataset root is `/Users/pot/Documents/大创/Face-DeStyle-Data`. A simple raw-file count on
 2026-08-23 found:
 
@@ -211,8 +217,7 @@ before there are meaningful labels, and do not collapse the three concepts into 
 
 1. Read `AGENTS.md`, this handoff, `docs/research_context.md`, and the relevant existing scripts.
 2. Preserve the current worktree and do not restart LoRA training.
-3. Inspect the 67 local 3D raw files and create a compact contact sheet plus a selected list of
-   roughly 40--50 diverse sources, reserving 5--10 for qualitative testing.
+3. While acquisition continues, do not freeze the 3D selected or held-out lists.
 4. Implement only the lightweight tooling needed to run and review a true sequential FLUX Stage 2
    from Stage 1 records. Do not rebuild formal-v1 infrastructure.
 5. Prepare separate output directories for Stage 1, sequential Stage 2, and imported closed-teacher
@@ -245,4 +250,3 @@ new shell lacks the command.
   the pair bank;
 - do not claim that a visible LoRA difference is an optimization;
 - do not reopen formal-v1 blind evaluation, hashing, or repeat-rating workflows.
-

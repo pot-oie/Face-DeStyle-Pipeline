@@ -67,19 +67,21 @@ from genuine styled source images rather than relying on lucky natural-to-3D syn
 Current raw inventory is approximately 67 3D, 12 clay, 12 needle felt, 60 comic, 61 ink, and 92
 watercolor files. A separate task is generating additional clay, needle-felt, and origami sources.
 
+Operator update (2026-08-23): source acquisition is still in progress. Do not freeze the final 3D
+selection or treat the current raw-file count as the number of usable portraits.
+
 Your first concrete task:
 
-1. inspect the 67 local 3D raw files without altering them;
-2. create a compact contact sheet and select roughly 40--50 diverse, usable 3D portrait sources;
-3. reserve 5--10 sources for later Base-vs-LoRA qualitative testing;
-4. keep a simple selected-file list; no cryptographic or formal validation;
-5. design or implement the smallest useful path for candidate generation:
+1. finish the source-independent candidate-generation and review tooling while acquisition runs;
+2. keep a simple CSV source-list format with candidate, holdout, and rejected roles;
+3. do not create the final selected/held-out list until the operator says acquisition is complete;
+4. design or implement the smallest useful path for candidate generation:
    - Base FLUX Stage 1 from the styled source;
    - true sequential Stage 2 using the Stage 1 output as input;
    - a separate location for closed-source teacher outputs;
-6. build review sheets with
+5. build review sheets with
    `styled source | FLUX Stage 1 | sequential Stage 2 | closed teacher`;
-7. do not train another LoRA until the operator has selected roughly 20--40 reliable pairs.
+6. do not train another LoRA until the operator has selected roughly 20--40 reliable pairs.
 
 The old material-extension Stage 2 edited the original source again. Do not call that a true second
 generation. The new sequential path must explicitly consume the Stage 1 output.
@@ -92,4 +94,3 @@ Run Ruff, complete pytest, relevant script `--help`, and `git diff --check` for 
 only when the operator's current authorization allows it. Do not start model inference from local
 macOS and do not launch unrelated LoRA, Multi-ControlNet, pose, depth, Qwen full evaluation, or v2
 formal experiments.
-

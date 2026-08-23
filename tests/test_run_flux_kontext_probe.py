@@ -169,3 +169,63 @@ def test_material_extension_selection_accepts_two_declared_styles():
     )
 
     assert [item.source_id for item in selected] == ["clay-a", "felt-a", "felt-b"]
+
+
+def test_load_sequential_inputs_uses_stage1_outputs(tmp_path):
+    stage1_output = tmp_path / "stage1" / "source-a.png"
+    stage1_output.parent.mkdir()
+    Image.new("RGB", (32, 32), "blue").save(stage1_output)
+    records = tmp_path / "stage1-records.jsonl"
+    records.write_text(
+        json.dumps(
+            {
+                "id": "source-a",
+                "source_id": "source-a",
+                "input_path": str(tmp_path / "original.png"),
+                "output_path": str(stage1_output),
+                "style_category": "3d_cartoon",
+                "backend": MODULE.FluxKontextBackend.name,
+                "seed": 42,
+                "prompt": "stage one",
+                "extra": {"prompt_stage": "stage1"},
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    loaded = MODULE.load_sequential_inputs(records)
+
+    assert len(loaded) == 1
+    assert loaded[0].source_id == "source-a"
+    assert loaded[0].image_path == stage1_output.resolve()
+
+
+def test_load_sequential_inputs_rejects_non_stage1_record(tmp_path):
+    output = tmp_path / "output.png"
+    Image.new("RGB", (8, 8), "blue").save(output)
+    records = tmp_path / "records.jsonl"
+    records.write_text(
+        json.dumps(
+            {
+                "id": "source-a",
+                "source_id": "source-a",
+                "input_path": str(tmp_path / "input.png"),
+                "output_path": str(output),
+                "style_category": "3d_cartoon",
+                "backend": MODULE.FluxKontextBackend.name,
+                "seed": 42,
+                "prompt": "stage two",
+                "extra": {"prompt_stage": "stage2"},
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    try:
+        MODULE.load_sequential_inputs(records)
+    except ValueError as exc:
+        assert "not a Stage 1 record" in str(exc)
+    else:
+        raise AssertionError("non-Stage 1 record was accepted as a sequential input")

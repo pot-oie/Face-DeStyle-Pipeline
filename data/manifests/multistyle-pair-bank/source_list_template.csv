@@ -1,0 +1,4 @@
+source_id,asset_path,style_category,role,notes
+example-001,raw/3d_cartoon/example-001.png,3d_cartoon,candidate,clear single-face portrait
+example-002,raw/3d_cartoon/example-002.png,3d_cartoon,holdout,reserved hard case
+example-003,raw/3d_cartoon/example-003.png,3d_cartoon,rejected,tiny face
