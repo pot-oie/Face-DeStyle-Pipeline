@@ -6,11 +6,11 @@ and 1024-square output.
 
 The visual decision is deliberately conservative:
 
-| Style | Accepted Stage 1 | Accepted Stage 2 | Available targets | Pending teacher | Identity-drift reject |
-|---|---:|---:|---:|---:|---:|
-| 3D cartoon | 0 | 0 | 0 | 27 | 0 |
-| Clay | 0 | 2 | 2 | 15 | 2 |
-| Origami | 14 | 5 | 19 | 5 | 0 |
+| Style | Stage 1 | Stage 2 | Teacher | Available targets | Pending teacher | Identity-drift reject |
+|---|---:|---:|---:|---:|---:|---:|
+| 3D cartoon | 0 | 0 | 1 | 1 | 26 | 0 |
+| Clay | 0 | 2 | 1 | 3 | 14 | 2 |
+| Origami | 14 | 5 | 1 | 20 | 4 | 0 |
 
 For 3D, a second FLUX edit mostly repeated or intensified animation geometry, large eyes, glossy
 skin, and CGI lighting. It did not produce a reliable training target in the eight-case probe.
@@ -34,3 +34,17 @@ The next data action is a small closed-teacher pilot, not more Base FLUX passes:
 
 The filled local selection sheets and four-column review pages are stored under
 `/Users/pot/Documents/大创/实验归档/multistyle-pair-bank-stage1-review-20260824`.
+
+## Closed-teacher pilot addendum
+
+A 2026-08-24 three-case pilot used OpenAI built-in reference-image generation through Codex as a
+private-research teacher. The exact prompts are recorded in each local `closed-teacher/NOTES.md`.
+All three pilot outputs were retained: `synthetic-3d-cartoon-006`, `matv2-clay-001`, and
+`matv2-origami-008`. This changes the available-target counts to 1 for 3D, 3 for Clay, and 20 for
+Origami. It is a promising teacher signal, not evidence that every teacher output will preserve
+identity.
+
+The 20-pair Origami ImageFolder dataset was built locally at
+`/Users/pot/Documents/大创/实验归档/origami-lora-pairs-v1-20`. Its preview confirms 20 condition-target
+pairs and its metadata records the selected target source for each pair. AutoDL preparation and
+training-environment audit instructions are in `docs/AUTODL_ORIGAMI_LORA_PREP.md`.

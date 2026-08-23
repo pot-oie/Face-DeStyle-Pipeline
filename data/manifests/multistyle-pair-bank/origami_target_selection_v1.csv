@@ -1,0 +1,25 @@
+source_id,selected_target,decision,reviewer_notes
+matv2-origami-001,stage1,accept,Face is substantially naturalized with pose and expression preserved.
+matv2-origami-003,stage1,accept,Face and skin are naturalized with stable composition.
+matv2-origami-004,stage1,accept,Face is naturalized; residual paper is concentrated in hair and clothing.
+matv2-origami-005,stage1,accept,Strong facial naturalization with age and pose preserved.
+matv2-origami-006,stage2-sequential,accept,Sequential edit removes geometric hair and further naturalizes the face while preserving content.
+matv2-origami-008,closed-teacher,accept,Closed teacher removes folded-paper material while preserving age downward gaze layered garment colors and composition.
+matv2-origami-009,stage1,accept,Strong facial naturalization and stable composition.
+matv2-origami-010,stage1,accept,Strong facial naturalization with age and expression preserved.
+matv2-origami-012,stage1,accept,Face is convincingly naturalized with stable pose.
+matv2-origami-013,stage1,accept,Face is convincingly naturalized while age is retained.
+matv2-origami-014,stage2-sequential,accept,Sequential edit slightly improves facial naturalness while retaining the source structure.
+matv2-origami-015,stage1,accept,Face is substantially naturalized; residual paper is concentrated in hair and clothing.
+matv2-origami-016,stage2-sequential,accept,Sequential edit yields a natural face with stable age expression and pose.
+matv2-origami-017,stage1,accept,Strong facial naturalization and stable pose.
+matv2-origami-019,stage1,accept,Strong facial naturalization with age and expression preserved.
+matv2-origami-020,stage2-sequential,accept,Sequential edit further naturalizes the face while preserving the bust and composition.
+matv2-origami-021,,pending_closed_teacher,Sequential Stage 2 remains folded paper across the face.
+matv2-origami-022,stage1,accept,Face is substantially naturalized and content remains stable.
+matv2-origami-024,stage2-sequential,accept,Sequential edit changes the faceted face into a plausible human reconstruction while preserving pose.
+matv2-origami-025,,pending_closed_teacher,Sequential Stage 2 leaves strong facets across the head and neck.
+matv2-origami-026,stage1,accept,Face is substantially naturalized with stable identity evidence.
+matv2-origami-027,,pending_closed_teacher,Sequential Stage 2 remains almost entirely folded paper.
+matv2-origami-028,stage1,accept,Face is substantially naturalized with stable composition.
+matv2-origami-029,,pending_closed_teacher,Sequential Stage 2 remains strongly stylized in hair clothing and lighting.

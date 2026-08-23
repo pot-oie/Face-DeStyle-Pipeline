@@ -240,6 +240,15 @@ available targets: 14 from Stage 1 and five from Stage 2. Do not run more sequen
 start LoRA merely to meet a round-number threshold. The next candidate source is a small
 closed-teacher pilot for the still-pending hard cases.
 
+Closed-teacher pilot update (2026-08-24): three OpenAI built-in reference-image edits were generated
+through Codex and retained for one 3D, one Clay, and one Origami source. Exact prompts and outputs
+remain in the local experiment archive. The Origami pool therefore reaches 20 accepted pairs and a
+local ImageFolder dataset has been built at
+`/Users/pot/Documents/大创/实验归档/origami-lora-pairs-v1-20`. Use
+`docs/AUTODL_ORIGAMI_LORA_PREP.md` to upload the one teacher target, rebuild the dataset on AutoDL,
+and locate the already-prepared training environment. Do not reinstall the GPU stack or launch
+training until the trainer help and actual `accelerate` path have been returned.
+
 1. Read `AGENTS.md`, this handoff, `docs/research_context.md`, and the relevant existing scripts.
 2. Preserve the current worktree and do not restart LoRA training.
 3. Copy the completed material-v2 source directory to the matching AutoDL data-root path.
