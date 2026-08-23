@@ -4,6 +4,8 @@ from pathlib import Path
 
 import pytest
 
+from face_destyle.utils.io import load_yaml
+
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts/build_3d_lora_smoke_pairs.py"
 SPEC = importlib.util.spec_from_file_location("build_3d_lora_smoke_pairs", SCRIPT)
@@ -43,6 +45,13 @@ def test_3d_condition_prompt_uses_restrained_v2_style() -> None:
     assert "near-human facial proportions" in STYLIZE_INSTRUCTION
     assert "Do not enlarge" in STYLIZE_INSTRUCTION
     assert "dry matte skin material" in STYLIZE_INSTRUCTION
+
+
+def test_3d_lora_eval_prompt_matches_training_caption() -> None:
+    styles = load_yaml(ROOT / "configs" / "styles_3d_lora.yaml")
+    prompt = styles["styles"]["3d_cartoon"]["stage1_prompt"]
+
+    assert prompt == DESTYLIZE_INSTRUCTION
 
 
 def test_write_metadata_uses_two_image_columns(tmp_path: Path) -> None:

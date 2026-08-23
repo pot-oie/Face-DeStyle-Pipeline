@@ -1,0 +1,8 @@
+styles:
+  3d_cartoon:
+    display_name: 3D Cartoon LoRA
+    stage1_prompt: "Convert this 3D cartoon portrait into a natural realistic photograph. Remove exaggerated facial geometry, oversized eyes, plastic skin, and CGI rendering while preserving the person, pose, expression, clothing, composition, and background."
+    stage2_prompt: "Convert this 3D cartoon portrait into a natural realistic photograph. Remove exaggerated facial geometry, oversized eyes, plastic skin, and CGI rendering while preserving the person, pose, expression, clothing, composition, and background."
+    negative_prompt: "3d render, cartoon, oversized eyes, exaggerated geometry, plastic skin, CGI rendering, changed identity, changed pose, altered composition"
+    canny_low: 80
+    canny_high: 180
