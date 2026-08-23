@@ -232,6 +232,14 @@ in `docs/AUTODL_MULTISTYLE_PAIR_BANK_STAGE2_SUBSETS.md`. Run only those 8/12/10 
 before the next visual review. Do not interpret the 14 provisional Origami candidates as a frozen
 training set and do not start LoRA yet.
 
+Later update (2026-08-24): the reviewed sequential subsets also completed at 8/8 3D, 12/12 Clay,
+and 10/10 Origami with zero runner failures. The visual result is recorded in
+`docs/results/multistyle_pair_bank_stage2_review_20260824.md`. No 3D target passed. Two Clay Stage 2
+targets passed, while two other Clay outputs were rejected for identity drift. Origami now has 19
+available targets: 14 from Stage 1 and five from Stage 2. Do not run more sequential FLUX passes or
+start LoRA merely to meet a round-number threshold. The next candidate source is a small
+closed-teacher pilot for the still-pending hard cases.
+
 1. Read `AGENTS.md`, this handoff, `docs/research_context.md`, and the relevant existing scripts.
 2. Preserve the current worktree and do not restart LoRA training.
 3. Copy the completed material-v2 source directory to the matching AutoDL data-root path.
