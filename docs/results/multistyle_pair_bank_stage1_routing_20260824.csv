@@ -1,0 +1,71 @@
+style_category,source_id,next_route,reviewer_notes
+3d_cartoon,synthetic-3d-cartoon-006,stage2_probe,Strong CGI skin and eye geometry remain; preserved content makes a second edit testable.
+3d_cartoon,synthetic-3d-cartoon-007,closed_teacher_priority,Stage 1 remains rendered and the earlier sequential pilot showed little gain for similar mild 3D cases.
+3d_cartoon,synthetic-3d-cartoon-008,closed_teacher_priority,Face remains illustration-like despite good content preservation.
+3d_cartoon,synthetic-3d-cartoon-009,stage2_probe,Large eyes and smooth CGI skin remain; include as a hard female case.
+3d_cartoon,synthetic-3d-cartoon-010,stage2_probe,Large-eye geometry remains; include as a hard frontal case.
+3d_cartoon,synthetic-3d-cartoon-011,closed_teacher_priority,Only a modest texture change and still visibly rendered.
+3d_cartoon,synthetic-3d-cartoon-012,stage2_probe,Strong eye exaggeration remains while pose and scene are preserved.
+3d_cartoon,synthetic-3d-cartoon-013,closed_teacher_priority,Still a polished character render rather than a photograph.
+3d_cartoon,synthetic-3d-cartoon-014,closed_teacher_priority,Minimal material removal and still strongly animated.
+3d_cartoon,synthetic-3d-cartoon-015,closed_teacher_priority,Subtle improvement only; still an illustration.
+3d_cartoon,synthetic-3d-cartoon-016,stage2_probe,Good content preservation but residual cartoon eyes and facial geometry.
+3d_cartoon,synthetic-3d-cartoon-018,closed_teacher_priority,Face remains synthetic and plastic.
+3d_cartoon,synthetic-3d-cartoon-019,closed_teacher_priority,Little visible destylization.
+3d_cartoon,synthetic-3d-cartoon-020,closed_teacher_priority,More facial detail but still a rendered character.
+3d_cartoon,synthetic-3d-cartoon-021,closed_teacher_priority,Preserved scene but synthetic skin and lighting remain.
+3d_cartoon,synthetic-3d-cartoon-022,stage2_probe,Strong large-eye and animation cues remain; include as a hard female case.
+3d_cartoon,synthetic-3d-cartoon-023,closed_teacher_priority,Only modest naturalization.
+3d_cartoon,synthetic-3d-cartoon-024,closed_teacher_priority,Still painterly and rendered.
+3d_cartoon,synthetic-3d-cartoon-025,closed_teacher_priority,Facial geometry remains synthetic.
+3d_cartoon,synthetic-3d-cartoon-026,closed_teacher_priority,Still a cinematic CGI portrait.
+3d_cartoon,synthetic-3d-cartoon-027,stage2_probe,Large eyes and doll-like anatomy remain; include as a severe case.
+3d_cartoon,synthetic-3d-cartoon-028,closed_teacher_priority,Face remains an animated-character reconstruction.
+3d_cartoon,synthetic-3d-cartoon-029,closed_teacher_priority,Very small change and still strongly stylized.
+3d_cartoon,synthetic-3d-cartoon-030,closed_teacher_priority,More detailed face but still synthetic.
+3d_cartoon,synthetic-3d-cartoon-031,stage2_probe,Preserved scene with strong animation geometry; include as a young male case.
+3d_cartoon,synthetic-3d-cartoon-032,closed_teacher_priority,Still a stylized animated portrait.
+3d_cartoon,synthetic-3d-cartoon-033,closed_teacher_priority,Still a polished character render with exaggerated eyes.
+clay,matv2-clay-001,stage2_probe,Clay material persists across face and clothing; strong content preservation.
+clay,matv2-clay-002,stage2_probe,Clay bust remains but identity evidence and pose are stable.
+clay,matv2-clay-004,closed_teacher_priority,Stage 1 remains almost entirely clay and overlaps the selected young male cases.
+clay,matv2-clay-005,stage2_probe,Dark clay material remains; include a middle-aged female case.
+clay,matv2-clay-007,stage2_probe,Face gains detail but remains clay; include a young male case.
+clay,matv2-clay-008,closed_teacher_priority,Still a clay bust and overlaps selected older female cases.
+clay,matv2-clay-009,stage2_probe,Texture is partly smoothed but clay color and material remain.
+clay,matv2-clay-010,stage2_probe,Strong stylized clay geometry remains with stable content.
+clay,matv2-clay-012,stage2_probe,Hard angular clay face remains; include a severe geometry case.
+clay,matv2-clay-013,stage2_probe,Dark clay material remains; include a Black male case.
+clay,matv2-clay-014,closed_teacher_priority,Still a clay bust and overlaps selected older female cases.
+clay,matv2-clay-015,stage2_probe,Clay material remains; include a Black female case.
+clay,matv2-clay-016,stage2_probe,Some eye naturalization but clay skin and hair remain.
+clay,matv2-clay-017,closed_teacher_priority,Almost no material removal.
+clay,matv2-clay-019,closed_teacher_priority,Almost no material removal and overlaps selected young male cases.
+clay,matv2-clay-020,closed_teacher_priority,Still a clay bust and overlaps selected older female cases.
+clay,matv2-clay-021,stage2_probe,Severe clay geometry remains; include an older Black female case.
+clay,matv2-clay-022,closed_teacher_priority,Still clay and overlaps selected male bust cases.
+clay,matv2-clay-024,stage2_probe,Face becomes more anatomical but material remains; include a severe elderly case.
+origami,matv2-origami-001,stage1_provisional,Face is substantially naturalized with pose and expression preserved.
+origami,matv2-origami-003,stage1_provisional,Face and skin are natural enough for provisional target review.
+origami,matv2-origami-004,stage1_provisional,Face is naturalized; residual paper is mainly hair and clothing.
+origami,matv2-origami-005,stage1_provisional,Strong facial naturalization with preserved age and pose.
+origami,matv2-origami-006,stage2_probe,Face improved but geometric hair and clothing remain dominant.
+origami,matv2-origami-008,stage2_probe,Face and bust remain largely folded paper.
+origami,matv2-origami-009,stage1_provisional,Strong facial naturalization and stable composition.
+origami,matv2-origami-010,stage1_provisional,Strong facial naturalization with preserved age and expression.
+origami,matv2-origami-012,stage1_provisional,Face is convincingly naturalized with stable pose.
+origami,matv2-origami-013,stage1_provisional,Face is convincingly naturalized while age is preserved.
+origami,matv2-origami-014,stage2_probe,Face improves but bust and clothing remain strongly papercraft.
+origami,matv2-origami-015,stage1_provisional,Face is substantially naturalized; residual paper is concentrated in hair and clothing.
+origami,matv2-origami-016,stage2_probe,Face improves but the entire bust remains folded paper.
+origami,matv2-origami-017,stage1_provisional,Strong facial naturalization and stable pose.
+origami,matv2-origami-019,stage1_provisional,Strong facial naturalization with preserved age and expression.
+origami,matv2-origami-020,stage2_probe,Face improves but bust and hair remain strongly geometric.
+origami,matv2-origami-021,stage2_probe,Most facial paper planes remain.
+origami,matv2-origami-022,stage1_provisional,Face is substantially naturalized and content is stable.
+origami,matv2-origami-024,stage2_probe,Stage 1 makes almost no destylization progress.
+origami,matv2-origami-025,stage2_probe,Only the lips naturalize; face and body remain folded paper.
+origami,matv2-origami-026,stage1_provisional,Face is substantially naturalized with stable identity evidence.
+origami,matv2-origami-027,stage2_probe,Stage 1 remains nearly entirely folded paper.
+origami,matv2-origami-028,stage1_provisional,Face is substantially naturalized with stable composition.
+origami,matv2-origami-029,stage2_probe,Face improves but hair clothing and lighting remain strongly stylized.

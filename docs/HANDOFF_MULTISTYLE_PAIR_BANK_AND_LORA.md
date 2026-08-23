@@ -223,6 +223,15 @@ before there are meaningful labels, and do not collapse the three concepts into 
 
 ## Immediate next work for the main implementation window
 
+Update (2026-08-24): all three curated Stage 1 batches completed on AutoDL and were reviewed
+locally: 27 3D, 19 Clay, and 24 Origami outputs, all with zero runner failures. Fourteen Origami
+outputs are provisional Stage 1 target candidates. No 3D or Clay Stage 1 output is yet reliable
+enough to count as a selected training target. The reviewed routing table is
+`docs/results/multistyle_pair_bank_stage1_routing_20260824.csv`; the exact next AutoDL commands are
+in `docs/AUTODL_MULTISTYLE_PAIR_BANK_STAGE2_SUBSETS.md`. Run only those 8/12/10 sequential subsets
+before the next visual review. Do not interpret the 14 provisional Origami candidates as a frozen
+training set and do not start LoRA yet.
+
 1. Read `AGENTS.md`, this handoff, `docs/research_context.md`, and the relevant existing scripts.
 2. Preserve the current worktree and do not restart LoRA training.
 3. Copy the completed material-v2 source directory to the matching AutoDL data-root path.

@@ -171,6 +171,35 @@ def test_material_extension_selection_accepts_two_declared_styles():
     assert [item.source_id for item in selected] == ["clay-a", "felt-a", "felt-b"]
 
 
+def test_explicit_source_subset_retains_input_order():
+    records = [
+        record("source-c", "clay"),
+        record("source-a", "clay"),
+        record("source-b", "clay"),
+    ]
+
+    selected = MODULE.filter_records_by_source_ids(
+        records, ["source-b", "source-c"]
+    )
+
+    assert [item.source_id for item in selected] == ["source-c", "source-b"]
+
+
+def test_explicit_source_subset_rejects_missing_and_duplicate_ids():
+    records = [record("source-a", "clay")]
+
+    for requested, message in (
+        (["source-a", "source-a"], "unique"),
+        (["source-b"], "unavailable"),
+    ):
+        try:
+            MODULE.filter_records_by_source_ids(records, requested)
+        except ValueError as exc:
+            assert message in str(exc)
+        else:
+            raise AssertionError(f"invalid source subset was accepted: {requested}")
+
+
 def test_load_sequential_inputs_uses_stage1_outputs(tmp_path):
     stage1_output = tmp_path / "stage1" / "source-a.png"
     stage1_output.parent.mkdir()

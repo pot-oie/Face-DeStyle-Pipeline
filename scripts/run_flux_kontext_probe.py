@@ -55,6 +55,22 @@ def select_probe_records(
     return selected
 
 
+def filter_records_by_source_ids(
+    records: list[ImageRecord], source_ids: list[str]
+) -> list[ImageRecord]:
+    """Keep an explicit source subset while retaining the input record order."""
+    if not source_ids:
+        return records
+    requested = set(source_ids)
+    if len(requested) != len(source_ids):
+        raise ValueError("source IDs must be unique")
+    available = {record.source_id for record in records}
+    missing = sorted(requested - available)
+    if missing:
+        raise ValueError("requested source IDs are unavailable: " + ", ".join(missing))
+    return [record for record in records if record.source_id in requested]
+
+
 def validate_resume_state(
     *,
     records_path: Path,
@@ -252,6 +268,15 @@ def main() -> int:
         default="stage1",
         help="Use the declared stage1 or stage2 prompt for every selected source.",
     )
+    parser.add_argument(
+        "--source-id",
+        action="append",
+        dest="source_ids",
+        default=[],
+        help=(
+            "Run only this source ID from the selected input; repeat for a reviewed subset."
+        ),
+    )
     parser.add_argument("--source-revision", default="master")
     parser.add_argument(
         "--split",
@@ -314,6 +339,9 @@ def main() -> int:
         )
     required_styles = tuple(args.required_styles or REQUIRED_STYLES)
     try:
+        manifest_records = filter_records_by_source_ids(
+            manifest_records, args.source_ids
+        )
         selected = select_probe_records(
             manifest_records,
             args.probe_stage,
