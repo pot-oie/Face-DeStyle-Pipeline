@@ -188,7 +188,7 @@ def main() -> int:
     prepare_layout(args.run_dir, rows)
     build_contact_sheet(
         rows,
-        args.run_dir / "review" / "3d-source-inventory.jpg",
+        args.run_dir / "review" / "source-inventory.jpg",
         columns=args.contact_columns,
     )
     page_count = build_review_pages(

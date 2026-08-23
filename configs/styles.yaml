@@ -41,6 +41,13 @@ styles:
     negative_prompt: "needle felt, wool fibers, fuzzy textile, handmade doll, soft sculpture, changed identity, changed pose, altered composition"
     canny_low: 60
     canny_high: 150
+  origami:
+    display_name: Origami
+    stage1_prompt: "Convert this folded-paper origami portrait into a natural realistic photograph while preserving the person, pose, expression, clothing, composition, and background."
+    stage2_prompt: "Remove folded-paper facets, sharp creases, geometric planes, and papercraft material cues; refine natural facial anatomy, skin, hair, and lighting without changing the person, pose, expression, clothing, composition, or background."
+    negative_prompt: "origami, folded paper, papercraft, polygonal facets, sharp creases, geometric planes, changed identity, changed pose, altered composition"
+    canny_low: 70
+    canny_high: 160
   watercolor:
     display_name: Watercolor
     stage1_prompt: "Convert this watercolor portrait into a natural realistic photograph while preserving identity, pose, composition, and background structure."

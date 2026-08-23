@@ -67,21 +67,20 @@ from genuine styled source images rather than relying on lucky natural-to-3D syn
 Current raw inventory is approximately 67 3D, 12 clay, 12 needle felt, 60 comic, 61 ink, and 92
 watercolor files. A separate task is generating additional clay, needle-felt, and origami sources.
 
-Operator update (2026-08-23): source acquisition is still in progress. Do not freeze the final 3D
-selection or treat the current raw-file count as the number of usable portraits.
+Operator update (2026-08-23): the current source generation round is complete. Curated lists
+now exist at `data/manifests/multistyle-pair-bank/` with 27/6 candidate/holdout 3D portraits, 19/5
+new Clay portraits, and 24/6 Origami portraits. `configs/styles.yaml` includes Origami prompts.
+Historical museum Clay fragments and non-portrait 3D frames are explicitly rejected in the lists.
 
 Your first concrete task:
 
-1. finish the source-independent candidate-generation and review tooling while acquisition runs;
-2. keep a simple CSV source-list format with candidate, holdout, and rejected roles;
-3. do not create the final selected/held-out list until the operator says acquisition is complete;
-4. design or implement the smallest useful path for candidate generation:
-   - Base FLUX Stage 1 from the styled source;
-   - true sequential Stage 2 using the Stage 1 output as input;
-   - a separate location for closed-source teacher outputs;
-5. build review sheets with
+1. copy `extensions/material_styles_v2` to the matching AutoDL data-root location;
+2. run Base FLUX Stage 1 separately for candidate rows in the three curated lists;
+3. review Stage 1 and route only residual-style/content-preserving failures to true sequential
+   Stage 2 or a separately stored closed-source teacher candidate;
+4. build review sheets with
    `styled source | FLUX Stage 1 | sequential Stage 2 | closed teacher`;
-6. do not train another LoRA until the operator has selected roughly 20--40 reliable pairs.
+5. do not train another LoRA until the operator has selected roughly 20--40 reliable pairs.
 
 The old material-extension Stage 2 edited the original source again. Do not call that a true second
 generation. The new sequential path must explicitly consume the Stage 1 output.

@@ -70,6 +70,14 @@ animation frames and other unusable candidates. Do not freeze a final selected l
 source-independent generation and review tooling is documented in
 `docs/MULTISTYLE_PAIR_BANK_WORKFLOW.md` and can be completed while acquisition continues.
 
+Later operator update (2026-08-23): source generation is complete for the current pair-bank round.
+The new material-v2 bank contains 24 Clay, 12 replacement Needle-felt, and 30 Origami portraits.
+Visual curation established lightweight source lists under
+`data/manifests/multistyle-pair-bank/`: 27 candidate plus 6 holdout 3D portraits, 19 candidate plus
+5 holdout new Clay portraits, and 24 candidate plus 6 holdout Origami portraits. Historical museum
+Clay fragments and non-portrait 3D animation frames remain listed as rejected rather than silently
+counted as usable portraits.
+
 The local dataset root is `/Users/pot/Documents/大创/Face-DeStyle-Data`. A simple raw-file count on
 2026-08-23 found:
 
@@ -217,13 +225,12 @@ before there are meaningful labels, and do not collapse the three concepts into 
 
 1. Read `AGENTS.md`, this handoff, `docs/research_context.md`, and the relevant existing scripts.
 2. Preserve the current worktree and do not restart LoRA training.
-3. While acquisition continues, do not freeze the 3D selected or held-out lists.
-4. Implement only the lightweight tooling needed to run and review a true sequential FLUX Stage 2
-   from Stage 1 records. Do not rebuild formal-v1 infrastructure.
-5. Prepare separate output directories for Stage 1, sequential Stage 2, and imported closed-teacher
-   candidates.
-6. Build exact source/candidate review sheets and let the operator choose targets.
-7. Only after roughly 20--40 useful 3D pairs exist, reactivate the LoRA training environment and
+3. Copy the completed material-v2 source directory to the matching AutoDL data-root path.
+4. Run Base FLUX Stage 1 separately for the candidate rows in the 3D, Clay, and Origami lists.
+5. Review Stage 1 locally and route only residual-style/content-preserving failures to sequential
+   Stage 2 or a closed teacher; do not automatically spend a second pass on every source.
+6. Build exact source/candidate review sheets and let the operator choose at most one target.
+7. Only after roughly 20--40 useful pairs per trained style exist, reactivate the LoRA environment and
    train a new adapter from scratch.
 
 ## Environment notes

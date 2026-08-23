@@ -1,0 +1,68 @@
+source_id,asset_path,style_category,role,notes
+synthetic-3d-cartoon-001,raw/3d_cartoon/synthetic-3d-cartoon-001.png,3d_cartoon,holdout,legacy five-source continuity case
+synthetic-3d-cartoon-002,raw/3d_cartoon/synthetic-3d-cartoon-002.png,3d_cartoon,holdout,legacy five-source continuity case
+synthetic-3d-cartoon-003,raw/3d_cartoon/synthetic-3d-cartoon-003.png,3d_cartoon,holdout,legacy five-source continuity case
+synthetic-3d-cartoon-004,raw/3d_cartoon/synthetic-3d-cartoon-004.png,3d_cartoon,holdout,legacy five-source continuity case
+synthetic-3d-cartoon-005,raw/3d_cartoon/synthetic-3d-cartoon-005.png,3d_cartoon,holdout,legacy five-source continuity case
+synthetic-3d-cartoon-006,batch1/raw/3d_cartoon/synthetic-3d-cartoon-006.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-007,batch1/raw/3d_cartoon/synthetic-3d-cartoon-007.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-008,batch1/raw/3d_cartoon/synthetic-3d-cartoon-008.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-009,batch1/raw/3d_cartoon/synthetic-3d-cartoon-009.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-010,batch1/raw/3d_cartoon/synthetic-3d-cartoon-010.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-011,batch1/raw/3d_cartoon/synthetic-3d-cartoon-011.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-012,batch1/raw/3d_cartoon/synthetic-3d-cartoon-012.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-013,batch1/raw/3d_cartoon/synthetic-3d-cartoon-013.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-014,batch1/raw/3d_cartoon/synthetic-3d-cartoon-014.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-015,batch1/raw/3d_cartoon/synthetic-3d-cartoon-015.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-016,batch1/raw/3d_cartoon/synthetic-3d-cartoon-016.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-017,batch1/raw/3d_cartoon/synthetic-3d-cartoon-017.png,3d_cartoon,holdout,large-eye geometry stress case
+synthetic-3d-cartoon-018,batch1/raw/3d_cartoon/synthetic-3d-cartoon-018.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-019,batch1/raw/3d_cartoon/synthetic-3d-cartoon-019.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-020,batch1/raw/3d_cartoon/synthetic-3d-cartoon-020.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-021,batch1/raw/3d_cartoon/synthetic-3d-cartoon-021.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-022,batch1/raw/3d_cartoon/synthetic-3d-cartoon-022.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-023,batch1/raw/3d_cartoon/synthetic-3d-cartoon-023.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-024,batch1/raw/3d_cartoon/synthetic-3d-cartoon-024.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-025,batch1/raw/3d_cartoon/synthetic-3d-cartoon-025.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-026,batch2/raw/3d_cartoon/synthetic-3d-cartoon-026.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-027,batch2/raw/3d_cartoon/synthetic-3d-cartoon-027.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-028,batch2/raw/3d_cartoon/synthetic-3d-cartoon-028.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-029,batch2/raw/3d_cartoon/synthetic-3d-cartoon-029.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-030,batch2/raw/3d_cartoon/synthetic-3d-cartoon-030.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-031,batch2/raw/3d_cartoon/synthetic-3d-cartoon-031.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-032,batch2/raw/3d_cartoon/synthetic-3d-cartoon-032.png,3d_cartoon,candidate,clear single-face portrait
+synthetic-3d-cartoon-033,batch2/raw/3d_cartoon/synthetic-3d-cartoon-033.png,3d_cartoon,candidate,clear single-face portrait
+wm-bigbuck-4142665,batch2/raw/3d_cartoon/wm-bigbuck-4142665.png,3d_cartoon,rejected,nonhuman character
+wm-bigbuck-4142691,batch2/raw/3d_cartoon/wm-bigbuck-4142691.png,3d_cartoon,rejected,nonhuman character
+wm-coffeerun-90800305,batch2/raw/3d_cartoon/wm-coffeerun-90800305.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800309,batch2/raw/3d_cartoon/wm-coffeerun-90800309.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800376,batch2/raw/3d_cartoon/wm-coffeerun-90800376.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800378,batch2/raw/3d_cartoon/wm-coffeerun-90800378.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800381,batch2/raw/3d_cartoon/wm-coffeerun-90800381.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800387,batch2/raw/3d_cartoon/wm-coffeerun-90800387.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800474,batch2/raw/3d_cartoon/wm-coffeerun-90800474.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800478,batch2/raw/3d_cartoon/wm-coffeerun-90800478.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800481,batch2/raw/3d_cartoon/wm-coffeerun-90800481.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800566,batch2/raw/3d_cartoon/wm-coffeerun-90800566.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800568,batch2/raw/3d_cartoon/wm-coffeerun-90800568.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800572,batch2/raw/3d_cartoon/wm-coffeerun-90800572.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800573,batch2/raw/3d_cartoon/wm-coffeerun-90800573.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800575,batch2/raw/3d_cartoon/wm-coffeerun-90800575.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800578,batch2/raw/3d_cartoon/wm-coffeerun-90800578.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800734,batch2/raw/3d_cartoon/wm-coffeerun-90800734.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800738,batch2/raw/3d_cartoon/wm-coffeerun-90800738.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800739,batch2/raw/3d_cartoon/wm-coffeerun-90800739.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800741,batch2/raw/3d_cartoon/wm-coffeerun-90800741.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800743,batch2/raw/3d_cartoon/wm-coffeerun-90800743.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800745,batch2/raw/3d_cartoon/wm-coffeerun-90800745.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800749,batch2/raw/3d_cartoon/wm-coffeerun-90800749.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800915,batch2/raw/3d_cartoon/wm-coffeerun-90800915.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800916,batch2/raw/3d_cartoon/wm-coffeerun-90800916.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800917,batch2/raw/3d_cartoon/wm-coffeerun-90800917.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800918,batch2/raw/3d_cartoon/wm-coffeerun-90800918.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-coffeerun-90800920,batch2/raw/3d_cartoon/wm-coffeerun-90800920.png,3d_cartoon,rejected,wide scene without a usable primary face
+wm-glasshalf-79395828,batch2/raw/3d_cartoon/wm-glasshalf-79395828.png,3d_cartoon,rejected,multi-character framed scene
+wm-glasshalf-79395834,batch2/raw/3d_cartoon/wm-glasshalf-79395834.png,3d_cartoon,rejected,multi-character framed scene
+wm-glasshalf-79395836,batch2/raw/3d_cartoon/wm-glasshalf-79395836.png,3d_cartoon,rejected,multi-character framed scene
+wm-glasshalf-79395837,batch2/raw/3d_cartoon/wm-glasshalf-79395837.png,3d_cartoon,rejected,multi-character framed scene
+wm-glasshalf-79395906,batch2/raw/3d_cartoon/wm-glasshalf-79395906.png,3d_cartoon,rejected,multi-character framed scene

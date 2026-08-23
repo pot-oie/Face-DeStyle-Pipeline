@@ -1,5 +1,6 @@
 import csv
 import importlib.util
+from collections import Counter
 from pathlib import Path
 
 from PIL import Image
@@ -8,6 +9,7 @@ from face_destyle.data.pair_bank import load_pair_bank_source_list
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts/build_pair_bank_review.py"
+SOURCE_LIST_ROOT = ROOT / "data/manifests/multistyle-pair-bank"
 
 
 def write_source_list(path: Path, rows: list[dict[str, str]]) -> None:
@@ -84,3 +86,17 @@ def test_pair_bank_review_builds_layout_and_four_column_sheet(tmp_path):
     assert (run_dir / "stage2-sequential/images").is_dir()
     assert (run_dir / "closed-teacher/NOTES.md").is_file()
     assert (run_dir / "review/target_selection.csv").is_file()
+
+
+def test_curated_pair_bank_lists_have_declared_role_counts():
+    expected = {
+        "3d_cartoon_sources.csv": ("3d_cartoon", Counter(candidate=27, holdout=6, rejected=34)),
+        "clay_sources.csv": ("clay", Counter(candidate=19, holdout=5, rejected=12)),
+        "origami_sources.csv": ("origami", Counter(candidate=24, holdout=6)),
+    }
+    for filename, (style, role_counts) in expected.items():
+        with (SOURCE_LIST_ROOT / filename).open(encoding="utf-8", newline="") as handle:
+            rows = list(csv.DictReader(handle))
+        assert {row["style_category"] for row in rows} == {style}
+        assert Counter(row["role"] for row in rows) == role_counts
+        assert len({row["source_id"] for row in rows}) == len(rows)
