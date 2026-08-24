@@ -1,95 +1,51 @@
 # Prompt for the next main implementation window
 
-Continue `Face-DeStyle-Pipeline` from the current multistyle pair-bank and targeted-LoRA handoff.
-Do not restart formal-v1 work and do not immediately resume LoRA training.
+Continue `Face-DeStyle-Pipeline` from the completed Origami pair-bank handoff. Do not restart
+formal-v1 work, regenerate the Origami targets, or resume the historical eight-pair 3D LoRA.
 
-Local repository:
-`/Users/pot/Github/Face-DeStyle-Pipeline`
+Local repository: `/Users/pot/Github/Face-DeStyle-Pipeline`
 
-Local dataset:
-`/Users/pot/Documents/大创/Face-DeStyle-Data`
+Local dataset: `/Users/pot/Documents/大创/Face-DeStyle-Data`
 
-AutoDL project root:
-`/root/autodl-tmp/face-destyle`
-
-Latest repository commit should include at least:
-
-- `1c24863 Add 3D destylization LoRA smoke path`
-- `7c5901c Use restrained V2 prompt for full 3D pair run`
-- `6438679 Align 3D LoRA training and evaluation prompts`
+AutoDL project root: `/root/autodl-tmp/face-destyle`
 
 First read completely:
 
 1. `AGENTS.md`
 2. `docs/HANDOFF_MULTISTYLE_PAIR_BANK_AND_LORA.md`
-3. `docs/research_context.md`
-4. `docs/HANDOFF_MATERIAL_STYLE_EXTENSION_V1.md` as historical background only
-5. `scripts/build_3d_lora_smoke_pairs.py`
-6. `scripts/run_flux_kontext_probe.py`
-7. `src/face_destyle/pipelines/flux_kontext_backend.py`
-8. `configs/styles.yaml`
-9. `configs/styles_3d_lora.yaml`
+3. `docs/AUTODL_ORIGAMI_LORA_PREP.md`
+4. `docs/results/multistyle_pair_bank_stage2_review_20260824.md`
+5. `scripts/build_pair_bank_lora_dataset.py`
+6. `data/manifests/multistyle-pair-bank/origami_target_selection_v1.csv`
 
-Important operator policy:
+Current state (2026-08-24):
 
-- prioritize a useful research narrative and working experiment over formal ceremony;
-- do not require hashes, blind review, freeze markers, repeat scoring, complex archive validation,
-  or formal statistics;
-- preserve original images and outputs, use separate directories, and report sample counts honestly;
-- local macOS cannot run CUDA or FLUX; heavy inference happens on AutoDL;
-- preserve all existing user changes and inspect the worktree before editing.
+- Base FLUX Stage 1 and true sequential Stage 2 were completed and reviewed for 3D, Clay, and
+  Origami.
+- A face-only review mistake accepted 19 Origami outputs with residual paper hair/clothing/bust.
+  The resulting `origami-lora-pairs-v1-20` is withdrawn and must never be trained.
+- Closed-teacher reconstruction and strict full-frame review are complete for all 24 Origami
+  candidate sources. Twenty-three passed. `matv2-origami-004` failed three times because geometric
+  skin/freckle marks remained and is excluded.
+- The approved upload-ready dataset is
+  `/Users/pot/Documents/大创/实验归档/origami-lora-pairs-v1-23.zip`.
+- Upload it to
+  `/root/autodl-tmp/face-destyle/packages/origami-lora-pairs-v1-23.zip`.
+- The exact extraction, environment discovery, and fresh rank-16 300-step Kontext LoRA command are
+  frozen in `docs/AUTODL_ORIGAMI_LORA_PREP.md`.
+- 3D and Clay still have only one strict pair each and are not approved for LoRA training.
 
-Research context:
+Your first concrete task is to follow `docs/AUTODL_ORIGAMI_LORA_PREP.md` exactly on AutoDL. Use
+`source /etc/network_turbo` only around `git fetch origin main`, then unset all proxy variables.
+Locate the already prepared training environment; do not reinstall or upgrade Torch, Diffusers,
+Transformers, Accelerate, or the external trainer checkout. Train from scratch into
+`outputs/origami-destyle-lora-teacher23-r16-steps300`, preserving checkpoints 100, 200, and 300.
 
-The senior student's paper is *Learning to Stylize by Learning to Destylize*
-(`/Users/pot/Documents/大创/2509.05970v2.pdf`). This is a small face-domain exploratory subproject,
-not the paper's official implementation. The useful inherited ideas are reverse data construction,
-progressive candidate generation/filtering, and LoRA only after high-quality pairs exist.
+After training succeeds, the next task is a fixed held-out comparison of Base versus checkpoints
+100/200/300 on the six Origami holdouts. Select the least overfit useful checkpoint from images,
+not training loss. Do not add seeds, prompt sweeps, ControlNet, pose, depth, a new base model, or a
+mixed-style LoRA before that comparison.
 
-The project found that FLUX Kontext is much stronger than the SDXL prompt/Canny baselines on comic,
-ink, and watercolor, but still struggles with geometry/material-entangled 3D. The material extension
-also found clay difficult, while needle felt was often handled by one-pass prompting.
-
-Completed negative LoRA result:
-
-- 24 synthetic natural-target/3D-condition pairs were generated;
-- eight conservative pairs (`004,005,009,010,016,019,021,023`) trained a rank-16, 200-step LoRA;
-- it loaded successfully and visibly changed five held-out 3D pilot outputs;
-- it did not improve destylization and instead stayed closer to the original 3D images;
-- comparison sheets are in
-  `/Users/pot/Documents/大创/实验归档/3d-lora-base-vs-adapted-pilot5-comparison`;
-- preserve this as a negative baseline and do not continue its checkpoint.
-
-A proposed 19-pair retraining did not start because a later shell could not find `accelerate`.
-Do not fix that environment or train the 19-pair set yet. The active strategy is to construct pairs
-from genuine styled source images rather than relying on lucky natural-to-3D synthesis.
-
-Current raw inventory is approximately 67 3D, 12 clay, 12 needle felt, 60 comic, 61 ink, and 92
-watercolor files. A separate task is generating additional clay, needle-felt, and origami sources.
-
-Operator update (2026-08-23): the current source generation round is complete. Curated lists
-now exist at `data/manifests/multistyle-pair-bank/` with 27/6 candidate/holdout 3D portraits, 19/5
-new Clay portraits, and 24/6 Origami portraits. `configs/styles.yaml` includes Origami prompts.
-Historical museum Clay fragments and non-portrait 3D frames are explicitly rejected in the lists.
-
-Your first concrete task:
-
-1. copy `extensions/material_styles_v2` to the matching AutoDL data-root location;
-2. run Base FLUX Stage 1 separately for candidate rows in the three curated lists;
-3. review Stage 1 and route only residual-style/content-preserving failures to true sequential
-   Stage 2 or a separately stored closed-source teacher candidate;
-4. build review sheets with
-   `styled source | FLUX Stage 1 | sequential Stage 2 | closed teacher`;
-5. do not train another LoRA until the operator has selected roughly 20--40 reliable pairs.
-
-The old material-extension Stage 2 edited the original source again. Do not call that a true second
-generation. The new sequential path must explicitly consume the Stage 1 output.
-
-The intended later training direction is one style-specific LoRA each for 3D, clay, and origami.
-Needle felt remains a prompt-only control unless new evidence shows persistent failure. Closed-source
-models may be used as private teacher target generators; the final LoRA remains a local FLUX adapter.
-
-Run Ruff, complete pytest, relevant script `--help`, and `git diff --check` for code changes. Push
-only when the operator's current authorization allows it. Do not start model inference from local
-macOS and do not launch unrelated LoRA, Multi-ControlNet, pose, depth, Qwen full evaluation, or v2
-formal experiments.
+Preserve all existing user changes, inspect the worktree before editing, run relevant tests and
+`git diff --check`, and report counts honestly. Local macOS is for curation and code only; CUDA and
+FLUX execution stay on AutoDL.

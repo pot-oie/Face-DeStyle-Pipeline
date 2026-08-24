@@ -10,7 +10,7 @@ The visual decision is deliberately conservative:
 |---|---:|---:|---:|---:|---:|---:|
 | 3D cartoon | 0 | 0 | 1 | 1 | 26 | 0 |
 | Clay | 0 | 0 | 1 | 1 | 14 | 4 |
-| Origami | 0 | 0 | 9 | 9 | 15 | 19 |
+| Origami | 0 | 0 | 23 | 23 | 0 | 19 |
 
 For 3D, a second FLUX edit mostly repeated or intensified animation geometry, large eyes, glossy
 skin, and CGI lighting. It did not produce a reliable training target in the eight-case probe.
@@ -24,7 +24,8 @@ headwear, clothing, or bust geometry. An initial face-only review mistakenly cou
 usable. The corrected full-portrait review rejects all 19 rather than teaching a LoRA to preserve
 the residual material.
 
-The next data action is a small closed-teacher pilot, not more Base FLUX passes:
+At this review stage, the next data action was a small closed-teacher pilot rather than more Base
+FLUX passes:
 
 - 3D: prioritize a diverse 5--8 source pilot because open sequential editing showed no rescue;
 - Clay: prioritize 5--8 cases still marked `pending_closed_teacher`, and reject teacher results
@@ -49,6 +50,13 @@ A second Origami teacher batch attempted `001`, `003`, `004`, `005`, and `006`. 
 whole-portrait review (`001`, `003`, `005`, and `006`). Both `004` attempts were rejected because
 the freckles or skin texture remained geometric/embossed. Origami therefore reaches nine strict
 targets, with 15 candidates still requiring an accepted teacher reconstruction.
+
+The completion batch then produced and accepted teacher targets for the fourteen remaining viable
+candidates: `009`, `010`, `012`, `013`, `014`, `015`, `016`, `017`, `019`, `020`, `022`, `024`,
+`026`, and `028`. A third fresh attempt for `004` again retained square/geometric cheek marks and
+was rejected. Origami is therefore frozen at 23 strict pairs out of 24 candidates, with no pending
+teacher cases. The approved artifact is `origami-lora-pairs-v1-23.zip` and the exact AutoDL command
+is recorded in `docs/AUTODL_ORIGAMI_LORA_PREP.md`.
 
 The rejected 20-pair Origami ImageFolder preview remains locally at
 `/Users/pot/Documents/大创/实验归档/origami-lora-pairs-v1-20` with a `DO_NOT_TRAIN.md` warning. It is

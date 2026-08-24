@@ -235,30 +235,31 @@ training set and do not start LoRA yet.
 Later update (2026-08-24): the reviewed sequential subsets also completed at 8/8 3D, 12/12 Clay,
 and 10/10 Origami with zero runner failures. The visual result is recorded in
 `docs/results/multistyle_pair_bank_stage2_review_20260824.md`. No 3D target passed. Two Clay Stage 2
-targets passed, while two other Clay outputs were rejected for identity drift. Origami now has 19
-available targets: 14 from Stage 1 and five from Stage 2. Do not run more sequential FLUX passes or
-start LoRA merely to meet a round-number threshold. The next candidate source is a small
-closed-teacher pilot for the still-pending hard cases.
+targets passed, while two other Clay outputs were rejected for identity drift. At that stage,
+Origami had 19 apparently available open-model targets: 14 from Stage 1 and five from Stage 2. The
+next action was a closed-teacher pilot rather than another sequential FLUX pass. The later
+full-frame review below supersedes that provisional count.
 
-Closed-teacher pilot update (2026-08-24): three OpenAI built-in reference-image edits were generated
-through Codex and retained for one 3D, one Clay, and one Origami source. Exact prompts and outputs
-remain in the local experiment archive. A first face-only review incorrectly counted 20 Origami
-targets even though 19 retained obvious folded-paper hair, headwear, clothing, or bust material.
-That dataset is withdrawn and marked `DO_NOT_TRAIN.md`. Four additional hard-case Origami teacher
-targets were then generated and passed full-portrait review. A second five-case batch accepted four
-more and rejected `004` for geometric skin/freckle artifacts. Origami now has nine strict targets;
-3D and Clay still have one each. Do not build or train the rejected 20-pair Origami set. The next
-work is additional teacher generation and review, not LoRA training.
+Closed-teacher completion update (2026-08-24): OpenAI built-in reference-image edits were generated
+through Codex and retained for one 3D, one Clay, and 23 Origami sources. Prompts and outputs remain
+in the local experiment archive. A first face-only review incorrectly counted 20 Origami targets
+even though 19 retained obvious folded-paper hair, headwear, clothing, or bust material; that
+dataset is withdrawn and marked `DO_NOT_TRAIN.md`. The replacement pass reviewed the complete
+portrait and accepted 23 of 24 candidate sources. `matv2-origami-004` was rejected after three
+attempts retained geometric skin/freckle artifacts. The frozen ready-to-train artifact is
+`/Users/pot/Documents/大创/实验归档/origami-lora-pairs-v1-23.zip`; its AutoDL upload and fresh
+300-step training command are in `docs/AUTODL_ORIGAMI_LORA_PREP.md`. 3D and Clay still have one
+strict target each. Never train the rejected 20-pair Origami set.
 
 1. Read `AGENTS.md`, this handoff, `docs/research_context.md`, and the relevant existing scripts.
-2. Preserve the current worktree and do not restart LoRA training.
+2. Preserve the current worktree and do not resume the historical eight-pair 3D LoRA.
 3. Copy the completed material-v2 source directory to the matching AutoDL data-root path.
 4. Run Base FLUX Stage 1 separately for the candidate rows in the 3D, Clay, and Origami lists.
 5. Review Stage 1 locally and route only residual-style/content-preserving failures to sequential
    Stage 2 or a closed teacher; do not automatically spend a second pass on every source.
 6. Build exact source/candidate review sheets and let the operator choose at most one target.
-7. Only after roughly 20--40 useful pairs per trained style exist, reactivate the LoRA environment and
-   train a new adapter from scratch.
+7. Origami has reached 23 strict pairs and is approved for a new adapter from scratch using
+   `docs/AUTODL_ORIGAMI_LORA_PREP.md`; 3D and Clay have not reached that gate.
 
 ## Environment notes
 
