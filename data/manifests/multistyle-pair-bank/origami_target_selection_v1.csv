@@ -1,9 +1,9 @@
 source_id,selected_target,decision,reviewer_notes
-matv2-origami-001,,reject_residual_material,Face improves but paper hair headwear and clothing remain unsuitable for a natural target.
-matv2-origami-003,,reject_residual_material,Face improves but folded-paper hair and clothing remain.
-matv2-origami-004,,reject_residual_material,Face improves but paper hair and clothing remain dominant.
-matv2-origami-005,,reject_residual_material,Face improves but paper hair and clothing remain.
-matv2-origami-006,,reject_residual_material,Sequential edit naturalizes the face and hair but leaves folded-paper clothing.
+matv2-origami-001,closed-teacher,accept,Closed teacher removes paper from skin curly hair headband and clothing while preserving pose expression accessories and studio composition.
+matv2-origami-003,closed-teacher,accept,Closed teacher removes paper from skin low bun and layered garment while preserving sideways gaze earring palette and composition.
+matv2-origami-004,,pending_closed_teacher_retry,Two teacher attempts were rejected because freckles or skin texture remained geometric and embossed.
+matv2-origami-005,closed-teacher,accept,Closed teacher removes paper from aged skin hair neck and olive clothing while preserving advanced age bun earring and pose.
+matv2-origami-006,closed-teacher,accept,Closed teacher removes paper from skin short hair neck and layered clothing while preserving downward gaze blue backdrop and rim light.
 matv2-origami-008,closed-teacher,accept,Closed teacher removes folded-paper material while preserving age downward gaze layered garment colors and composition.
 matv2-origami-009,,reject_residual_material,Face improves but folded-paper hair and clothing remain.
 matv2-origami-010,,reject_residual_material,Face improves but paper hair and clothing remain.

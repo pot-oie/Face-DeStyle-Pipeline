@@ -10,7 +10,7 @@ The visual decision is deliberately conservative:
 |---|---:|---:|---:|---:|---:|---:|
 | 3D cartoon | 0 | 0 | 1 | 1 | 26 | 0 |
 | Clay | 0 | 0 | 1 | 1 | 14 | 4 |
-| Origami | 0 | 0 | 5 | 5 | 0 | 19 |
+| Origami | 0 | 0 | 9 | 9 | 15 | 19 |
 
 For 3D, a second FLUX edit mostly repeated or intensified animation geometry, large eyes, glossy
 skin, and CGI lighting. It did not produce a reliable training target in the eight-case probe.
@@ -44,6 +44,11 @@ All three pilot outputs were retained: `synthetic-3d-cartoon-006`, `matv2-clay-0
 generated with stricter whole-portrait prompts and accepted after source/Stage 1/Stage 2/teacher
 comparison. Origami therefore has five strict targets, while 3D and Clay each have one. This is a
 promising teacher signal, not evidence that every teacher output will preserve identity.
+
+A second Origami teacher batch attempted `001`, `003`, `004`, `005`, and `006`. Four targets passed
+whole-portrait review (`001`, `003`, `005`, and `006`). Both `004` attempts were rejected because
+the freckles or skin texture remained geometric/embossed. Origami therefore reaches nine strict
+targets, with 15 candidates still requiring an accepted teacher reconstruction.
 
 The rejected 20-pair Origami ImageFolder preview remains locally at
 `/Users/pot/Documents/大创/实验归档/origami-lora-pairs-v1-20` with a `DO_NOT_TRAIN.md` warning. It is

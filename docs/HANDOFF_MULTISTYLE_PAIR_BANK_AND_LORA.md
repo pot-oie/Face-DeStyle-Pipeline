@@ -245,7 +245,8 @@ through Codex and retained for one 3D, one Clay, and one Origami source. Exact p
 remain in the local experiment archive. A first face-only review incorrectly counted 20 Origami
 targets even though 19 retained obvious folded-paper hair, headwear, clothing, or bust material.
 That dataset is withdrawn and marked `DO_NOT_TRAIN.md`. Four additional hard-case Origami teacher
-targets were then generated and passed full-portrait review, bringing Origami to five strict targets;
+targets were then generated and passed full-portrait review. A second five-case batch accepted four
+more and rejected `004` for geometric skin/freckle artifacts. Origami now has nine strict targets;
 3D and Clay still have one each. Do not build or train the rejected 20-pair Origami set. The next
 work is additional teacher generation and review, not LoRA training.
 

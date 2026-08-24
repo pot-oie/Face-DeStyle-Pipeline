@@ -4,9 +4,8 @@
 >
 > A face-only review incorrectly accepted 19 open-model targets that still contain obvious
 > folded-paper hair, headwear, clothing, or bust material. Under the corrected full-portrait
-> standard, five closed-teacher targets (`008`, `021`, `025`, `027`, and `029`) are accepted. Five
-> pairs are still not a viable LoRA dataset. The next step is additional closed-teacher generation
-> and strict review.
+> standard, nine closed-teacher targets are accepted. Nine pairs are still not a viable LoRA
+> dataset. The next step is additional closed-teacher generation and strict review.
 
 This document is retained to explain the rejected experiment and the AutoDL synchronization
 failure. The old 3D LoRA must remain untouched.
@@ -17,6 +16,10 @@ The accepted local files are:
 
 ```text
 /Users/pot/Documents/大创/实验归档/multistyle-pair-bank-stage1-review-20260824/origami/closed-teacher/images/matv2-origami-008.png
+/Users/pot/Documents/大创/实验归档/multistyle-pair-bank-stage1-review-20260824/origami/closed-teacher/images/matv2-origami-001.png
+/Users/pot/Documents/大创/实验归档/multistyle-pair-bank-stage1-review-20260824/origami/closed-teacher/images/matv2-origami-003.png
+/Users/pot/Documents/大创/实验归档/multistyle-pair-bank-stage1-review-20260824/origami/closed-teacher/images/matv2-origami-005.png
+/Users/pot/Documents/大创/实验归档/multistyle-pair-bank-stage1-review-20260824/origami/closed-teacher/images/matv2-origami-006.png
 /Users/pot/Documents/大创/实验归档/multistyle-pair-bank-stage1-review-20260824/origami/closed-teacher/images/matv2-origami-021.png
 /Users/pot/Documents/大创/实验归档/multistyle-pair-bank-stage1-review-20260824/origami/closed-teacher/images/matv2-origami-025.png
 /Users/pot/Documents/大创/实验归档/multistyle-pair-bank-stage1-review-20260824/origami/closed-teacher/images/matv2-origami-027.png
