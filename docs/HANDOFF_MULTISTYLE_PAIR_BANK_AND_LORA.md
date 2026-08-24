@@ -2,7 +2,7 @@
 
 ## Status and authority
 
-This handoff records the active research direction as of 2026-08-23. It supersedes the immediate
+This handoff records the active research direction as of 2026-08-24. It supersedes the immediate
 plan to keep tuning or retraining the eight-pair 3D LoRA. Older formal-v1 and material-extension-v1
 documents remain useful history, but their freezes, blind review, acceptance gates, hashing, and
 prescribed next steps are not active requirements. Follow the operator policy at the top of
@@ -251,15 +251,41 @@ attempts retained geometric skin/freckle artifacts. The frozen ready-to-train ar
 300-step training command are in `docs/AUTODL_ORIGAMI_LORA_PREP.md`. 3D and Clay still have one
 strict target each. Never train the rejected 20-pair Origami set.
 
-1. Read `AGENTS.md`, this handoff, `docs/research_context.md`, and the relevant existing scripts.
-2. Preserve the current worktree and do not resume the historical eight-pair 3D LoRA.
-3. Copy the completed material-v2 source directory to the matching AutoDL data-root path.
-4. Run Base FLUX Stage 1 separately for the candidate rows in the 3D, Clay, and Origami lists.
-5. Review Stage 1 locally and route only residual-style/content-preserving failures to sequential
-   Stage 2 or a closed teacher; do not automatically spend a second pass on every source.
-6. Build exact source/candidate review sheets and let the operator choose at most one target.
-7. Origami has reached 23 strict pairs and is approved for a new adapter from scratch using
-   `docs/AUTODL_ORIGAMI_LORA_PREP.md`; 3D and Clay have not reached that gate.
+Origami LoRA training and held-out evaluation update (2026-08-24): the approved 23-pair dataset
+trained successfully from scratch with rank 16, effective batch 4, learning rate `1e-4`, and 300
+maximum steps. Checkpoints 100, 200, and 300 plus the final weight were saved. The fixed six-source
+holdout comparison ran Base FLUX and all three checkpoints at seed 42, 28 steps, guidance 2.5, and
+LoRA scale 1.0 with 6/6 outputs and zero failures per method. Full-frame review found roughly 1/6
+strict pass for Base and 3/6 for every LoRA checkpoint. Checkpoint 100 is the selected adapter:
+later checkpoints did not rescue more cases and progressively changed face shape, age, or
+expression. Its AutoDL path and SHA-256 are:
+
+```text
+/root/autodl-tmp/face-destyle/outputs/origami-destyle-lora-teacher23-r16-steps300/checkpoint-100/pytorch_lora_weights.safetensors
+06ab9433e341713aaaa0edb11849db5e687b47ad0ca930c121cea49277eca7c4
+```
+
+The six holdouts remain protected evaluation data. `007`, `023`, and `030` passed under checkpoint
+100; `011` and `018` improved only partially because paper scalp/hair/clothing remained; `002`
+remained a strong failure with paper hair, clothing, and bust. Do not train on any of these six.
+The detailed review is `docs/results/origami_lora_holdout_review_20260824.md`.
+The next intervention is a targeted difficult-pair expansion, not more steps, a higher rank, or a
+continuation from checkpoint 100. The generation/curation task is specified in
+`docs/PROMPT_ORIGAMI_HARD_PAIR_EXPANSION_V2.md`.
+
+1. Preserve checkpoint 100 as the first positive but limited Origami baseline; do not continue it.
+2. Keep the original six Origami holdouts sealed and unchanged.
+3. Generate 36 new difficult fictional Origami sources and identity-preserving teacher targets
+   using `docs/PROMPT_ORIGAMI_HARD_PAIR_EXPANSION_V2.md`.
+4. Strictly retain about 24--30 new full-frame pairs, concentrating on paper hair/headwear, elderly
+   beards, severe scalp/neck planes, and clothing/bust/pedestal material.
+5. Independently inspect the returned package before merging it with the original 23 pairs.
+6. Use stronger per-example material-region instructions and build an approximately 47--53-pair
+   V2 dataset.
+7. Train a new rank-16 adapter from the base Kontext model, not from checkpoint 100. Preserve early
+   checkpoints and target roughly the same 17 effective epochs that produced the current optimum.
+8. Re-run the unchanged six-holdout comparison. Require at least 4/6 strict passes and rescue at
+   least one of `002`, `011`, or `018` without worse identity drift.
 
 ## Environment notes
 
@@ -277,6 +303,9 @@ new shell lacks the command.
 ## What not to do next
 
 - do not continue the eight-pair checkpoint;
+- do not continue the 23-pair Origami adapter past checkpoint 100;
+- do not train on Origami holdouts `002`, `007`, `011`, `018`, `023`, or `030`;
+- do not add easy or near-duplicate Origami pairs merely to increase the count;
 - do not train style-contrast19 merely because its folder may exist;
 - do not manufacture all conditions from natural portraits and hope prompt constraints preserve
   anatomy;
