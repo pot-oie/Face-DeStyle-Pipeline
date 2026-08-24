@@ -242,12 +242,11 @@ closed-teacher pilot for the still-pending hard cases.
 
 Closed-teacher pilot update (2026-08-24): three OpenAI built-in reference-image edits were generated
 through Codex and retained for one 3D, one Clay, and one Origami source. Exact prompts and outputs
-remain in the local experiment archive. The Origami pool therefore reaches 20 accepted pairs and a
-local ImageFolder dataset has been built at
-`/Users/pot/Documents/大创/实验归档/origami-lora-pairs-v1-20`. Use
-`docs/AUTODL_ORIGAMI_LORA_PREP.md` to upload the one teacher target, rebuild the dataset on AutoDL,
-and locate the already-prepared training environment. Do not reinstall the GPU stack or launch
-training until the trainer help and actual `accelerate` path have been returned.
+remain in the local experiment archive. A first face-only review incorrectly counted 20 Origami
+targets even though 19 retained obvious folded-paper hair, headwear, clothing, or bust material.
+That dataset is withdrawn and marked `DO_NOT_TRAIN.md`; only the teacher target passes the corrected
+full-portrait standard. Do not build or train the 20-pair Origami set. Each style currently has one
+strict target, so the next work is additional teacher generation and review, not LoRA training.
 
 1. Read `AGENTS.md`, this handoff, `docs/research_context.md`, and the relevant existing scripts.
 2. Preserve the current worktree and do not restart LoRA training.

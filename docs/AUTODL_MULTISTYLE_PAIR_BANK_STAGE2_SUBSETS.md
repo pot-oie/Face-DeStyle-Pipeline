@@ -30,7 +30,8 @@ unset OMP_NUM_THREADS
 cd "$REPO"
 git status --short --branch
 source /etc/network_turbo
-git pull --ff-only origin main
+git fetch origin main
+git merge --ff-only FETCH_HEAD
 unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY all_proxy ALL_PROXY
 
 python scripts/run_flux_kontext_probe.py --help | grep -- --source-id
