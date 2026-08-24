@@ -1,8 +1,8 @@
 # Prompt for the next main implementation window
 
-Continue `Face-DeStyle-Pipeline` from the completed first Origami LoRA experiment and the targeted
-hard-pair expansion handoff. The operator has temporarily shut down AutoDL. Do not attempt remote
-commands until the operator explicitly reports that the instance is running again.
+Continue `Face-DeStyle-Pipeline` from the completed first Origami LoRA experiment and the completed,
+independently reviewed hard-pair expansion. The operator has temporarily shut down AutoDL. Do not
+attempt remote commands until the operator explicitly reports that the instance is running again.
 
 Local repository: `/Users/pot/Github/Face-DeStyle-Pipeline`
 
@@ -17,9 +17,10 @@ First read completely:
 3. `docs/PROMPT_ORIGAMI_HARD_PAIR_EXPANSION_V2.md`
 4. `docs/results/multistyle_pair_bank_stage2_review_20260824.md`
 5. `docs/results/origami_lora_holdout_review_20260824.md`
-6. `scripts/build_pair_bank_lora_dataset.py`
-7. `scripts/run_origami_lora_holdout_eval.sh`
-8. `data/manifests/multistyle-pair-bank/origami_target_selection_v1.csv`
+6. `docs/results/origami_hard_pairs_v2_review_20260825.md`
+7. `scripts/build_pair_bank_lora_dataset.py`
+8. `scripts/run_origami_lora_holdout_eval.sh`
+9. `data/manifests/multistyle-pair-bank/origami_target_selection_v1.csv`
 
 ## Completed state
 
@@ -39,48 +40,54 @@ First read completely:
   a strong failure. All six stay evaluation-only.
 - More training steps are rejected as the next intervention. The active bottleneck is targeted
   difficult-pair coverage and stronger region-specific instructions.
+- The expansion at
+  `/Users/pot/Documents/大创/Face-DeStyle-Data/extensions/origami_hard_pairs_v2` contains 36 new
+  sources and 30 generator-accepted teachers. Independent review accepts 28 for training.
+- Exclude `origami-hard-v2-021` and `origami-hard-v2-023`: both remove a visible bust/pedestal and
+  therefore change composition. Do not take all 30 rows from the delivered CSV.
+- The accepted 28 plus the original 23 produce an exact 51-pair V2 dataset. This is sufficient; do
+  not generate another image batch before testing it.
+- The delivered CSV uses slightly different columns and absolute paths. Treat it as provenance
+  input, not the final training manifest.
 
-## Expected incoming artifact
+## First concrete task
 
-A separate image-generation/curation window is responsible for
-`docs/PROMPT_ORIGAMI_HARD_PAIR_EXPANSION_V2.md`. It should return:
-
-`/Users/pot/Desktop/origami-hard-pairs-v2-generation-and-review.zip`
-
-containing 36 new hard Origami source candidates, accepted/rejected teacher outputs, manifests,
-prompt notes, and contact sheets under an `origami_hard_pairs_v2` tree. The target is 24--30 strict
-accepted pairs. These images are untrusted until this main window independently inspects them.
-
-## First concrete task after the artifact arrives
-
-1. Inspect the ZIP without overwriting existing data; verify counts, paths, image readability, IDs,
-   manifests, and absence of the six protected holdouts.
-2. Build source/target comparison sheets and conduct strict full-frame review. Reject paper in
-   hair/headwear/beard/scalp/neck/clothing/bust/pedestal and reject identity, age, pose, gaze, or
-   composition drift.
-3. Report accepted counts by difficulty category. Do not force the result to 24 if fewer pass.
-4. Integrate only accepted pairs with the original 23-pair dataset. Preserve the original dataset
-   and selection manifest; create versioned V2 manifests and a new output directory.
-5. Replace the single generic caption with per-example instructions that explicitly name all
-   material regions present in that source while preserving identity and garment structure.
-6. Build and visually verify an approximately 47--53-pair ImageFolder package. Keep all six original
-   holdouts out of training.
-7. Prepare, but do not launch until the operator authorizes AutoDL, a fresh rank-16 Kontext LoRA
-   run from the base model. Do not resume checkpoint 100. Keep learning rate `1e-4`, effective batch
-   4, and choose steps by exposure: for roughly 48 pairs, evaluate checkpoints 50/100/150/200 and
-   stop at 200 rather than automatically running 300.
-8. After training, repeat the exact six-holdout seed-42 comparison. The V2 gate is at least 4/6
-   strict passes, at least one rescue among `002/011/018`, and no worse identity drift than the
-   frozen checkpoint-100 baseline.
+1. Check the working tree and preserve unrelated user changes.
+2. Create a tracked, portable V2 selection manifest containing the exact 28 accepted IDs from
+   `docs/results/origami_hard_pairs_v2_review_20260825.md`, with source-relative paths, decisions,
+   difficulty tags, and reviewer notes. Do not commit bulk images.
+3. Implement or carefully extend a dataset builder that combines these 28 pairs with the unmodified
+   original dataset at `/Users/pot/Documents/大创/实验归档/origami-lora-pairs-v1-23` into a new
+   versioned 51-pair ImageFolder directory. Never overwrite the V1 dataset.
+4. Write one metadata row per pair. Use a common strong instruction to naturalize the complete
+   subject, then add tag-specific clauses naming all relevant regions (hair/headwear, beard,
+   wrinkles, scalp/ears/neck, clothing/shoulders/bust/pedestal). Preserve identity, age, skin tone,
+   pose, gaze, expression, crop, garment layout, background, palette, and lighting.
+5. Add focused tests for selection, exclusion, count, source/target pairing, portable paths, and
+   metadata generation. Run the new script's `--help`, Ruff, relevant pytest, and
+   `git diff --check`.
+6. Build the real 51-pair dataset locally and make a simple contact sheet to catch path reversal,
+   duplicate, crop, or pairing errors. Package it for AutoDL and report its upload source and exact
+   server destination. Do not add unnecessary formal archive ceremony.
+7. Prepare one directly copyable AutoDL command block, but do not run it until the operator says the
+   instance is online. It must use `screen`, not `tmux`, and train a fresh rank-16 adapter from the
+   base model with learning rate `1e-4`, effective batch 4, max 200 steps, and checkpoints at
+   50/100/150/200. Do not resume checkpoint 100.
+8. After the operator completes training, repeat the unchanged six-holdout seed-42 comparison for
+   Base, frozen V1 checkpoint 100, and V2 checkpoints 50/100/150/200. Compare residual paper and
+   identity/composition drift honestly; the useful target is at least 4/6 passes and at least one
+   rescue among `002/011/018`, but do not hide a mixed result.
 
 ## Boundaries
 
 - local macOS is for image generation, curation, packaging, code, and review; it cannot run CUDA;
 - AutoDL uses `screen`, not `tmux`;
-- GitHub operations on AutoDL use `source /etc/network_turbo`, followed immediately by unsetting all
-  proxy variables;
+- for a GitHub operation on AutoDL, run `source /etc/network_turbo`, perform the single explicit Git
+  fetch/push operation, then unset `http_proxy`, `https_proxy`, `HTTP_PROXY`, `HTTPS_PROXY`,
+  `all_proxy`, and `ALL_PROXY`; use `git fetch origin main` plus
+  `git merge --ff-only origin/main`, not a multi-branch `git pull`;
 - do not reinstall or upgrade the prepared Torch/Diffusers/Accelerate environments;
-- do not train on the six holdouts or on rejected teacher outputs;
+- do not train on the six holdouts, rejected teacher outputs, or V2 IDs `021` and `023`;
 - do not increase rank, steps, LoRA scale, seeds, models, or add ControlNet before the V2 data test;
 - do not mix 3D, Clay, Needle-felt, or Origami into one adapter;
 - do not restart formal-v1 or claim that 3/6 is a solved result;

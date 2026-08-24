@@ -287,6 +287,21 @@ continuation from checkpoint 100. The generation/curation task is specified in
 8. Re-run the unchanged six-holdout comparison. Require at least 4/6 strict passes and rescue at
    least one of `002`, `011`, or `018` without worse identity drift.
 
+Origami difficult-pair expansion update (2026-08-25): the local generation window produced 36 new
+sources and 30 generator-accepted teachers. Independent full-frame review retained 28. It excluded
+`origami-hard-v2-021` and `origami-hard-v2-023` because their visible bust/pedestal support was
+removed rather than converted while preserving composition. The retained set has broad coverage of
+hair/headwear, elderly wrinkles and beards, bald scalp/neck planes, clothing/bust material, profile,
+dark-skin, and strong-shadow cases. Combined with the original 23 strict pairs, the next training
+dataset is exactly 51 pairs. This is enough for the next experiment; do not generate more before
+testing it. Package inventory, accepted IDs, and the review rationale are recorded in
+`docs/results/origami_hard_pairs_v2_review_20260825.md`.
+
+The next local task is to create a repository-owned V2 selection manifest, normalize the delivered
+absolute CSV paths to portable source-relative metadata, build and visually check the 51-pair
+ImageFolder package, and prepare a fresh rank-16/200-step run. Do not modify the original 23-pair
+dataset and do not train directly from the generation window's 30-row `selected_pairs.csv`.
+
 ## Environment notes
 
 Local macOS is for curation, contact sheets, code, Ruff, and pytest. It cannot run CUDA or FLUX.
