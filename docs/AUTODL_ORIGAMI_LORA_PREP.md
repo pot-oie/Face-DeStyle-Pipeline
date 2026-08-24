@@ -4,24 +4,29 @@
 >
 > A face-only review incorrectly accepted 19 open-model targets that still contain obvious
 > folded-paper hair, headwear, clothing, or bust material. Under the corrected full-portrait
-> standard, only the closed-teacher target for `matv2-origami-008` is accepted. One pair is not a
-> viable LoRA dataset. The next step is additional closed-teacher generation and strict review.
+> standard, five closed-teacher targets (`008`, `021`, `025`, `027`, and `029`) are accepted. Five
+> pairs are still not a viable LoRA dataset. The next step is additional closed-teacher generation
+> and strict review.
 
 This document is retained to explain the rejected experiment and the AutoDL synchronization
 failure. The old 3D LoRA must remain untouched.
 
-## Teacher target retained for future dataset work
+## Teacher targets retained for future dataset work
 
-Upload this local file:
+The accepted local files are:
 
 ```text
 /Users/pot/Documents/大创/实验归档/multistyle-pair-bank-stage1-review-20260824/origami/closed-teacher/images/matv2-origami-008.png
+/Users/pot/Documents/大创/实验归档/multistyle-pair-bank-stage1-review-20260824/origami/closed-teacher/images/matv2-origami-021.png
+/Users/pot/Documents/大创/实验归档/multistyle-pair-bank-stage1-review-20260824/origami/closed-teacher/images/matv2-origami-025.png
+/Users/pot/Documents/大创/实验归档/multistyle-pair-bank-stage1-review-20260824/origami/closed-teacher/images/matv2-origami-027.png
+/Users/pot/Documents/大创/实验归档/multistyle-pair-bank-stage1-review-20260824/origami/closed-teacher/images/matv2-origami-029.png
 ```
 
-to exactly:
+Their eventual AutoDL destination is:
 
 ```text
-/root/autodl-tmp/face-destyle/outputs/pair-bank-origami-v1/closed-teacher/images/matv2-origami-008.png
+/root/autodl-tmp/face-destyle/outputs/pair-bank-origami-v1/closed-teacher/images/
 ```
 
 Do not combine this target with the 19 rejected Stage 1 and Stage 2 outputs. They are useful as

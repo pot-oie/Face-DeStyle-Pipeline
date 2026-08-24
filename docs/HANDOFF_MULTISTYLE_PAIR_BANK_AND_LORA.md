@@ -244,9 +244,10 @@ Closed-teacher pilot update (2026-08-24): three OpenAI built-in reference-image 
 through Codex and retained for one 3D, one Clay, and one Origami source. Exact prompts and outputs
 remain in the local experiment archive. A first face-only review incorrectly counted 20 Origami
 targets even though 19 retained obvious folded-paper hair, headwear, clothing, or bust material.
-That dataset is withdrawn and marked `DO_NOT_TRAIN.md`; only the teacher target passes the corrected
-full-portrait standard. Do not build or train the 20-pair Origami set. Each style currently has one
-strict target, so the next work is additional teacher generation and review, not LoRA training.
+That dataset is withdrawn and marked `DO_NOT_TRAIN.md`. Four additional hard-case Origami teacher
+targets were then generated and passed full-portrait review, bringing Origami to five strict targets;
+3D and Clay still have one each. Do not build or train the rejected 20-pair Origami set. The next
+work is additional teacher generation and review, not LoRA training.
 
 1. Read `AGENTS.md`, this handoff, `docs/research_context.md`, and the relevant existing scripts.
 2. Preserve the current worktree and do not restart LoRA training.

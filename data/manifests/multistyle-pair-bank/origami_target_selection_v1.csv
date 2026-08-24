@@ -15,11 +15,11 @@ matv2-origami-016,,reject_residual_material,Sequential edit naturalizes the face
 matv2-origami-017,,reject_residual_material,Face improves but folded-paper hair and clothing remain.
 matv2-origami-019,,reject_residual_material,Face improves but paper headwear and clothing remain.
 matv2-origami-020,,reject_residual_material,Sequential edit naturalizes the face but leaves geometric hair clothing and bust.
-matv2-origami-021,,pending_closed_teacher,Sequential Stage 2 remains folded paper across the face.
+matv2-origami-021,closed-teacher,accept,Closed teacher removes paper from skin hair beard and clothing while preserving the older-man pose expression and olive palette.
 matv2-origami-022,,reject_residual_material,Face improves but folded-paper hair and clothing remain.
 matv2-origami-024,,reject_residual_material,Sequential edit naturalizes the face but leaves paper hair and clothing.
-matv2-origami-025,,pending_closed_teacher,Sequential Stage 2 leaves strong facets across the head and neck.
+matv2-origami-025,closed-teacher,accept,Closed teacher removes paper from scalp skin neck and garment while preserving baldness gaze earring and studio composition.
 matv2-origami-026,,reject_residual_material,Face improves but folded-paper hair clothing and bust remain.
-matv2-origami-027,,pending_closed_teacher,Sequential Stage 2 remains almost entirely folded paper.
+matv2-origami-027,closed-teacher,accept,Closed teacher removes paper from face hair and layered coat while preserving the middle-aged pose subtle smile and palette.
 matv2-origami-028,,reject_residual_material,Face improves but folded-paper hair and clothing remain.
-matv2-origami-029,,pending_closed_teacher,Sequential Stage 2 remains strongly stylized in hair clothing and lighting.
+matv2-origami-029,closed-teacher,accept,Closed teacher removes paper from skin hair neck and hood while preserving youth upward gaze slight smile and olive lighting.

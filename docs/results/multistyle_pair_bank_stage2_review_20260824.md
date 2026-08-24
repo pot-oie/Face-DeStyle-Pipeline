@@ -10,7 +10,7 @@ The visual decision is deliberately conservative:
 |---|---:|---:|---:|---:|---:|---:|
 | 3D cartoon | 0 | 0 | 1 | 1 | 26 | 0 |
 | Clay | 0 | 0 | 1 | 1 | 14 | 4 |
-| Origami | 0 | 0 | 1 | 1 | 4 | 19 |
+| Origami | 0 | 0 | 5 | 5 | 0 | 19 |
 
 For 3D, a second FLUX edit mostly repeated or intensified animation geometry, large eyes, glossy
 skin, and CGI lighting. It did not produce a reliable training target in the eight-case probe.
@@ -40,8 +40,10 @@ The filled local selection sheets and four-column review pages are stored under
 A 2026-08-24 three-case pilot used OpenAI built-in reference-image generation through Codex as a
 private-research teacher. The exact prompts are recorded in each local `closed-teacher/NOTES.md`.
 All three pilot outputs were retained: `synthetic-3d-cartoon-006`, `matv2-clay-001`, and
-`matv2-origami-008`. Under the corrected standard, each style therefore has one strict target. It is
-a promising teacher signal, not evidence that every teacher output will preserve identity.
+`matv2-origami-008`. Four additional Origami hard cases (`021`, `025`, `027`, and `029`) were then
+generated with stricter whole-portrait prompts and accepted after source/Stage 1/Stage 2/teacher
+comparison. Origami therefore has five strict targets, while 3D and Clay each have one. This is a
+promising teacher signal, not evidence that every teacher output will preserve identity.
 
 The rejected 20-pair Origami ImageFolder preview remains locally at
 `/Users/pot/Documents/大创/实验归档/origami-lora-pairs-v1-20` with a `DO_NOT_TRAIN.md` warning. It is
