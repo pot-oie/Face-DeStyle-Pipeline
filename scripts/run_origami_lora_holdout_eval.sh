@@ -37,7 +37,6 @@ do
   [[ -f "$required" ]] || { echo "STOP: missing required file: $required"; exit 1; }
 done
 
-[[ ! -e "$RUN_ROOT" ]] || { echo "STOP: output already exists: $RUN_ROOT"; exit 1; }
 [[ ! -e "$ARCHIVE" ]] || { echo "STOP: archive already exists: $ARCHIVE"; exit 1; }
 
 mkdir -p "$RUN_ROOT/source-images" "$(dirname "$ARCHIVE")"
@@ -57,6 +56,16 @@ run_method() {
   label=$1
   weights=${2:-}
   method_dir=$RUN_ROOT/$label
+  records=0
+  images=0
+  failures=0
+  [[ -f "$method_dir/records.jsonl" ]] && records=$(wc -l < "$method_dir/records.jsonl")
+  [[ -d "$method_dir/images" ]] && images=$(find "$method_dir/images" -maxdepth 1 -type f -name '*.png' | wc -l)
+  [[ -f "$method_dir/failures.jsonl" ]] && failures=$(wc -l < "$method_dir/failures.jsonl")
+  if [[ "$records" -eq 6 && "$images" -eq 6 && "$failures" -eq 0 ]]; then
+    echo "SKIP_METHOD=$label RECORDS=6 IMAGES=6 FAILURES=0"
+    return 0
+  fi
   args=(
     python scripts/run_flux_kontext_probe.py
     --source-list "$HOLDOUT_LIST"
@@ -78,11 +87,15 @@ run_method() {
   if [[ -n "$weights" ]]; then
     args+=(--lora-weights "$weights" --lora-scale 1.0)
   fi
+  if [[ -e "$method_dir/records.jsonl" || -e "$method_dir/failures.jsonl" || -d "$method_dir/images" ]]; then
+    args+=(--resume)
+  fi
   echo "START_METHOD=$label"
-  "${args[@]}" 2>&1 | tee "$method_dir.log"
+  "${args[@]}" 2>&1 | tee -a "$method_dir.log"
   records=$(wc -l < "$method_dir/records.jsonl")
   images=$(find "$method_dir/images" -maxdepth 1 -type f -name '*.png' | wc -l)
-  failures=$(wc -l < "$method_dir/failures.jsonl")
+  failures=0
+  [[ -f "$method_dir/failures.jsonl" ]] && failures=$(wc -l < "$method_dir/failures.jsonl")
   echo "METHOD=$label RECORDS=$records IMAGES=$images FAILURES=$failures"
   [[ "$records" -eq 6 && "$images" -eq 6 && "$failures" -eq 0 ]]
 }
