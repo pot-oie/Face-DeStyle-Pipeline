@@ -92,6 +92,7 @@ class FluxKontextBackend(DestylizationBackend):
         styles_config: dict[str, Any],
         *,
         prompt_stage: str = "stage1",
+        prompt_overrides: dict[str, str] | None = None,
         pipeline_factory: PipelineFactory | None = None,
     ) -> None:
         settings.validate()
@@ -100,10 +101,22 @@ class FluxKontextBackend(DestylizationBackend):
         self.settings = settings
         self.styles_config = styles_config
         self.prompt_stage = prompt_stage
+        self.prompt_overrides = prompt_overrides or {}
         self._pipeline_factory = pipeline_factory
         self._uses_injected_pipeline = pipeline_factory is not None
         self._pipeline: Any | None = None
         self._pipeline_load_seconds: float | None = None
+
+    def resolve_prompt(self, record: ImageRecord) -> str:
+        """Resolve an optional source-specific prompt before the style default."""
+        return self.prompt_overrides.get(
+            record.source_id,
+            select_stage_prompt(
+                record.style_category,
+                self.styles_config,
+                stage=self.prompt_stage,
+            ),
+        )
 
     def _load_real_pipeline(self, model_dir: Path) -> Any:
         try:
@@ -193,11 +206,7 @@ class FluxKontextBackend(DestylizationBackend):
         destination = output_dir / f"{record.id}.png"
         if destination.exists():
             raise FileExistsError(f"Refusing to overwrite existing output: {destination}")
-        prompt = select_stage_prompt(
-            record.style_category,
-            self.styles_config,
-            stage=self.prompt_stage,
-        )
+        prompt = self.resolve_prompt(record)
         with Image.open(source) as image:
             initial_image = ImageOps.fit(
                 ImageOps.exif_transpose(image).convert("RGB"),
@@ -253,6 +262,7 @@ class FluxKontextBackend(DestylizationBackend):
             extra={
                 "probe": "flux1_kontext_dev_generator_capability",
                 "prompt_stage": self.prompt_stage,
+                "prompt_override": record.source_id in self.prompt_overrides,
                 "official_model_id": "black-forest-labs/FLUX.1-Kontext-dev",
                 "transport_source": "modelscope_mirror",
                 "transport_model_id": "black-forest-labs/FLUX.1-Kontext-dev",

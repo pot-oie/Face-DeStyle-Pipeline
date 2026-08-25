@@ -93,3 +93,30 @@ def test_mock_kontext_probe_uses_declared_stage2_prompt(tmp_path):
     assert result.prompt == "remove persistent terracotta material"
     assert result.extra["prompt_stage"] == "stage2"
     assert fake.calls[0]["prompt"] == "remove persistent terracotta material"
+
+
+def test_mock_kontext_probe_uses_source_specific_prompt_override(tmp_path):
+    source = tmp_path / "source.png"
+    Image.new("RGB", (800, 800)).save(source)
+    fake = FakePipeline()
+    backend = FluxKontextBackend(
+        make_settings(tmp_path),
+        {"styles": {"origami": {"stage1_prompt": "generic origami prompt"}}},
+        prompt_overrides={"origami-hard": "naturalize hair and clothing"},
+        pipeline_factory=lambda _path: fake,
+    )
+
+    result = backend.run(
+        ImageRecord(
+            id="origami-hard",
+            source_id="origami-hard",
+            image_path=source,
+            style_category="origami",
+        ),
+        tmp_path / "outputs",
+        seed=42,
+    )
+
+    assert result.prompt == "naturalize hair and clothing"
+    assert result.extra["prompt_override"] is True
+    assert fake.calls[0]["prompt"] == "naturalize hair and clothing"

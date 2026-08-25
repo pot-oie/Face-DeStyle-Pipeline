@@ -200,6 +200,26 @@ def test_explicit_source_subset_rejects_missing_and_duplicate_ids():
             raise AssertionError(f"invalid source subset was accepted: {requested}")
 
 
+def test_load_prompt_overrides_requires_non_empty_string_mapping(tmp_path):
+    valid = tmp_path / "valid.json"
+    valid.write_text(
+        json.dumps({"source-a": "  targeted instruction  "}), encoding="utf-8"
+    )
+    assert MODULE.load_prompt_overrides(valid) == {
+        "source-a": "targeted instruction"
+    }
+
+    for index, payload in enumerate(({}, [], {"source-a": ""}, {"": "prompt"})):
+        invalid = tmp_path / f"invalid-{index}.json"
+        invalid.write_text(json.dumps(payload), encoding="utf-8")
+        try:
+            MODULE.load_prompt_overrides(invalid)
+        except ValueError as exc:
+            assert "prompt override" in str(exc)
+        else:
+            raise AssertionError(f"invalid prompt overrides were accepted: {payload}")
+
+
 def test_load_sequential_inputs_uses_stage1_outputs(tmp_path):
     stage1_output = tmp_path / "stage1" / "source-a.png"
     stage1_output.parent.mkdir()

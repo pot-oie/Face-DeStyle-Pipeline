@@ -71,6 +71,42 @@ def filter_records_by_source_ids(
     return [record for record in records if record.source_id in requested]
 
 
+def load_prompt_overrides(path: Path) -> dict[str, str]:
+    """Load a portable JSON source_id-to-prompt mapping."""
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError(f"invalid prompt overrides file: {path}") from exc
+    if not isinstance(payload, dict) or not payload:
+        raise ValueError("prompt overrides must be a non-empty JSON object")
+    if any(
+        not isinstance(source_id, str)
+        or not source_id.strip()
+        or not isinstance(prompt, str)
+        or not prompt.strip()
+        for source_id, prompt in payload.items()
+    ):
+        raise ValueError("prompt override keys and values must be non-empty strings")
+    return {source_id.strip(): prompt.strip() for source_id, prompt in payload.items()}
+
+
+def expected_prompt(
+    record: ImageRecord,
+    styles_config: dict,
+    *,
+    prompt_stage: str,
+    prompt_overrides: dict[str, str],
+) -> str:
+    return prompt_overrides.get(
+        record.source_id,
+        select_stage_prompt(
+            record.style_category,
+            styles_config,
+            stage=prompt_stage,
+        ),
+    )
+
+
 def validate_resume_state(
     *,
     records_path: Path,
@@ -81,9 +117,11 @@ def validate_resume_state(
     styles_config: dict,
     seed: int,
     prompt_stage: str = "stage1",
+    prompt_overrides: dict[str, str] | None = None,
 ) -> set[str]:
     """Validate every persisted success and failure before resuming an interrupted run."""
     expected = {record.source_id: record for record in selected}
+    prompt_overrides = prompt_overrides or {}
     completed: dict[str, DestylizationRecord] = {}
     if records_path.is_file():
         for line_number, line in enumerate(
@@ -131,10 +169,11 @@ def validate_resume_state(
                 or record.backend != FluxKontextBackend.name
                 or record.seed != seed
                 or record.prompt
-                != select_stage_prompt(
-                    source.style_category,
+                != expected_prompt(
+                    source,
                     styles_config,
-                    stage=prompt_stage,
+                    prompt_stage=prompt_stage,
+                    prompt_overrides=prompt_overrides,
                 )
                 or record.extra.get("prompt_stage", "stage1") != prompt_stage
                 or any(record.extra.get(key) != value for key, value in required_extra.items())
@@ -254,6 +293,14 @@ def main() -> int:
     parser.add_argument("--failures-output", type=Path, required=True)
     parser.add_argument("--styles-config", type=Path, default=Path("configs/styles.yaml"))
     parser.add_argument(
+        "--prompt-overrides",
+        type=Path,
+        help=(
+            "Optional JSON object mapping selected source IDs to source-specific prompts. "
+            "Unmapped sources continue to use the declared style prompt."
+        ),
+    )
+    parser.add_argument(
         "--required-style",
         action="append",
         dest="required_styles",
@@ -360,6 +407,20 @@ def main() -> int:
         lora_scale=args.lora_scale,
     )
     styles_config = load_yaml(args.styles_config)
+    prompt_overrides: dict[str, str] = {}
+    if args.prompt_overrides:
+        try:
+            prompt_overrides = load_prompt_overrides(args.prompt_overrides)
+        except ValueError as exc:
+            parser.error(str(exc))
+        selected_ids = {record.source_id for record in selected}
+        unexpected_overrides = sorted(prompt_overrides.keys() - selected_ids)
+        missing_overrides = sorted(selected_ids - prompt_overrides.keys())
+        if unexpected_overrides or missing_overrides:
+            parser.error(
+                "prompt overrides must exactly match selected source IDs; "
+                f"unexpected={unexpected_overrides}, missing={missing_overrides}"
+            )
     if args.resume:
         try:
             completed = validate_resume_state(
@@ -371,6 +432,7 @@ def main() -> int:
                 styles_config=styles_config,
                 seed=args.seed,
                 prompt_stage=args.prompt_stage,
+                prompt_overrides=prompt_overrides,
             )
         except ValueError as exc:
             parser.error(str(exc))
@@ -387,6 +449,7 @@ def main() -> int:
         settings,
         styles_config,
         prompt_stage=args.prompt_stage,
+        prompt_overrides=prompt_overrides,
     )
     failures = 0
     for record in selected:
