@@ -46,12 +46,38 @@ V2-200 by ignoring the `030` drift, and do not automatically continue V2 past 20
 result is that adding 28 carefully reviewed difficult pairs and region-specific captions was not
 sufficient to improve this six-source generalization test.
 
+## Prompt-alignment diagnostic
+
+A subsequent source-specific prompt diagnostic kept V2 checkpoint 200, seed 42, 28 inference
+steps, guidance 2.5, and LoRA scale 1.0 frozen. It changed only the instruction for the unresolved
+holdouts `002`, `011`, and `018`, using full-subject region language aligned with the V2 training
+captions.
+
+| Holdout | Matched-prompt result | Rationale |
+|---|---|---|
+| `002` | fail, materially improved | Face, hair, and gray beard became natural, but the garment, lower bust, pedestal, support, and a rear hair ornament retained folded-paper geometry. |
+| `011` | pass | Bald scalp, face, neck, and complete garment became plausible skin and fabric while preserving the pose, gaze, palette, and composition. |
+| `018` | fail, partially improved | The face became natural, but the large outer hair/headwear mass and complete shoulder garment remained folded paper. |
+
+The diagnostic rescues one of the three hard cases and demonstrates that train/evaluation
+instruction mismatch contributed to the original result. It does not establish that prompt
+alignment alone solves V2: only `011` is a new strict pass, while `002` and `018` still expose a
+full-subject material-removal limitation. Combined with the unchanged `007` and `023` passes, this
+is approximately 3/6 rather than the required 4/6. V1 checkpoint 100 therefore remains the frozen
+selected adapter.
+
 ## Artifacts
 
 - downloaded archive:
-  `/Users/pot/Desktop/origami-lora-heldout-v2-base-v1ckpt100-v2ckpt50-100-150-200-seed42.zip`
+  `/Users/pot/Documents/大创/实验归档/returned-runs/origami-lora-heldout-v2-base-v1ckpt100-v2ckpt50-100-150-200-seed42.zip`
 - local seven-column review sheets:
   `/Users/pot/Documents/大创/实验归档/origami-lora-heldout-v2-review-20260825`
+- prompt-alignment archive:
+  `/Users/pot/Documents/大创/实验归档/returned-runs/origami-lora-v2-prompt-alignment-hard3-seed42.zip`
+- prompt-alignment review sheets:
+  `/Users/pot/Documents/大创/实验归档/origami-lora-v2-prompt-alignment-review-20260825`
+- compact presentation set:
+  `/Users/pot/Documents/大创/实验归档/showcase-20260825`
 - V1 selected weight SHA-256:
   `06ab9433e341713aaaa0edb11849db5e687b47ad0ca930c121cea49277eca7c4`
 - V2 checkpoint-200 weight SHA-256:

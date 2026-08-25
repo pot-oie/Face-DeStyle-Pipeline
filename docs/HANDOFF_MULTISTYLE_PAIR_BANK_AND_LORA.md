@@ -311,6 +311,17 @@ not receive a strict pass. None of `002`, `011`, or `018` was rescued. V1 checkp
 the selected adapter; do not continue V2 automatically or call it an improvement. Full review:
 `docs/results/origami_lora_v2_holdout_review_20260825.md`.
 
+Prompt-alignment diagnostic update (2026-08-25): V2 checkpoint 200 was rerun only on unresolved
+holdouts `002`, `011`, and `018` with source-specific full-subject instructions while seed 42,
+28 steps, guidance 2.5, and LoRA scale 1.0 remained frozen. `011` was rescued strictly. `002`
+naturalized the face, hair, and beard but retained paper clothing, bust, and pedestal; `018`
+naturalized the face but retained paper outer hair/headwear and clothing. This supports a partial
+train/evaluation instruction mismatch but also confirms a remaining full-subject generalization
+limit. The effective strict result is still only about 3/6, not the required 4/6. Do not promote
+V2 or start a parameter sweep. V1 checkpoint 100 remains selected. The returned archives are now
+under `/Users/pot/Documents/大创/实验归档/returned-runs`, and compact visual evidence is under
+`/Users/pot/Documents/大创/实验归档/showcase-20260825`.
+
 ## Environment notes
 
 Local macOS is for curation, contact sheets, code, Ruff, and pytest. It cannot run CUDA or FLUX.
