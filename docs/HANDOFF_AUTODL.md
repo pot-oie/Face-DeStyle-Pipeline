@@ -15,8 +15,10 @@ operator-directed experiment.
 Training completion update: the V2 run reached 200/200 and saved valid weights at checkpoints
 50/100/150/200 plus the final adapter under
 `outputs/origami-destyle-lora-v2-51-r16-steps200`. It must not be retrained or resumed. The active
-server action is now the fixed six-holdout comparison in
-`docs/AUTODL_ORIGAMI_LORA_V2_EVAL.md`.
+fixed six-holdout comparison also completed. Strict review found no V2 improvement: checkpoints
+100/150/200 reached 2/6, below frozen V1 checkpoint 100 at 3/6, and none of `002/011/018` was
+rescued. No further server action is currently prescribed. See
+`docs/results/origami_lora_v2_holdout_review_20260825.md`.
 
 ## State at handoff
 

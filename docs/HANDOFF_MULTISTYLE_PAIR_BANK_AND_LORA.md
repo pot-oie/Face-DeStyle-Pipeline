@@ -302,6 +302,15 @@ absolute CSV paths to portable source-relative metadata, build and visually chec
 ImageFolder package, and prepare a fresh rank-16/200-step run. Do not modify the original 23-pair
 dataset and do not train directly from the generation window's 30-row `selected_pairs.csv`.
 
+Origami V2 result update (2026-08-25): the exact 51-pair dataset trained successfully from Base for
+200 steps and saved checkpoints 50/100/150/200. The unchanged six-holdout comparison completed for
+Base, frozen V1 checkpoint 100, and all four V2 checkpoints. Strict review found Base 1/6, V1
+checkpoint 100 at 3/6, V2 checkpoint 50 at 0/6, and V2 checkpoints 100/150/200 at 2/6 each. V2-200
+removed paper strongly on `030` but changed beard color, apparent age, and expression, so it does
+not receive a strict pass. None of `002`, `011`, or `018` was rescued. V1 checkpoint 100 remains
+the selected adapter; do not continue V2 automatically or call it an improvement. Full review:
+`docs/results/origami_lora_v2_holdout_review_20260825.md`.
+
 ## Environment notes
 
 Local macOS is for curation, contact sheets, code, Ruff, and pytest. It cannot run CUDA or FLUX.
