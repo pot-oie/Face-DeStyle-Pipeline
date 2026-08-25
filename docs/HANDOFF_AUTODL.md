@@ -1,5 +1,23 @@
 # AutoDL handoff — 2026-08-14
 
+## 2026-08-25 current execution boundary — Origami LoRA V2
+
+The active next server experiment is the fresh 51-pair Origami V2 adapter described in
+`docs/AUTODL_ORIGAMI_LORA_V2.md`. The local package combines the unchanged 23-pair strict V1
+dataset with 28 independently accepted difficult pairs and excludes hard V2 IDs `021` and `023`.
+Wait until the operator explicitly reports that AutoDL is online. Then use `screen`, not `tmux`,
+and train from the base Kontext model at rank 16, learning rate `1e-4`, effective batch 4, and at
+most 200 steps, saving checkpoints 50/100/150/200. Never resume the frozen V1 checkpoint 100.
+
+The older execution boundaries below are historical records and do not override this current
+operator-directed experiment.
+
+Training completion update: the V2 run reached 200/200 and saved valid weights at checkpoints
+50/100/150/200 plus the final adapter under
+`outputs/origami-destyle-lora-v2-51-r16-steps200`. It must not be retrained or resumed. The active
+server action is now the fixed six-holdout comparison in
+`docs/AUTODL_ORIGAMI_LORA_V2_EVAL.md`.
+
 ## State at handoff
 
 The local working tree now contains a declarative model registry (`configs/models.yaml`), a primary

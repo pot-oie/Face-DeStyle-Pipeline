@@ -4,6 +4,11 @@ These CSV files are lightweight, operator-visible curation records for the activ
 pair-bank experiment. Paths resolve against the private `Face-DeStyle-Data` root. They are not a
 public image release or a formal-v1 manifest.
 
+`origami_hard_v2_selection.csv` records the independent review of the 30 generator-accepted hard
+Origami candidates. Its paths are portable relative to the private
+`extensions/origami_hard_pairs_v2` root. Exactly 28 rows are accepted; `origami-hard-v2-021` and
+`origami-hard-v2-023` remain explicit composition-drift rejections.
+
 Current roles:
 
 | Style | Candidate | Holdout | Rejected |
