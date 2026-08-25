@@ -322,6 +322,15 @@ V2 or start a parameter sweep. V1 checkpoint 100 remains selected. The returned 
 under `/Users/pot/Documents/大创/实验归档/returned-runs`, and compact visual evidence is under
 `/Users/pot/Documents/大创/实验归档/showcase-20260825`.
 
+V2.1 caption-only update (2026-08-26): the same 51 visual pairs were retrained from Base with five
+CLIP-safe templates distributed `11/10/10/10/10`. The run completed all 200 steps and saved valid
+checkpoints 50/100/150/200 plus final weights. Fixed six-holdout review found checkpoint 50 at 0/6
+and checkpoints 100/150/200 at 2/6 (`007`, `023`). `002` and `018` still retain paper hair,
+clothing, and support regions; `011` invents hair on the bald subject and retains paper clothing;
+`030` removes paper but changes beard color, age, and expression. Caption compression did not
+improve V2. V1 checkpoint 100 remains selected, and no V2.1 checkpoint should be promoted or
+continued. Full review: `docs/results/origami_lora_v21_holdout_review_20260826.md`.
+
 ## Environment notes
 
 Local macOS is for curation, contact sheets, code, Ruff, and pytest. It cannot run CUDA or FLUX.
