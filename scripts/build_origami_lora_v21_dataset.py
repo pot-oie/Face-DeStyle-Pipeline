@@ -29,36 +29,68 @@ PROTECTED_IDS = {
 }
 
 CORE_INSTRUCTION = (
-    "Turn the entire folded-paper origami portrait into a natural realistic photograph. "
-    "Replace all visible paper surfaces on the face, scalp, hair, headwear, ears, neck, "
-    "clothing, shoulders, bust, pedestal, and support with realistic skin, hair, fabric, "
-    "and materials. Preserve the same identity, apparent age, skin tone, facial hair, pose, "
-    "gaze, expression, silhouette, crop, background, colors, and lighting."
+    "Make the entire origami portrait a natural photo. Remove paper from visible skin, scalp, "
+    "hair, headwear, neck, clothes, shoulders, bust, pedestal and support. Keep identity, age, "
+    "skin tone, facial hair, pose, gaze, expression, composition, background and lighting."
 )
 TEMPLATES = {
     "full_subject": CORE_INSTRUCTION,
     "hair_headwear": (
         CORE_INSTRUCTION
-        + " Fully convert the complete hair, hairline, ornaments, hood, scarf, or headwear; "
-        "leave no paper folds around the head."
+        + " Naturalize all hair and headwear; leave no paper folds."
     ),
     "scalp_neck": (
         CORE_INSTRUCTION
-        + " Fully convert the scalp, ears, jaw, and neck while preserving baldness and head "
-        "shape; leave no planar paper facets in these regions."
+        + " Keep baldness; naturalize scalp and neck without adding hair."
     ),
     "clothing_support": (
         CORE_INSTRUCTION
-        + " Fully convert the complete garment, shoulders, lower bust, pedestal, and support "
-        "without cropping, deleting, or leaving folded-paper geometry."
+        + " Naturalize complete clothing, bust, pedestal and support without cropping."
     ),
     "identity_sensitive": (
         CORE_INSTRUCTION
-        + " Where present, preserve wrinkles, gray or white facial hair, dark skin undertones, "
-        "unusual gaze, profile, and dramatic shadow without rejuvenation or expression change."
+        + " Preserve wrinkles, gray beard, dark skin, gaze, shadows and expression."
     ),
 }
 TEMPLATE_ORDER = tuple(TEMPLATES)
+CLIP_TOKEN_LIMIT = 77
+CONSERVATIVE_WORD_LIMIT = 50
+
+
+def validate_conservative_prompt_lengths() -> None:
+    """Keep every template short even before the exact tokenizer is available."""
+    too_long = {
+        name: len(prompt.split())
+        for name, prompt in TEMPLATES.items()
+        if len(prompt.split()) > CONSERVATIVE_WORD_LIMIT
+    }
+    if too_long:
+        raise ValueError(f"prompt templates exceed conservative word limit: {too_long}")
+
+
+def validate_clip_token_lengths(tokenizer: object) -> dict[str, int]:
+    """Reject any template that the model's CLIP tokenizer would truncate."""
+    counts = {}
+    for name, prompt in TEMPLATES.items():
+        encoded = tokenizer(prompt, add_special_tokens=True, truncation=False)
+        input_ids = encoded["input_ids"]
+        counts[name] = len(input_ids)
+    too_long = {name: count for name, count in counts.items() if count > CLIP_TOKEN_LIMIT}
+    if too_long:
+        raise ValueError(f"CLIP prompt templates exceed {CLIP_TOKEN_LIMIT} tokens: {too_long}")
+    return counts
+
+
+def load_and_validate_clip_tokenizer(path: Path) -> dict[str, int]:
+    try:
+        from transformers import AutoTokenizer
+    except ImportError as exc:
+        raise ValueError("transformers is required for exact CLIP token validation") from exc
+    try:
+        tokenizer = AutoTokenizer.from_pretrained(str(path), local_files_only=True)
+    except (OSError, ValueError) as exc:
+        raise ValueError(f"failed to load local CLIP tokenizer: {path}") from exc
+    return validate_clip_token_lengths(tokenizer)
 
 
 def _load_metadata(path: Path) -> list[dict]:
@@ -119,7 +151,15 @@ def assign_templates(rows: list[dict]) -> list[dict]:
     return rewritten
 
 
-def verify_dataset(root: Path) -> dict[str, int]:
+def verify_dataset(
+    root: Path, *, clip_tokenizer: Path | None = None
+) -> tuple[dict[str, int], dict[str, int] | None]:
+    validate_conservative_prompt_lengths()
+    clip_token_counts = (
+        load_and_validate_clip_tokenizer(clip_tokenizer)
+        if clip_tokenizer is not None
+        else None
+    )
     train = root / "train"
     rows = _load_metadata(train / "metadata.jsonl")
     if len(rows) != EXPECTED_PAIRS:
@@ -149,10 +189,12 @@ def verify_dataset(root: Path) -> dict[str, int]:
         raise ValueError(
             f"expected 51 condition/target PNGs, found {condition_count}/{target_count}"
         )
-    return dict(counts)
+    return dict(counts), clip_token_counts
 
 
-def build_dataset(source: Path, output: Path) -> dict[str, int]:
+def build_dataset(
+    source: Path, output: Path, *, clip_tokenizer: Path | None = None
+) -> tuple[dict[str, int], dict[str, int] | None]:
     if output.exists():
         raise ValueError(f"refusing to overwrite existing output: {output}")
     source_train = source / "train"
@@ -168,7 +210,9 @@ def build_dataset(source: Path, output: Path) -> dict[str, int]:
         with (output_train / "metadata.jsonl").open("w", encoding="utf-8") as handle:
             for row in rewritten:
                 handle.write(json.dumps(row, ensure_ascii=False) + "\n")
-        counts = verify_dataset(output)
+        counts, clip_token_counts = verify_dataset(
+            output, clip_tokenizer=clip_tokenizer
+        )
         (output / "BUILD_SUMMARY.json").write_text(
             json.dumps(
                 {
@@ -176,6 +220,8 @@ def build_dataset(source: Path, output: Path) -> dict[str, int]:
                     "source_dataset": str(source.resolve()),
                     "pairs": EXPECTED_PAIRS,
                     "template_counts": counts,
+                    "clip_token_limit": CLIP_TOKEN_LIMIT,
+                    "clip_token_counts": clip_token_counts,
                     "templates": TEMPLATES,
                 },
                 ensure_ascii=False,
@@ -187,25 +233,40 @@ def build_dataset(source: Path, output: Path) -> dict[str, int]:
     except Exception:
         shutil.rmtree(output, ignore_errors=True)
         raise
-    return counts
+    return counts, clip_token_counts
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--clip-tokenizer",
+        type=Path,
+        help="Local FLUX CLIP tokenizer directory used for exact 77-token validation.",
+    )
     parser.add_argument("--verify-only", action="store_true")
     args = parser.parse_args()
     try:
         if args.verify_only:
-            counts = verify_dataset(args.output)
+            counts, clip_token_counts = verify_dataset(
+                args.output, clip_tokenizer=args.clip_tokenizer
+            )
         else:
             if args.source is None:
                 parser.error("--source is required unless --verify-only is used")
-            counts = build_dataset(args.source, args.output)
+            counts, clip_token_counts = build_dataset(
+                args.source,
+                args.output,
+                clip_tokenizer=args.clip_tokenizer,
+            )
     except ValueError as exc:
         parser.error(str(exc))
-    print(f"DATASET_OK={EXPECTED_PAIRS} TEMPLATE_COUNTS={json.dumps(counts, sort_keys=True)}")
+    print(
+        f"DATASET_OK={EXPECTED_PAIRS} "
+        f"TEMPLATE_COUNTS={json.dumps(counts, sort_keys=True)} "
+        f"CLIP_TOKEN_COUNTS={json.dumps(clip_token_counts, sort_keys=True)}"
+    )
     return 0
 
 

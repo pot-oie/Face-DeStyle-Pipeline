@@ -3,7 +3,8 @@
 Do not run either operation until AutoDL is online. Both use `screen`, not `tmux`. Step 1 keeps
 V2 checkpoint 200 frozen and writes six loose PNG files without an archive. Step 2 is optional: it
 copies the existing 51-pair V2 ImageFolder into a new V2.1 directory, rewrites only metadata to five
-concise prompt templates, and trains a fresh adapter from Base.
+concise prompt templates, verifies every template against the model's local 77-token CLIP
+tokenizer, and trains a fresh adapter from Base.
 
 ## Step 1: one universal prompt on all six holdouts
 
@@ -51,7 +52,8 @@ Completion must report `RECORDS=6 IMAGES=6 FAILURES=0` and
 
 Run this only if Step 1 is not good enough. It does not use or resume any old adapter. The builder
 verifies that the new dataset has 51 pairs, excludes all protected IDs, and uses template counts
-`11/10/10/10/10`.
+`11/10/10/10/10`. The adjusted `clip77` paths intentionally differ from the first V2.1 draft, so
+an earlier metadata directory cannot be trained accidentally.
 
 ```bash
 set -Eeuo pipefail
@@ -70,25 +72,25 @@ bash scripts/launch_origami_lora_v21_train.sh
 The launcher creates and verifies:
 
 ```text
-/root/autodl-tmp/face-destyle/data/origami-lora-pairs-v21-51-templates
+/root/autodl-tmp/face-destyle/data/origami-lora-pairs-v21-51-clip77
 ```
 
-It then starts `screen` session `origami-lora-v21-51` with fresh Base-model training at rank 16,
+It then starts `screen` session `origami-lora-v21-clip77` with fresh Base-model training at rank 16,
 learning rate `1e-4`, effective batch 4, and at most 200 steps. It saves checkpoints 50, 100, 150,
 and 200 under:
 
 ```text
-/root/autodl-tmp/face-destyle/outputs/origami-destyle-lora-v21-51-templates-r16-steps200
+/root/autodl-tmp/face-destyle/outputs/origami-destyle-lora-v21-51-clip77-r16-steps200
 ```
 
 Monitor without attaching:
 
 ```bash
-tail -f /root/autodl-tmp/face-destyle/outputs/origami-destyle-lora-v21-51-templates-r16-steps200/screen.log
+tail -f /root/autodl-tmp/face-destyle/outputs/origami-destyle-lora-v21-51-clip77-r16-steps200/screen.log
 ```
 
 Or attach and later detach with `Ctrl-A`, then `D`:
 
 ```bash
-screen -r origami-lora-v21-51
+screen -r origami-lora-v21-clip77
 ```

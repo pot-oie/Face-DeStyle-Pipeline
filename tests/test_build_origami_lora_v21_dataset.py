@@ -46,7 +46,7 @@ def test_v21_builder_rewrites_only_instructions_and_balances_templates(tmp_path)
     )
 
     output = tmp_path / "v21"
-    counts = MODULE.build_dataset(source, output)
+    counts, clip_counts = MODULE.build_dataset(source, output)
     rewritten = [
         json.loads(line)
         for line in (output / "train" / "metadata.jsonl")
@@ -55,9 +55,33 @@ def test_v21_builder_rewrites_only_instructions_and_balances_templates(tmp_path)
     ]
 
     assert counts == MODULE.EXPECTED_TEMPLATE_COUNTS
+    assert clip_counts is None
     assert len({row["instruction"] for row in rewritten}) == 5
-    assert all(len(row["instruction"]) < 700 for row in rewritten)
+    assert all(
+        len(row["instruction"].split()) <= MODULE.CONSERVATIVE_WORD_LIMIT
+        for row in rewritten
+    )
     assert {row["source_id"] for row in rewritten} == {
         row["source_id"] for row in rows
     }
-    assert MODULE.verify_dataset(output) == MODULE.EXPECTED_TEMPLATE_COUNTS
+    assert MODULE.verify_dataset(output) == (MODULE.EXPECTED_TEMPLATE_COUNTS, None)
+
+
+def test_clip_token_validation_rejects_truncated_template():
+    class FakeTokenizer:
+        def __init__(self, overflow: bool):
+            self.overflow = overflow
+
+        def __call__(self, prompt, **_kwargs):
+            count = 78 if self.overflow and prompt == MODULE.CORE_INSTRUCTION else 60
+            return {"input_ids": list(range(count))}
+
+    assert set(MODULE.validate_clip_token_lengths(FakeTokenizer(False))) == set(
+        MODULE.TEMPLATES
+    )
+    try:
+        MODULE.validate_clip_token_lengths(FakeTokenizer(True))
+    except ValueError as exc:
+        assert "exceed 77 tokens" in str(exc)
+    else:
+        raise AssertionError("a truncated CLIP template was accepted")
