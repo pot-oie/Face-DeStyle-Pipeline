@@ -1,15 +1,16 @@
-# Multistyle processing-router completion handoff
+# Multistyle processing-router completion record
 
-## Active task
+## Final status — completed 2026-08-26
 
-Complete the missing Stage 1/true-sequential-Stage 2 evidence and then implement a manifest-driven
-processing router. This supersedes the statement that the entire multistyle branch was closed. The
-LoRA branch remains closed: do not restart Origami V2/V2.1, 3D style-contrast19, or any multistyle
-adapter.
+The missing Stage 1/true-sequential-Stage 2 evidence and the human-reviewed processing router are
+complete. No GPU or training task remains active. The LoRA branch stays closed: do not restart
+Origami V2/V2.1, 3D style-contrast19, or any multistyle adapter.
 
-The factual coverage audit is
-`docs/results/multistyle_processing_coverage_audit_20260826.md`. The frozen 24-source manifest is
-`data/manifests/multistyle-routing/missing_stage12_sources.jsonl`.
+The 24-source run completed 24/24 Stage 1 and 24/24 true sequential Stage 2 outputs with zero runner
+failures. Strict review selected Stage 1 for 6/6 Comic and 6/6 Watercolor, selected Stage 2 for 5/6
+Ink, and rejected 6/6 replacement Needle-felt cases. The final Origami V1 residual diagnostic
+completed 3/3 but rescued 0/3 strict failures. See
+`docs/results/multistyle_project_closure_20260826.md`.
 
 ## Operator execution preference
 
@@ -60,11 +61,10 @@ include the data disk. If the data disk was not selected during clone, use AutoD
 data-disk copy rather than reconstructing the environment or redownloading weights. Do not delete
 or overwrite the old instance until the cloned environment has completed one real Stage 1 image.
 
-## Phase 1: missing four-style generation
+## Historical Phase 1: completed four-style generation
 
-No AutoDL run has been started by this handoff. Once the operator creates and opens the cloned
-instance, use the existing environment and original BF16 Kontext model. Do not reinstall or
-download weights.
+The commands below record the completed run and are not a next-step instruction. The run used the
+existing environment and original BF16 Kontext model without reinstalling or downloading weights.
 
 Expected paths:
 
@@ -132,25 +132,49 @@ python scripts/run_flux_kontext_probe.py \
 Do not use `--manifest` for Stage 2. That would re-edit the original source and repeat the old
 Needle-felt design error.
 
-## Phase 2: Origami fallback probe
+## Historical Phase 2: completed Origami fallback probe
 
-After the four-style review, separately test `matv2-origami-002`, `011`, and `018` as:
+The completed diagnostic tested `matv2-origami-002`, `011`, and `018` as:
 
 `original source -> frozen V1 checkpoint 100 -> true residual-material Stage 2`
 
-This is not a new adapter run. Preserve the fixed V1 weight and settings. Prepare exact prompts and
-commands only after confirming the V1 output records and weight remain available on AutoDL.
+This was not a new adapter run. It completed 3/3 technically and rescued 0/3 strictly. Preserve the
+fixed V1 weight and settings; do not repeat the probe.
 
-## Phase 3: executable router
+## Completed Phase 3: executable human-review router
 
-Implement a lightweight, human-review-driven router rather than an untrained automatic selector:
+`scripts/route_multistyle_processing.py` implements the lightweight human-review route rather than
+an untrained automatic selector. It can:
 
-1. plan Stage 1 from input style;
-2. emit a review CSV;
-3. accept explicit decisions such as `accept_stage1`, `run_stage2`, `run_origami_v1`,
+1. plan Stage 1 from a portable manifest and `configs/styles.yaml`;
+2. emit a review CSV from successful records;
+3. accept explicit decisions such as `accept_stage1`, `accept_stage2`, `run_stage2`, `run_origami_v1`,
    `route_teacher`, or `explicit_failure`;
-4. run only the selected next stage without overwriting prior outputs;
-5. preserve parent-record provenance and write the terminal route for every source.
+4. emit only the selected next-stage record/source subsets without overwriting prior artifacts;
+5. preserve parent-record provenance and write one route status for every source.
+
+Typical local planning and resolution:
+
+```bash
+python scripts/route_multistyle_processing.py plan-stage1 \
+  --manifest data/manifests/multistyle-routing/missing_stage12_sources.jsonl \
+  --output /path/to/run/stage1-plan.csv
+
+python scripts/route_multistyle_processing.py init-review \
+  --records /path/to/run/stage1/records.jsonl \
+  --current-stage stage1 \
+  --output /path/to/run/stage1-review.csv
+
+python scripts/route_multistyle_processing.py resolve \
+  --review /path/to/run/stage1-review.csv \
+  --records /path/to/run/stage1/records.jsonl \
+  --output-dir /path/to/run/routing
+```
+
+`stage2-input-records.jsonl` can be passed directly to the existing Kontext runner's
+`--input-records`. `origami-v1-source-ids.txt` lists only explicitly selected adapter inputs.
+`routes.jsonl` labels pending actions, external-teacher cases, terminal successes, and explicit
+failures without pretending that unavailable outputs succeeded.
 
 Teacher generation remains an external, manually authorized fallback. The router must never report
 an unavailable teacher or adapter result as successful.

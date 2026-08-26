@@ -1,8 +1,8 @@
 # Prompt for the next multistyle routing and closure window
 
-> Completed on 2026-08-26 for documentation closure, but later found not to cover an executable
-> Stage 1/true-sequential-Stage 2 router. Do not repeat this prompt. Active work is now
-> `docs/HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md`.
+> Historical prompt, fully superseded and completed on 2026-08-26. The missing true-sequential
+> evidence, Origami residual probe, executable human-review router, and final closure report now
+> exist. Do not repeat any task or launch any command from this prompt.
 
 Continue `Face-DeStyle-Pipeline` from the completed Origami V1/V2/V2.1 experiments and the earlier
 3D, Clay, Needle-felt, comic, ink, and watercolor investigations.

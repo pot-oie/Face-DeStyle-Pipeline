@@ -10,10 +10,10 @@ is in [`docs/research_context.md`](docs/research_context.md), and the approved p
 licensing, screening, and splitting artistic images is in
 [`docs/data_acquisition.md`](docs/data_acquisition.md).
 
-The style-specific LoRA branch is closed, but multistyle processing-route completion is active.
-Start with [`docs/HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md`](docs/HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md)
-and the [`processing coverage audit`](docs/results/multistyle_processing_coverage_audit_20260826.md).
-There is no active AutoDL run until the operator explicitly starts the prepared GPU phase.
+The style-specific LoRA branch and multistyle processing-route work are complete. Start with the
+[`final multistyle report`](docs/results/multistyle_project_closure_20260826.md) and
+[`experiment evidence index`](docs/EXPERIMENT_EVIDENCE_INDEX.md). There is no active AutoDL run or
+unfinished experiment.
 
 > “This repository is a compact and independent reproduction developed from an undergraduate
 > innovation project under the same research direction as DeStyle. It focuses on face-domain
@@ -46,7 +46,8 @@ in the repository.
 
 ## Implemented and evaluated
 
-Implemented: strict Pydantic records, JSONL validation, stable metadata IDs, OpenCV Canny,
+Implemented: strict Pydantic records, JSONL validation, stable metadata IDs, a human-reviewed
+manifest/record processing router, OpenCV Canny,
 manual/center masks for smoke testing, a no-op copy backend, a prompt-only SDXL image-to-image
 baseline for AutoDL, global and face-parsing-aware region Canny ControlNet backends with saved
 condition artifacts, an original-BF16 FLUX.1 Kontext native-1024 prompt-editing backend with model
@@ -206,10 +207,11 @@ The repository records:
 - structured VLM style-removal output;
 - human strict-pass decisions and limitations.
 
-The final route uses Base FLUX for comic, ink, watercolor, and Needle-felt; optional frozen Origami
-V1 checkpoint 100 plus residual-region fallback for Origami; sequential editing and teacher/failure
-handling for Clay; and Base/teacher/failure handling for 3D cartoon. Exact evidence and limitations
-are in the closure report. No new LoRA, selector, or formal rerun is active.
+The final route accepts one-stage Base FLUX for Comic and Watercolor, uses a review-triggered second
+edit for Ink, and records explicit fallback/failure handling for Needle-felt. Origami retains the
+optional frozen V1 checkpoint 100 plus a limited residual edit; Clay and 3D cartoon retain
+teacher/failure handling. Exact evidence and limitations are in the closure report. No new LoRA,
+selector, formal rerun, or GPU experiment is active.
 
 ## Repository layout
 

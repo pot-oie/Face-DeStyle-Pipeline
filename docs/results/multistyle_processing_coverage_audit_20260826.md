@@ -1,11 +1,14 @@
 # Multistyle processing coverage audit (2026-08-26)
 
+> Historical pre-run audit. Every gap identified below was resolved later on 2026-08-26. See
+> [`multistyle_project_closure_20260826.md`](multistyle_project_closure_20260826.md) for the final
+> results and routes. Do not treat the “remaining gap” column as active work.
+
 ## Correction to the earlier closure
 
-The earlier closure completed the style-specific LoRA evidence narrative and wrote a recommended
-routing policy. It did not complete an executable multistyle processing route or a uniform
-Stage 1/true-sequential-Stage 2 experiment. The remaining work is therefore a processing-routing
-completion, not another LoRA campaign.
+At audit time, the earlier closure had completed the style-specific LoRA evidence narrative but not
+the executable route or matched Stage 1/true-sequential-Stage 2 experiment. That processing gap has
+since been completed without another LoRA campaign.
 
 ## Actual completed coverage
 
@@ -34,7 +37,7 @@ native 1024 square, seed 42, 28 steps, guidance 2.5, model offload, and the decl
 Running Stage 2 on all records measures both rescue and harm; selecting Stage 2 only after seeing
 Stage 1 would not reveal how often the second edit introduces drift.
 
-## Review outputs required after generation
+## Review outputs used after generation
 
 For each source, compare `source | Stage 1 | Stage 1 -> Stage 2` and record:
 
@@ -45,5 +48,5 @@ For each source, compare `source | Stage 1 | Stage 1 -> Stage 2` and record:
 - `stage2_regression` when Stage 1 passes and Stage 2 fails;
 - one final route: `accept_stage1`, `accept_stage2`, or `explicit_failure`.
 
-No blind round, formal metric suite, LoRA training, or new source generation is required for this
+No blind round, formal metric suite, LoRA training, or new source generation was used for this
 compact completion experiment.

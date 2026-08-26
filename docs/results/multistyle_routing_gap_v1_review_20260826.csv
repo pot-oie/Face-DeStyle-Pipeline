@@ -1,0 +1,25 @@
+source_id,style_category,stage1_review,stage2_review,selected_route,strict_result,notes
+synthetic-comic-001,comic,pass,no material gain,accept_stage1,pass,Natural face and scene already established in Stage 1; Stage 2 only lightly redraws details.
+synthetic-comic-002,comic,pass,no material gain,accept_stage1,pass,Stage 1 removes the comic rendering while retaining the distinctive glasses and workshop scene.
+synthetic-comic-003,comic,pass,no material gain,accept_stage1,pass,Stage 1 gives a coherent photographic portrait; Stage 2 adds contrast without changing the route.
+synthetic-comic-004,comic,pass,no material gain,accept_stage1,pass,Stage 1 is already natural and compositionally stable.
+synthetic-comic-005,comic,pass,no material gain,accept_stage1,pass,Stage 1 is the less aggressive sufficient edit; Stage 2 is unnecessary.
+synthetic-comic-006,comic,pass,no material gain,accept_stage1,pass,Stage 1 naturalizes the face and preserves braids and library structure.
+met-12464,ink,partial,partial/fail,explicit_failure,fail,Stage 2 removes the cheek mark but large ink masses remain in hair background and clothing; teacher is optional only with authorization.
+met-334004,ink,partial,pass,accept_stage2,pass,Second edit further stabilizes the photographic portrait; a small source-derived garment motif remains acceptable.
+met-459963,ink,partial,pass,accept_stage2,pass,Stage 2 removes the dominant inked garment texture while preserving hat pose and face.
+synthetic-ink-001,ink,pass,pass,accept_stage2,pass,Two-stage route is stable and yields a natural portrait with preserved gaze and bamboo setting.
+synthetic-ink-002,ink,pass,pass,accept_stage2,pass,Two-stage route remains natural and preserves age hair and composition.
+met-335049,ink,pass,pass,accept_stage2,pass,Two-stage route gives a coherent photographic seated portrait with stable pose.
+aic-18667,watercolor,pass,no material gain,accept_stage1,pass,Stage 1 already removes the painted rendering; Stage 2 does not justify another edit.
+synthetic-watercolor-001,watercolor,pass,no material gain,accept_stage1,pass,Stage 1 is sufficient and preserves face palette and setting.
+synthetic-watercolor-002,watercolor,pass,no material gain,accept_stage1,pass,Stage 1 produces a natural portrait with stable braid gaze and window scene.
+synthetic-watercolor-003,watercolor,pass,no material gain,accept_stage1,pass,Stage 2 subtly redraws facial details without a useful style-removal gain.
+synthetic-watercolor-004,watercolor,pass,no material gain,accept_stage1,pass,Stage 1 is already photographic and compositionally faithful.
+synthetic-watercolor-005,watercolor,pass,no material gain,accept_stage1,pass,Stage 1 removes watercolor while preserving the frontal portrait and library structure.
+matv2-needle-felt-001,needle_felt,fail,fail,explicit_failure,fail,Childlike felt doll proportions bust construction and textile wrap remain after both edits.
+matv2-needle-felt-002,needle_felt,partial,partial/fail,explicit_failure,fail,Face becomes more human-like but bust support and felt clothing remain dominant.
+matv2-needle-felt-006,needle_felt,fail,fail,explicit_failure,fail,Cartoon doll geometry and textile bust remain after Stage 2.
+matv2-needle-felt-007,needle_felt,partial,partial/fail,explicit_failure,fail,Face skin improves but the result remains a textile bust with visible fiber garments and support.
+matv2-needle-felt-008,needle_felt,fail,fail,explicit_failure,fail,Caricatured doll face and knitted bust remain; Stage 2 does not produce a natural photograph.
+matv2-needle-felt-011,needle_felt,fail,fail,explicit_failure,fail,Oversized doll eyes and felt bust construction remain through the true sequential edit.

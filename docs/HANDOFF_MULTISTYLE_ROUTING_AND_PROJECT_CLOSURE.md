@@ -1,22 +1,20 @@
 # Multistyle routing and project-closure handoff
 
-> Scope correction (2026-08-26): this handoff closed the style-specific adaptation narrative, not
-> the executable multistyle processing route. Active work moved to
-> `docs/HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md`. There is no active AutoDL run until the operator
-> explicitly starts that GPU phase.
+> Historical closure handoff, superseded on 2026-08-26 by the completed executable route and final
+> report. No work in this file remains active. See
+> `docs/results/multistyle_project_closure_20260826.md`.
 
 ## Final decision
 
-The next phase is not another LoRA campaign. The project already has enough evidence to close the
-style-specific adaptation branch and consolidate a practical multistyle routing story.
+No next LoRA phase exists. The completed project has enough evidence to close the style-specific
+adaptation branch and the practical multistyle processing route.
 
 Do not automatically generate another training bank, rent a GPU, resume an adapter, or repeat the
 Origami workflow for Clay, 3D cartoon, or Needle-felt. Training time was not the only cost: strict
 teacher-pair construction and full-frame curation were the dominant bottlenecks.
 
-The active local task is to organize the completed evidence, make the per-style routing decision
-explicit, and prepare a compact final research narrative and visual index. AutoDL has no prescribed
-next run.
+The evidence, per-style decisions, final narrative, visual index, and human-review router are now
+complete. AutoDL has no prescribed next run.
 
 ## Evidence that fixes this decision
 
@@ -65,8 +63,8 @@ source-specific diagnostic rescued `011`, showing that instruction alignment mat
 effective result remained around 3/6. Do not promote or continue V2/V2.1, increase rank or steps,
 or perform another caption sweep.
 
-The active Origami fallback for hard cases is a true residual-region second edit, not another
-single-pass LoRA retrain.
+The final Origami residual-region diagnostic rescued 0/3 hard V1 failures. It remains an optional
+review-triggered edit, not a guaranteed fallback and not another single-pass LoRA retrain.
 
 ## Practical style routing
 
@@ -94,7 +92,8 @@ The closure package uses only existing records and visual artifacts and now cont
    style-contrast instructions as historical;
 4. one explicitly optional Clay feasibility extension, requiring new operator authorization.
 
-No orchestration system, rerun, metric suite, or archive rebuild is part of the closure.
+The lightweight human-review router is implemented; no additional rerun, metric suite, or archive
+rebuild is part of the closure.
 
 ## Primary evidence files
 

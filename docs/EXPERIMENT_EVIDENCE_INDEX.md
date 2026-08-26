@@ -2,23 +2,29 @@
 
 ## Current reading order
 
-1. [`HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md`](HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md)
-   — active processing-route completion and the next GPU phase.
-2. [`results/multistyle_processing_coverage_audit_20260826.md`](results/multistyle_processing_coverage_audit_20260826.md)
-   — actual per-style Stage 1/Stage 2 coverage and remaining gaps.
-3. [`results/multistyle_project_closure_20260826.md`](results/multistyle_project_closure_20260826.md)
-   — final evidence summary and per-style routing contract.
-4. [`HANDOFF_MULTISTYLE_ROUTING_AND_PROJECT_CLOSURE.md`](HANDOFF_MULTISTYLE_ROUTING_AND_PROJECT_CLOSURE.md)
+1. [`results/multistyle_project_closure_20260826.md`](results/multistyle_project_closure_20260826.md)
+   — final evidence summary, strict outcomes, and per-style routing contract.
+2. [`results/multistyle_routing_gap_v1_review_20260826.csv`](results/multistyle_routing_gap_v1_review_20260826.csv)
+   — all 24 Comic/Ink/Watercolor/Needle-felt Stage 1/Stage 2 decisions.
+3. [`results/origami_v1_residual_stage2_review_20260826.md`](results/origami_v1_residual_stage2_review_20260826.md)
+   — final three-source V1-100 residual-edit review; 0/3 strict rescues.
+4. [`HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md`](HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md)
+   — completed run record and executable human-review router usage.
+5. [`results/multistyle_processing_coverage_audit_20260826.md`](results/multistyle_processing_coverage_audit_20260826.md)
+   — pre-completion coverage audit that identified the resolved gaps.
+6. [`HANDOFF_MULTISTYLE_ROUTING_AND_PROJECT_CLOSURE.md`](HANDOFF_MULTISTYLE_ROUTING_AND_PROJECT_CLOSURE.md)
    — project boundary and closure handoff.
-5. [`results/formal_v1_reduced_heldout_20260822.md`](results/formal_v1_reduced_heldout_20260822.md)
+7. [`results/formal_v1_reduced_heldout_20260822.md`](results/formal_v1_reduced_heldout_20260822.md)
    — exploratory 32-source, five-method reduced replication.
-6. [`HANDOFF_MULTISTYLE_PAIR_BANK_AND_LORA.md`](HANDOFF_MULTISTYLE_PAIR_BANK_AND_LORA.md)
+8. [`HANDOFF_MULTISTYLE_PAIR_BANK_AND_LORA.md`](HANDOFF_MULTISTYLE_PAIR_BANK_AND_LORA.md)
    — chronological pair-bank and adaptation history; not an active training plan.
 
 ## Repository-owned result records
 
 | Evidence | What it supports | Status |
 |---|---|---|
+| [`results/multistyle_routing_gap_v1_review_20260826.csv`](results/multistyle_routing_gap_v1_review_20260826.csv) | 24/24 Stage 1 and 24/24 true Stage 2 visual decisions: Comic 6/6 Stage 1, Ink 5/6 Stage 2, Watercolor 6/6 Stage 1, Needle-felt 0/6 | completed full-bank review |
+| [`results/origami_v1_residual_stage2_review_20260826.md`](results/origami_v1_residual_stage2_review_20260826.md) | V1-100 residual Stage 2 rescues 0/3 strict hard failures; `011` is local face improvement only | completed final inference diagnostic |
 | [`results/formal_v1_reduced_heldout_20260822.md`](results/formal_v1_reduced_heldout_20260822.md) and [`results/formal_v1_reduced_32/`](results/formal_v1_reduced_32/) | FLUX 22/32 overall; 6/8 for comic, ink, and watercolor and 4/8 for 3D cartoon; SDXL baselines at 0--1/32 | completed exploratory reduced replication; post-unblinding and completion-informed |
 | [`results/multistyle_pair_bank_stage2_review_20260824.md`](results/multistyle_pair_bank_stage2_review_20260824.md) | true sequential Stage 2 probes, corrected full-frame review, 0/8 strict 3D and 0/12 strict Clay open-model targets, final 23-pair Origami teacher bank | completed visual review |
 | [`results/origami_lora_holdout_review_20260824.md`](results/origami_lora_holdout_review_20260824.md) | V1 Base about 1/6 versus checkpoint 100 about 3/6; later checkpoints add drift without more passes | completed six-holdout review; selected limited adapter |
@@ -58,10 +64,17 @@ experiment archive or AutoDL data disk. They must not be copied into this reposi
 Origami V1 checkpoint 100 is identified in the V1 report by its server path and SHA-256; this index
 does not duplicate the weight.
 
+The final returned evidence also remains outside Git:
+
+| Returned folder | Comparison | Repository decision record |
+|---|---|---|
+| `multistyle-routing-gap-v1` | 24 Stage 1 outputs and their 24 true sequential Stage 2 outputs | `results/multistyle_routing_gap_v1_review_20260826.csv` |
+| `origami-lora-heldout-base-ckpt100-200-300-seed42/checkpoint-100` | frozen V1 checkpoint 100 inputs for the final residual edit | `results/origami_lora_holdout_review_20260824.md` |
+| `origami-v1ckpt100-residual-stage2-hard3-seed42` | `002/011/018` after V1 output to Base residual Stage 2 | `results/origami_v1_residual_stage2_review_20260826.md` |
+
 ## Historical execution documents
 
 Files named `AUTODL_*`, older `PROMPT_*`, and the detailed pair-bank workflow are preserved to show
-how completed experiments were run. Unless a document links to the active processing-router
-handoff, its commands and “next experiment” language describe historical state. No AutoDL run has
-started, and no LoRA training, new dataset generation, or formal evaluation is authorized by the
-current completion task.
+how completed experiments were run. Their commands and “next experiment” language describe
+historical state. All prescribed routing-gap inference is complete; no LoRA training, new dataset
+generation, formal evaluation, or additional AutoDL run is authorized.
