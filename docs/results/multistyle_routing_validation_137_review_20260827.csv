@@ -1,0 +1,138 @@
+source_id,style_category,stage1_pass,stage2_pass,stage2_rescue,stage2_regression,selected_route,reviewer_notes
+synthetic-comic-007,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-comic-008,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-comic-009,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-comic-010,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-comic-011,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-comic-012,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-comic-013,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-comic-014,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-comic-015,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-comic-016,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-comic-017,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-comic-018,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-comic-019,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-comic-020,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-comic-021,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-comic-022,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-comic-023,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-comic-024,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-comic-025,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+wm-wm_carrot-63817815,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+wm-wm_carrot-64383292,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+wm-wm_carrot-64417174,comic,no,no,no,no,explicit_failure,Both stages invent or replace a key depicted object and scene semantics.
+wm-wm_carrot-64417379,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+wm-wm_pepper-64416783,comic,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+cma-120841,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+cma-120843,ink,no,no,no,no,explicit_failure,"Both stages remove the medium but visibly change the depicted person, including sex, age, or key facial attributes."
+cma-120848,ink,no,no,no,no,explicit_failure,"Both stages remove the medium but visibly change the depicted person, including sex, age, or key facial attributes."
+cma-120850,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+cma-160121,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+cma-166868,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+cma-169341,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+cma-170878,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+cma-329352,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+met-336317,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+met-337257,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+met-337311,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+met-339012,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+met-339025,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+met-339875,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+met-339919,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+met-341941,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+met-343419,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+met-376383,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+met-389929,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+met-459195,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+met-459232,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+met-635819,ink,no,no,no,no,explicit_failure,"Both stages remove the medium but visibly change the depicted person, including sex, age, or key facial attributes."
+met-747511,ink,yes,yes,no,no,accept_stage1,Stage 1 is already photographic; Stage 2 mainly sharpens detail and is not needed for this source.
+cma-108522,watercolor,no,no,no,no,explicit_failure,"Both stages remove the medium but visibly change the depicted person, including sex, age, or key facial attributes."
+cma-119019,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+cma-119030,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+cma-119033,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+cma-120829,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+cma-120831,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+cma-120839,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+cma-120840,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+cma-121265,watercolor,no,no,no,no,explicit_failure,"Both stages remove the medium but visibly change the depicted person, including sex, age, or key facial attributes."
+cma-121266,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+cma-121273,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+cma-121281,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+cma-121283,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+cma-121286,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+cma-121287,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+met-341620,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+met-415530,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+met-420442,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+met-459970,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+met-727789,watercolor,no,no,no,no,explicit_failure,"Both stages remove the medium but visibly change the depicted person, including sex, age, or key facial attributes."
+met-845725,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+met-906106,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-watercolor-006,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-watercolor-007,watercolor,yes,yes,no,no,accept_stage1,Stage 1 gives a natural-looking reconstruction; Stage 2 adds no material improvement.
+synthetic-3d-cartoon-001,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-002,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-003,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-004,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-005,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-006,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-007,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-008,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-009,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-010,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-011,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-012,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-013,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-014,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-015,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-016,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-017,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-018,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-019,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-020,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-021,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-022,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-023,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+synthetic-3d-cartoon-024,3d_cartoon,no,no,no,no,explicit_failure,"Both stages retain obvious CGI/cartoon geometry, material, or lighting."
+matv2-clay-001,clay,no,no,no,no,explicit_failure,Clay or sculpture material remains dominant after both stages.
+matv2-clay-002,clay,no,no,no,no,explicit_failure,Clay or sculpture material remains dominant after both stages.
+matv2-clay-003,clay,no,yes,yes,no,accept_stage2,Stage 2 removes the dominant clay facial material without an observed major subject or pose change.
+matv2-clay-004,clay,no,no,no,no,explicit_failure,Clay or sculpture material remains dominant after both stages.
+matv2-clay-005,clay,no,no,no,no,explicit_failure,Clay or sculpture material remains dominant after both stages.
+matv2-clay-006,clay,no,no,no,no,explicit_failure,Clay or sculpture material remains dominant after both stages.
+matv2-clay-007,clay,no,no,no,no,explicit_failure,Clay or sculpture material remains dominant after both stages.
+matv2-clay-008,clay,no,no,no,no,explicit_failure,Clay or sculpture material remains dominant after both stages.
+matv2-clay-009,clay,no,no,no,no,explicit_failure,Clay or sculpture material remains dominant after both stages.
+matv2-clay-010,clay,no,no,no,no,explicit_failure,Clay or sculpture material remains dominant after both stages.
+matv2-clay-011,clay,no,no,no,no,explicit_failure,Clay or sculpture material remains dominant after both stages.
+matv2-clay-012,clay,no,yes,yes,no,accept_stage2,Stage 2 removes the dominant clay facial material without an observed major subject or pose change.
+matv2-clay-013,clay,no,no,no,no,explicit_failure,Clay or sculpture material remains dominant after both stages.
+matv2-clay-014,clay,no,no,no,no,explicit_failure,Clay or sculpture material remains dominant after both stages.
+matv2-clay-015,clay,no,yes,yes,no,accept_stage2,Stage 2 removes the dominant clay facial material without an observed major subject or pose change.
+matv2-clay-016,clay,no,no,no,no,explicit_failure,Clay or sculpture material remains dominant after both stages.
+matv2-clay-017,clay,no,no,no,no,explicit_failure,Clay or sculpture material remains dominant after both stages.
+matv2-clay-018,clay,no,no,no,no,explicit_failure,Clay or sculpture material remains dominant after both stages.
+matv2-clay-019,clay,no,no,no,no,explicit_failure,Clay or sculpture material remains dominant after both stages.
+matv2-clay-020,clay,no,yes,yes,no,accept_stage2,Stage 2 removes the dominant clay facial material without an observed major subject or pose change.
+matv2-clay-021,clay,no,yes,yes,no,accept_stage2,Stage 2 removes the dominant clay facial material without an observed major subject or pose change.
+matv2-clay-022,clay,no,no,no,no,explicit_failure,Clay or sculpture material remains dominant after both stages.
+matv2-clay-023,clay,no,no,no,no,explicit_failure,Clay or sculpture material remains dominant after both stages.
+matv2-clay-024,clay,no,no,no,no,explicit_failure,Clay or sculpture material remains dominant after both stages.
+matv2-needle-felt-001,needle_felt,no,no,no,no,explicit_failure,"Felt, doll, bust, or textile construction remains dominant after both stages."
+matv2-needle-felt-002,needle_felt,no,no,no,no,explicit_failure,"Felt, doll, bust, or textile construction remains dominant after both stages."
+matv2-needle-felt-003,needle_felt,no,no,no,no,explicit_failure,"Felt, doll, bust, or textile construction remains dominant after both stages."
+matv2-needle-felt-004,needle_felt,no,no,no,no,explicit_failure,"Felt, doll, bust, or textile construction remains dominant after both stages."
+matv2-needle-felt-005,needle_felt,no,no,no,no,explicit_failure,"Felt, doll, bust, or textile construction remains dominant after both stages."
+matv2-needle-felt-006,needle_felt,no,no,no,no,explicit_failure,"Felt, doll, bust, or textile construction remains dominant after both stages."
+matv2-needle-felt-007,needle_felt,no,no,no,no,explicit_failure,"Felt, doll, bust, or textile construction remains dominant after both stages."
+matv2-needle-felt-008,needle_felt,no,no,no,no,explicit_failure,"Felt, doll, bust, or textile construction remains dominant after both stages."
+matv2-needle-felt-009,needle_felt,no,no,no,no,explicit_failure,"Felt, doll, bust, or textile construction remains dominant after both stages."
+matv2-needle-felt-010,needle_felt,no,no,no,no,explicit_failure,"Felt, doll, bust, or textile construction remains dominant after both stages."
+matv2-needle-felt-011,needle_felt,no,no,no,no,explicit_failure,"Felt, doll, bust, or textile construction remains dominant after both stages."
+matv2-needle-felt-012,needle_felt,no,no,no,no,explicit_failure,"Felt, doll, bust, or textile construction remains dominant after both stages."
+synthetic-needle-felt-006,needle_felt,yes,yes,no,no,accept_stage1,Stage 1 is the simpler acceptable reconstruction; Stage 2 adds no material improvement.
+synthetic-needle-felt-009,needle_felt,no,no,no,no,explicit_failure,"Felt, doll, bust, or textile construction remains dominant after both stages."
+synthetic-needle-felt-010,needle_felt,no,no,no,no,explicit_failure,"Felt, doll, bust, or textile construction remains dominant after both stages."
+synthetic-needle-felt-011,needle_felt,no,no,no,no,explicit_failure,"Felt, doll, bust, or textile construction remains dominant after both stages."
+synthetic-needle-felt-012,needle_felt,no,no,no,no,explicit_failure,"Felt, doll, bust, or textile construction remains dominant after both stages."

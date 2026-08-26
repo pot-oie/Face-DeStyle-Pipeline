@@ -1,21 +1,23 @@
-# Non-Origami multistyle routing validation — active handoff
+# Non-Origami multistyle routing validation — completed run record
 
 ## Scope
 
 Origami is closed: keep V1 checkpoint 100 as a limited approximately 3/6 adapter and do not rerun
-V2/V2.1 or the residual hard-three diagnostic. The remaining task is a larger Base FLUX processing
-validation for Comic, Ink, Watercolor, 3D cartoon, Clay, and Needle-felt.
+V2/V2.1 or the residual hard-three diagnostic. The larger Base FLUX processing validation for
+Comic, Ink, Watercolor, 3D cartoon, Clay, and Needle-felt completed on 2026-08-27.
 
 The frozen manifest is
 `data/manifests/multistyle-routing/non_origami_validation_137.jsonl`. It contains 137 accepted
 sources: 24 each for Comic, Ink, Watercolor, 3D cartoon, and Clay, plus all 17 accepted available
 Needle-felt sources. Rejected inputs are not used to balance the count.
 
-This is inference and visual validation only. Do not train a LoRA, generate new source data, run
-Origami, start a metric suite, or add teacher outputs. Keep validation practical: normal manifest
-loading is enough; do not hash generated images, archives, caches, or model shards.
+This was inference and visual validation only. Both stages completed 137/137 with zero recorded
+generation failures, and all Stage 2 inputs matched their same-ID Stage 1 parents. The completed
+visual review is in
+[`results/multistyle_routing_validation_137_review_20260827.csv`](results/multistyle_routing_validation_137_review_20260827.csv).
+Do not rerun it as an active task.
 
-## AutoDL run
+## Historical AutoDL run
 
 Use the existing 32 GB inference instance and environment. No model download or reinstall is
 required. Pull the preparation commit before starting.
@@ -121,9 +123,13 @@ echo "VALIDATION_STAGE2_EXIT_CODE=${PIPESTATUS[0]}"
 Do not add `--manifest` or `--data-root` to Stage 2. Expected result: another 137 records and PNGs,
 with the Stage 1 outputs recorded as explicit inputs.
 
-## Review and stopping rule
+## Completed review and stopping result
 
-After both stages return, download only this run root. Build source/Stage1/Stage2 comparison sheets
-locally and record, per source, Stage1 pass, Stage2 pass, rescue, regression, and final route. The
-study can close when all 137 sources have an explicit terminal decision. A poor style pass rate is
-an allowed result; it does not authorize LoRA training or another source-generation cycle.
+The returned run was reviewed through 23 source/Stage1/Stage2 comparison pages. All 137 sources now
+have an explicit terminal decision: 71 selected successes and 66 explicit failures. Stage 2 added
+five strict Clay rescues and no strict rescue in the other five styles. The final report and route
+are in [`results/multistyle_project_closure_20260826.md`](results/multistyle_project_closure_20260826.md)
+and [`../configs/multistyle_routing.yaml`](../configs/multistyle_routing.yaml).
+
+No experiment is left active. A new LoRA, teacher run, source-generation cycle, or additional
+large-batch validation requires a new operator decision.

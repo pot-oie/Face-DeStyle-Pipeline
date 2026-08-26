@@ -1,86 +1,97 @@
-# Interim multistyle result report — Origami branch closed
+# Final multistyle result report
 
-> Scope correction: Origami is fully closed, and the 24-source Stage 1/true-sequential-Stage 2 run
-> establishes initial routes for four styles. It is not the final large-batch validation of the
-> complete non-Origami route. That active task is frozen in
-> [`../HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md`](../HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md).
+## Scope and final conclusion
 
-## Scope and conclusion
+The multistyle experiment branch is closed. The last inference run processed 137 non-Origami
+sources with original-BF16 FLUX.1-Kontext-dev through both Stage 1 and a true sequential Stage 2.
+Both stages completed 137/137 records and images with zero recorded generation failures. Stage 2
+used the corresponding Stage 1 image for every source; source IDs and style labels matched exactly.
 
-This report closes the Origami adaptation branch and records the first implemented processing-route
-evidence. The compact completion run added 24 Stage 1 outputs and 24 true sequential Stage 2
-outputs for Comic, Ink,
-Watercolor, and the replacement Needle-felt bank. It also tested three frozen Origami V1 outputs
-through a true residual edit. No new LoRA was trained. The non-Origami routing claims remain
-provisional until the 137-source validation and terminal-route review finish.
+The visual review selected 71/137 usable outputs and recorded 66 explicit failures. This is a
+practical qualitative routing result, not a population estimate or formal test. No new LoRA,
+teacher output, source data, metric suite, or seed search was added.
 
-The result is not one universal adapter or an automatic quality selector. Original-BF16 FLUX
-Kontext is the default editor, while a lightweight executable router turns explicit human decisions
-into terminal routes or next-stage input subsets. Painting-like styles work well through Base FLUX.
-Needle-felt, Clay, 3D cartoon, and hard Origami cases demonstrate that material entangled with full
-subject geometry still requires a teacher fallback or an honest failure. Closed-teacher images are
-private reconstruction candidates, not ground-truth natural appearances.
+The project now has a real style-dependent route rather than a universal adapter claim. Comic,
+Ink, and Watercolor usually work with one Base FLUX edit. Clay sometimes benefits from a true
+second edit. 3D cartoon and Needle-felt remain unreliable because geometry, garments, supports,
+and scene-wide material remain stylized. Origami V1 checkpoint 100 remains only a limited optional
+adapter at about 3/6 on its fixed qualitative holdout.
 
-## Evidence by style
+## Final 137-source validation
 
-| Style | What actually ran | Observed result | Final route | Evidence limit |
-|---|---|---|---|---|
-| Comic | Earlier pilot/calibration/reduced replication plus six new sources through Stage 1 and true sequential Stage 2 | New review: Stage 1 passed 6/6; Stage 2 added no material gain. Earlier reduced replication was 6/8. | Base FLUX Stage 1, then accept after review. Do not run Stage 2 by default. | The new six-source set is a small qualitative extension, not a population estimate. |
-| Ink | Earlier pilot/calibration/reduced replication plus six new sources through Stage 1 and true sequential Stage 2 | New review: Stage 2 passed 5/6. `met-12464` still retained large ink masses after both edits. Earlier reduced replication was 6/8. | Base Stage 1, then Stage 2 for residual ink; teacher when authorized or explicit failure if ink remains. | The six sources mix museum drawings and synthetic portraits; one difficult drawing remains unresolved. |
-| Watercolor | Earlier pilot/calibration/reduced replication plus six new sources through Stage 1 and true sequential Stage 2 | New review: Stage 1 passed 6/6; Stage 2 added no material gain and sometimes only redrew facial detail. Earlier reduced replication was 6/8. | Base FLUX Stage 1, then accept after review. Do not run Stage 2 by default. | The new six-source set is small and visually selected. |
-| Needle-felt | Earlier five-source non-sequential prompt comparison plus a replacement six-source bank through Stage 1 and true sequential Stage 2 | New strict review: 0/6 full-frame passes. Some faces became more realistic, but doll proportions, textile garments, busts, and supports remained. | Base Stage 1 is only a first attempt; Stage 2 is optional diagnostic handling. Teacher when authorized or explicit failure. No LoRA. | Six difficult material-v2 busts define the observed boundary; they do not prove all Needle-felt inputs fail. |
-| 3D cartoon | Five-source BF16 FLUX pilot; 27-source curated Stage 1 bank; eight-source true sequential Stage 2 probe; one strict closed-teacher target; eight-pair rank-16/200-step LoRA smoke evaluated on five pilot sources | Base FLUX often retained exaggerated eyes, CGI geometry, material, and lighting. Sequential Stage 2 produced 0/8 strict targets. The LoRA loaded and changed inference but generally became more conservative and closer to the 3D input; it was not a reliable improvement. | Base FLUX as the reproducible first attempt; then closed teacher when authorized and appropriate, otherwise record an explicit failure. Freeze the negative LoRA smoke. | The LoRA used only eight low-drift synthetic pairs; there is only one strict teacher pair. Do not generalize the negative result to all possible data or adapters. |
-| Clay | Five-source material pilot; 19-source curated Stage 1 bank; 12-source true sequential Stage 2 probe; one strict closed-teacher target | Stage 1 usually retained clay. Stage 2 sometimes naturalized the face but left clay clothing (`012`, `021`) or invented a different person (`013`, `015`); it produced 0/12 strict full-frame targets. | Stage 1, then a true Stage 1-to-Stage 2 residual-material edit; use a closed teacher only as a fallback, otherwise record failure. No LoRA with the current pair bank. | One strict teacher pair is insufficient for training. The teacher route is a proposed fallback, not a measured general solution. |
-| Origami | 24-source pair-bank review; V1/V2/V2.1 training and fixed holdouts; prompt-alignment diagnostic; final V1-100-to-Stage-2 diagnostic on `002/011/018` | Base passed about 1/6 and V1-100 about 3/6. V2/V2.1 did not beat V1. The final true residual edit rescued 0/3: `011` naturalized the face and scalp but retained a dominant folded garment. | Base or optional frozen V1 checkpoint 100, always described as limited. Residual Stage 2 is review-triggered, followed by teacher or explicit failure. Stop V2/V2.1. | Six holdouts are a small fixed qualitative set. V1 is partial, and the residual edit does not improve the aggregate strict count. |
+The review used a simple full-frame boundary: the selected result had to look like a plausible
+photograph while retaining the depicted person's recoverable attributes, pose, composition, and
+major scene content. Removing the medium by visibly changing sex, age, identity cues, a key object,
+or the subject construction was counted as failure.
 
-The reduced replication also found FLUX at 4/8 for 3D cartoon versus 6/8 for each painting-like
-style. That comparison supports the routing boundary, but its completion-informed selection and
-missing repeat round prevent confirmatory interpretation.
+| Style | Sources | Stage 1 pass | Stage 2 pass | Stage 2 rescue | Selected terminal route | Main observation |
+|---|---:|---:|---:|---:|---|---|
+| Comic | 24 | 23 | 23 | 0 | 23 Stage 1; 1 failure | Stage 1 reliably removed drawing cues. Stage 2 added no material gain. One sketch changed a key object and scene semantics. |
+| Ink | 24 | 21 | 21 | 0 | 21 Stage 1; 3 failures | Both stages usually became photographic. The three failures changed major person attributes; Stage 2 mostly sharpened rather than rescued. |
+| Watercolor | 24 | 21 | 21 | 0 | 21 Stage 1; 3 failures | Stage 1 was sufficient when successful. Three historical portraits changed major person attributes. |
+| 3D cartoon | 24 | 0 | 0 | 0 | 24 failures | CGI/cartoon geometry, material, eye shape, or lighting remained after both edits. |
+| Clay | 24 | 0 | 5 | 5 | 5 Stage 2; 19 failures | Stage 2 naturalized five faces without an observed major subject/pose change, but most outputs remained clay or sculpture. |
+| Needle-felt | 17 | 1 | 1 | 0 | 1 Stage 1; 16 failures | One synthetic portrait became plausibly photographic; the rest retained felt, doll, bust, textile, or support construction. |
+| **Total** | **137** | **66** | **71** | **5** | **71 successes; 66 failures** | Stage 2's only strict incremental gain was the five-source Clay subset. |
 
-## Final routing contract
+The exact decisions and notes are in
+[`multistyle_routing_validation_137_review_20260827.csv`](multistyle_routing_validation_137_review_20260827.csv).
+The five Clay rescues were `matv2-clay-003`, `012`, `015`, `020`, and `021`. The sole accepted
+Needle-felt result was `synthetic-needle-felt-006`. No accepted Stage 1 result regressed to failure
+under the binary review, but this does not imply Stage 2 improved it.
 
-| Input style | Default | If material/style remains | Terminal handling | Adapter status |
-|---|---|---|---|---|
-| Comic | Base FLUX Stage 1 | no default second edit | accept Stage 1 after review; otherwise failure | none |
-| Ink | Base FLUX Stage 1 | true Stage 2 for residual ink | accept Stage 2, authorized teacher, or explicit failure | none |
-| Watercolor | Base FLUX Stage 1 | no default second edit | accept Stage 1 after review; otherwise failure | none |
-| Needle-felt | Base FLUX Stage 1 as a first attempt | optional Stage 2 diagnostic | authorized teacher or explicit failure; current replacement bank is 0/6 | none |
-| Origami | Base FLUX or optional V1 checkpoint 100 | review-triggered residual Stage 2 | authorized teacher or explicit failure; residual hard-three rescue is 0/3 | freeze V1-100; stop V2/V2.1 |
-| Clay | Base FLUX Stage 1 | true Stage 1-to-Stage 2 residual-material edit | closed teacher when authorized, otherwise explicit failure | insufficient strict pairs |
-| 3D cartoon | Base FLUX | closed teacher when authorized | explicit failure | freeze negative eight-pair smoke |
+## Actual processing route
 
-The second-edit and teacher columns define handling options, not guaranteed pass paths. Do not
-silently accept a result that removes material by changing the depicted subject, crop, clothing,
-support, or composition.
+The machine-readable policy is [`../../configs/multistyle_routing.yaml`](../../configs/multistyle_routing.yaml).
+All routes remain review-gated because no automatic quality selector was trained.
 
-## Cross-experiment interpretation
+| Input style | Default route | If the result remains unacceptable | Adapter status |
+|---|---|---|---|
+| Comic | Base FLUX Stage 1 | explicit failure | none |
+| Ink | Base FLUX Stage 1 | Stage 2 only when visible ink remains; otherwise explicit failure | none |
+| Watercolor | Base FLUX Stage 1 | explicit failure | none |
+| 3D cartoon | Base FLUX Stage 1 as diagnostic only | separately authorized external teacher, otherwise explicit failure | negative eight-pair LoRA smoke frozen |
+| Clay | Base FLUX Stage 1 followed by true sequential Stage 2 | separately authorized external teacher, otherwise explicit failure | current strict pair bank is insufficient; no LoRA |
+| Needle-felt | Base FLUX Stage 1 as diagnostic only | separately authorized external teacher, otherwise explicit failure | none |
+| Origami | Base FLUX Stage 1 | optional frozen V1 checkpoint 100, then explicit failure if still unacceptable | V1-100 retained as limited; V2/V2.1 stopped |
 
-The main boundary is not simply “2D works, 3D fails.” FLUX handles many surface-style changes.
-Failure becomes persistent when style is encoded jointly in
-facial geometry, large hair/headwear masses, clothing, busts, pedestals, or scene-wide material.
-The Origami runs further show that more pairs and shorter captions are not sufficient by themselves:
-full-frame supervision coverage and instruction alignment both matter, while stronger removal can
-trade against subject preservation.
+An external teacher is an optional future fallback, not a measured success path and not active
+work. The router must never silently accept a material-removal result that changed the subject or
+pretend that an unavailable teacher output exists.
 
-This makes the negative runs useful. The 3D smoke shows that conservative synthetic pairs can teach
-near-copy behavior. Origami V2/V2.1 show that increasing a small pair bank from 23 to 51 and changing
-caption form did not move the six-source generalization boundary. The appropriate project ending is
-therefore routing and explicit failure reporting, not another automatic training cycle.
+## Relation to earlier experiments
 
-## Optional future work requiring new authorization
+The larger run confirms the earlier boundary while refining Clay:
 
-No extension below is active. If the operator later authorizes one additional adaptation study,
-Clay is the first candidate: run at most a 6--8-source closed-teacher feasibility pilot and continue
-only if roughly five targets preserve the complete subject and composition while removing clay over
-the full frame. Accumulate about 20 strict pairs before considering LoRA training. Otherwise stop.
+- the earlier six-source completion batch found Comic 6/6 at Stage 1, Ink 5/6 at Stage 2,
+  Watercolor 6/6 at Stage 1, and Needle-felt 0/6;
+- the earlier true sequential probes found 3D cartoon 0/8 and Clay 0/12 strict full-frame targets;
+- the new 24-source Clay bank shows a small 5/24 Stage 2 rescue signal, but not enough reliability or
+  paired supervision to justify a LoRA;
+- Origami Base was about 1/6 and frozen V1-100 about 3/6; V2/V2.1 and the final hard-three residual
+  edit did not improve the aggregate boundary.
 
-## Evidence map
+These are qualitative, source-specific counts. Closed-teacher targets are reconstruction
+candidates, not ground-truth natural appearances.
 
-The repository reports and local-only visual artifacts supporting this summary are catalogued in
-[`../EXPERIMENT_EVIDENCE_INDEX.md`](../EXPERIMENT_EVIDENCE_INDEX.md). Images, returned runs, model
-weights, and training packages remain outside Git.
+## Evidence and storage boundary
 
-The exact 24-source decisions are recorded in
-[`multistyle_routing_gap_v1_review_20260826.csv`](multistyle_routing_gap_v1_review_20260826.csv), and
-the final Origami diagnostic is recorded in
-[`origami_v1_residual_stage2_review_20260826.md`](origami_v1_residual_stage2_review_20260826.md).
+The returned run remains outside Git at:
+
+```text
+/Users/pot/Desktop/multistyle-routing-validation-137-v1
+```
+
+The local comparison pages remain outside Git at:
+
+```text
+/private/tmp/multistyle-validation-137-review
+```
+
+Git contains only the compact manifest, decisions, routing policy, reports, and tests. It does not
+contain source images, the 274 generated images, model weights, checkpoints, caches, or bulk logs.
+The concise evidence map is [`../EXPERIMENT_EVIDENCE_INDEX.md`](../EXPERIMENT_EVIDENCE_INDEX.md).
+
+No experiment is left active. Further training, teacher generation, new data collection, or
+additional large-batch inference requires a new operator decision rather than being treated as the
+next step of this branch.

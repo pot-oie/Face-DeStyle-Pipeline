@@ -1,25 +1,23 @@
 # AutoDL handoff — 2026-08-14
 
-## 2026-08-26 current execution boundary — 137-source routing validation prepared
+## 2026-08-27 current execution boundary — no active run
 
 Origami V2 and caption-only V2.1 both completed and failed to beat the frozen V1 checkpoint 100.
 The earlier eight-pair 3D adapter is also a negative smoke result; Clay and Needle-felt do not have
-an authorized LoRA plan. The 24-source Comic/Ink/Watercolor/Needle-felt Stage 1 and true sequential
-Stage 2 run completed 24/24 at each stage. The final Origami V1-100 residual Stage 2 diagnostic
-completed 3/3 and rescued 0/3 strict failures. The compact processing router is implemented, but
-the earlier six-per-style evidence is not enough to close the full multistyle route. The active
-inference-only task is the 137-source, six-style Stage 1/true-sequential-Stage 2 run in
-`docs/HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md`. Origami remains closed and must not be included.
+an authorized LoRA plan. The final 137-source, six-style Stage 1/true-sequential-Stage 2 run
+completed 137/137 at each stage with zero recorded runner failures. Full visual review selected 71
+outputs and recorded 66 explicit failures. The final route and result are in
+`configs/multistyle_routing.yaml` and `docs/results/multistyle_project_closure_20260826.md`.
 
-The recommended clone target is `vGPU-32GB`: the earlier real Kontext run already succeeded on an
+If a future separately authorized Kontext inference run is needed, the demonstrated economical
+clone target is `vGPU-32GB`: the real 137-source run succeeded on an
 RTX 4080 SUPER vGPU with 32 GB visible memory and reached about 24.9 GB peak allocated VRAM. This
-inference-only task does not justify the former 48GB-350W cost. Avoid unchanged BF16 execution on
+inference workload does not justify the former 48GB-350W cost. Avoid unchanged BF16 execution on
 24GB cards because the prior peak leaves very little transient-allocation headroom. Use AutoDL's
-official clone and `source /etc/network_turbo` workflow as documented in the current
-processing-router handoff, and keep validation lightweight.
+official clone and `source /etc/network_turbo` workflow, and keep validation lightweight.
 
-Only the commands in `HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md` are current. All commands below
-and in the compact processing-router record are historical.
+No command is currently active. `HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md` and all commands
+below are historical run records.
 
 ## Historical 2026-08-25 execution boundary — Origami LoRA V2
 

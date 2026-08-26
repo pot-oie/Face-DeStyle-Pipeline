@@ -1,17 +1,22 @@
 # Multistyle processing-router completion record
 
-## Compact-route status — completed; broader validation active
+## Processing-route status — completed
 
-The compact Stage 1/true-sequential-Stage 2 evidence and the human-reviewed processing router are
-complete. They do not finish the larger non-Origami validation, which is now defined in
-`docs/HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md`. The LoRA branch stays closed: do not restart
-Origami V2/V2.1, 3D style-contrast19, or any multistyle adapter.
+The compact Stage 1/true-sequential-Stage 2 evidence, human-reviewed processing router, and larger
+137-source non-Origami validation are complete. The LoRA branch stays closed: do not restart
+Origami V2/V2.1, 3D style-contrast19, or any multistyle adapter. The final policy is
+`configs/multistyle_routing.yaml` and the final result is
+`docs/results/multistyle_project_closure_20260826.md`.
 
 The 24-source run completed 24/24 Stage 1 and 24/24 true sequential Stage 2 outputs with zero runner
 failures. Strict review selected Stage 1 for 6/6 Comic and 6/6 Watercolor, selected Stage 2 for 5/6
 Ink, and rejected 6/6 replacement Needle-felt cases. The final Origami V1 residual diagnostic
 completed 3/3 but rescued 0/3 strict failures. See
 `docs/results/multistyle_project_closure_20260826.md`.
+
+The subsequent 137-source run selected 71 outputs and recorded 66 explicit failures. It added five
+Clay Stage 2 rescues; the other styles gained no strict Stage 2 rescue. No further AutoDL action is
+prescribed.
 
 ## Operator execution preference
 

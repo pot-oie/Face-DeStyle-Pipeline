@@ -1,0 +1,25 @@
+version: 1
+review_required: true
+fallback_when_unacceptable: explicit_failure
+styles:
+  comic:
+    default_route: flux_stage1
+    optional_next_route: none
+  ink:
+    default_route: flux_stage1
+    optional_next_route: flux_stage2_for_visible_residual_ink
+  watercolor:
+    default_route: flux_stage1
+    optional_next_route: none
+  3d_cartoon:
+    default_route: flux_stage1_diagnostic_only
+    optional_next_route: external_teacher_if_separately_authorized
+  clay:
+    default_route: flux_stage1_then_flux_stage2
+    optional_next_route: external_teacher_if_separately_authorized
+  needle_felt:
+    default_route: flux_stage1_diagnostic_only
+    optional_next_route: external_teacher_if_separately_authorized
+  origami:
+    default_route: flux_stage1
+    optional_next_route: frozen_v1_checkpoint_100_limited
