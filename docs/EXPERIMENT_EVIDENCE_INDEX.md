@@ -2,13 +2,17 @@
 
 ## Current reading order
 
-1. [`results/multistyle_project_closure_20260826.md`](results/multistyle_project_closure_20260826.md)
+1. [`HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md`](HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md)
+   — active processing-route completion and the next GPU phase.
+2. [`results/multistyle_processing_coverage_audit_20260826.md`](results/multistyle_processing_coverage_audit_20260826.md)
+   — actual per-style Stage 1/Stage 2 coverage and remaining gaps.
+3. [`results/multistyle_project_closure_20260826.md`](results/multistyle_project_closure_20260826.md)
    — final evidence summary and per-style routing contract.
-2. [`HANDOFF_MULTISTYLE_ROUTING_AND_PROJECT_CLOSURE.md`](HANDOFF_MULTISTYLE_ROUTING_AND_PROJECT_CLOSURE.md)
+4. [`HANDOFF_MULTISTYLE_ROUTING_AND_PROJECT_CLOSURE.md`](HANDOFF_MULTISTYLE_ROUTING_AND_PROJECT_CLOSURE.md)
    — project boundary and closure handoff.
-3. [`results/formal_v1_reduced_heldout_20260822.md`](results/formal_v1_reduced_heldout_20260822.md)
+5. [`results/formal_v1_reduced_heldout_20260822.md`](results/formal_v1_reduced_heldout_20260822.md)
    — exploratory 32-source, five-method reduced replication.
-4. [`HANDOFF_MULTISTYLE_PAIR_BANK_AND_LORA.md`](HANDOFF_MULTISTYLE_PAIR_BANK_AND_LORA.md)
+6. [`HANDOFF_MULTISTYLE_PAIR_BANK_AND_LORA.md`](HANDOFF_MULTISTYLE_PAIR_BANK_AND_LORA.md)
    — chronological pair-bank and adaptation history; not an active training plan.
 
 ## Repository-owned result records
@@ -57,6 +61,7 @@ does not duplicate the weight.
 ## Historical execution documents
 
 Files named `AUTODL_*`, older `PROMPT_*`, and the detailed pair-bank workflow are preserved to show
-how completed experiments were run. Unless a document explicitly links back to the current closure
-report, its commands and “next experiment” language describe historical state. There is no active
-AutoDL run, LoRA training, new dataset generation, or formal evaluation task.
+how completed experiments were run. Unless a document links to the active processing-router
+handoff, its commands and “next experiment” language describe historical state. No AutoDL run has
+started, and no LoRA training, new dataset generation, or formal evaluation is authorized by the
+current completion task.

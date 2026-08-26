@@ -33,3 +33,8 @@ not a silent rewrite after test results are known.
 pilot used by the completed SDXL and FLUX runs. Its raw images remain in the separate
 `Face-DeStyle-Data` root. The split is pilot/debug and must not be reassigned to calibration or
 held-out test.
+
+`multistyle-routing/missing_stage12_sources.jsonl` is a separate 24-source extension manifest for
+the lightweight processing-route completion. It reuses authorized non-test Comic, Ink, and
+Watercolor inputs and adds six replacement Needle-felt sources. It does not alter formal-v1 splits
+or authorize image redistribution.

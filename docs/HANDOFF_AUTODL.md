@@ -1,15 +1,23 @@
 # AutoDL handoff — 2026-08-14
 
-## 2026-08-26 current execution boundary — no active GPU run
+## 2026-08-26 current execution boundary — routing-gap run prepared, not started
 
 Origami V2 and caption-only V2.1 both completed and failed to beat the frozen V1 checkpoint 100.
 The earlier eight-pair 3D adapter is also a negative smoke result; Clay and Needle-felt do not have
-an authorized LoRA plan. No AutoDL command is currently prescribed. Keep the server offline unless
-the operator explicitly creates a new GPU task. The completed branch result and evidence map are
-`docs/results/multistyle_project_closure_20260826.md` and
-`docs/EXPERIMENT_EVIDENCE_INDEX.md`.
+an authorized LoRA plan. Local preparation has now frozen a 24-source Comic/Ink/Watercolor/
+Needle-felt set for the missing Stage 1/true-sequential-Stage 2 comparison. The exact future GPU
+commands are in `docs/HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md`. No GPU command has been issued;
+keep the server offline until the operator explicitly starts that phase.
 
-The execution records below are historical and must not be treated as current launch instructions.
+The recommended clone target is `vGPU-32GB`: the earlier real Kontext run already succeeded on an
+RTX 4080 SUPER vGPU with 32 GB visible memory and reached about 24.9 GB peak allocated VRAM. This
+inference-only task does not justify the former 48GB-350W cost. Avoid unchanged BF16 execution on
+24GB cards because the prior peak leaves very little transient-allocation headroom. Use AutoDL's
+official clone and `source /etc/network_turbo` workflow as documented in the current
+processing-router handoff, and keep validation lightweight.
+
+Only the routing-gap commands in that current handoff are prospective. The execution records below
+are historical and must not be treated as current launch instructions.
 
 ## Historical 2026-08-25 execution boundary — Origami LoRA V2
 

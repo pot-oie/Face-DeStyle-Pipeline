@@ -1,16 +1,23 @@
 # Multistyle adaptation branch: final result and routing report
 
+> Scope correction (2026-08-26): this report closes the LoRA/adaptation branch and records a
+> recommended routing policy. It is not evidence that a uniform Stage 1/true-sequential-Stage 2
+> matrix or executable router was completed. See
+> [`multistyle_processing_coverage_audit_20260826.md`](multistyle_processing_coverage_audit_20260826.md)
+> and [`../HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md`](../HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md).
+
 ## Scope and conclusion
 
 This report closes the multistyle adaptation branch using completed real-model runs and existing
 visual review only. No new image generation, LoRA training, metric run, or AutoDL session was used
 for this closure.
 
-The practical result is a routed system, not one universal adapter. Original-BF16 FLUX Kontext is
-the default editor. Painting-like styles and Needle-felt do not justify a style LoRA in the current
-project. Geometry/material-entangled styles remain harder: Origami has one useful but limited
-adapter, while Clay and 3D cartoon require explicit fallback or failure handling. Closed-teacher
-images are private reconstruction candidates, not ground-truth natural appearances.
+The practical adaptation result is a documented routing policy, not one universal adapter or an
+implemented routed system. Original-BF16 FLUX Kontext is the default editor. Painting-like styles
+and Needle-felt do not justify a style LoRA in the current project. Geometry/material-entangled
+styles remain harder: Origami has one useful but limited adapter, while Clay and 3D cartoon require
+explicit fallback or failure handling. Closed-teacher images are private reconstruction candidates,
+not ground-truth natural appearances.
 
 ## Evidence by style
 

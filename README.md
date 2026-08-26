@@ -10,10 +10,10 @@ is in [`docs/research_context.md`](docs/research_context.md), and the approved p
 licensing, screening, and splitting artistic images is in
 [`docs/data_acquisition.md`](docs/data_acquisition.md).
 
-The experimental branch is now closed. Start with the
-[`final multistyle result and routing report`](docs/results/multistyle_project_closure_20260826.md)
-and the [`experiment and visual evidence index`](docs/EXPERIMENT_EVIDENCE_INDEX.md). There is no
-active AutoDL run or prescribed LoRA training task.
+The style-specific LoRA branch is closed, but multistyle processing-route completion is active.
+Start with [`docs/HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md`](docs/HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md)
+and the [`processing coverage audit`](docs/results/multistyle_processing_coverage_audit_20260826.md).
+There is no active AutoDL run until the operator explicitly starts the prepared GPU phase.
 
 > “This repository is a compact and independent reproduction developed from an undergraduate
 > innovation project under the same research direction as DeStyle. It focuses on face-domain

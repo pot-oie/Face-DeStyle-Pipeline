@@ -1,8 +1,9 @@
 # Multistyle routing and project-closure handoff
 
-> Closure completed (2026-08-26): the final factual report is
-> `docs/results/multistyle_project_closure_20260826.md`, and the compact report/visual map is
-> `docs/EXPERIMENT_EVIDENCE_INDEX.md`. There is no active experiment or AutoDL run.
+> Scope correction (2026-08-26): this handoff closed the style-specific adaptation narrative, not
+> the executable multistyle processing route. Active work moved to
+> `docs/HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md`. There is no active AutoDL run until the operator
+> explicitly starts that GPU phase.
 
 ## Final decision
 
