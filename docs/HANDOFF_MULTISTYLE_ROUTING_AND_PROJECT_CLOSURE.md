@@ -1,6 +1,10 @@
 # Multistyle routing and project-closure handoff
 
-## Active decision
+> Closure completed (2026-08-26): the final factual report is
+> `docs/results/multistyle_project_closure_20260826.md`, and the compact report/visual map is
+> `docs/EXPERIMENT_EVIDENCE_INDEX.md`. There is no active experiment or AutoDL run.
+
+## Final decision
 
 The next phase is not another LoRA campaign. The project already has enough evidence to close the
 style-specific adaptation branch and consolidate a practical multistyle routing story.
@@ -77,23 +81,19 @@ single-pass LoRA retrain.
 
 This table is a research routing summary, not a claim that every source in a listed style will pass.
 
-## Next local deliverable
+## Completed local deliverable
 
-Use only existing records and visual artifacts to create one concise closure package:
+The closure package uses only existing records and visual artifacts and now contains:
 
-1. a factual multistyle result report that distinguishes completed real-model evidence from proposed
-   fallbacks;
-2. a compact visual index pointing to the best existing comparison/contact sheets without copying
-   bulk images into Git;
-3. a final per-style routing table consistent with this handoff;
-4. an updated top-level handoff/index so a future reader does not mistake old Origami V2 or 3D
-   style-contrast plans for active work;
-5. a short list of optional future extensions, clearly labeled optional and requiring new operator
-   authorization.
+1. `docs/results/multistyle_project_closure_20260826.md`, which separates completed real-model
+   evidence from proposed fallbacks and records the final per-style routes;
+2. `docs/EXPERIMENT_EVIDENCE_INDEX.md`, which points to the best existing reports and local
+   comparison sheets without copying images or weights into Git;
+3. updated entry-point and handoff text that identifies older Origami V2/V2.1 and 3D
+   style-contrast instructions as historical;
+4. one explicitly optional Clay feasibility extension, requiring new operator authorization.
 
-Prefer updating documentation and lightweight configuration over implementing a large orchestration
-system. Do not rerun formal-v1 scoring, add metric suites, rebuild archives, or create acceptance
-ceremony merely to close the project.
+No orchestration system, rerun, metric suite, or archive rebuild is part of the closure.
 
 ## Primary evidence files
 

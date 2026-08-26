@@ -10,19 +10,25 @@ is in [`docs/research_context.md`](docs/research_context.md), and the approved p
 licensing, screening, and splitting artistic images is in
 [`docs/data_acquisition.md`](docs/data_acquisition.md).
 
+The experimental branch is now closed. Start with the
+[`final multistyle result and routing report`](docs/results/multistyle_project_closure_20260826.md)
+and the [`experiment and visual evidence index`](docs/EXPERIMENT_EVIDENCE_INDEX.md). There is no
+active AutoDL run or prescribed LoRA training task.
+
 > “This repository is a compact and independent reproduction developed from an undergraduate
 > innovation project under the same research direction as DeStyle. It focuses on face-domain
 > destylization, structural conditioning, and quality filtering. It is not the official
 > implementation of DeStyle-350K.”
 
-## Research questions and scope
+## Research outcome and scope
 
-The planned 1–2 week study asks whether a two-stage destylization pipeline benefits from
-style-adaptive prompts, structural controls, and failure-aware progressive routing. It compares
-generic versus category-adaptive prompts, prompt-only generation, whole-image Canny, and
-face/background region-aware Canny. Results will be judged on content preservation, identity
-preservation, style removal, and human pass rate. A dual-threshold gate produces only accepted
-`<destylized content, style reference, original style target>` triplets.
+The completed study tested style-adaptive prompts, structural controls, original-BF16 FLUX Kontext,
+material-aware sequential editing, and small failure-targeted LoRAs. SDXL prompt/Canny variants
+reached a practical plateau, while FLUX showed a stronger signal on comic, ink, and watercolor.
+Geometry/material-entangled styles remained harder. Origami V1 checkpoint 100 is retained as a
+limited adapter at about 3/6 strict holdout passes; Origami V2/V2.1 and the eight-pair 3D LoRA did
+not improve the selected boundary. The final output is an evidence-backed per-style route, not a
+universal multistyle adapter.
 
 This repository owns code, small public examples, configuration, tests, and documentation. It
 does not contain DeStyle-350K, model weights, full datasets, private faces, caches, checkpoints, or
@@ -38,7 +44,7 @@ environment. Durable agent rules, including mainland mirror/proxy cautions, are 
 server setup is in `docs/autodl_setup.md`. Credentials and live connection details are never stored
 in the repository.
 
-## Implemented versus planned
+## Implemented and evaluated
 
 Implemented: strict Pydantic records, JSONL validation, stable metadata IDs, OpenCV Canny,
 manual/center masks for smoke testing, a no-op copy backend, a prompt-only SDXL image-to-image
@@ -50,21 +56,20 @@ exploratory FLUX probe have completed 20-source pilot generation; this is not fo
 quality validation.
 Local Diffusers tests inject mock pipelines and never download a model.
 
-The AutoDL-only formal evaluator is implemented as a checkpointed local-asset runner for DINOv2,
-CLIP, paired ArcFace drift diagnostics, and a structured Qwen2.5-VL rubric. See
-[`docs/HANDOFF_EVALUATION.md`](docs/HANDOFF_EVALUATION.md) before its first real-model run. Raw
-cosines and rubric scores require human calibration; they are not acceptance probabilities.
+The AutoDL-only formal evaluator ran on the primary pilot with DINOv2, CLIP, paired ArcFace drift
+diagnostics, and a structured Qwen2.5-VL rubric. The human test was ultimately completed as a
+32-source, five-method reduced post-unblinding replication, not the abandoned confirmatory design;
+see [`docs/results/formal_v1_reduced_heldout_20260822.md`](docs/results/formal_v1_reduced_heldout_20260822.md).
+Raw cosines and rubric scores are diagnostics, not acceptance probabilities.
 
-Method-hidden pilot review can be prepared with `scripts/build_blind_review.py` and summarized only
-after both rounds are frozen with `scripts/summarize_blind_review.py`. The private unblinding key is
-kept outside the reviewer bundle.
+Historical method-hidden review tooling and its private unblinding material remain preserved. The
+operator ended the planned 300-candidate test and repeat round; they must not be restarted or
+described as unfinished requirements.
 
-Declared for AutoDL, but not yet GPU-verified: pose/depth extraction, DINO/CLIP/SigLIP content or
-semantic similarity, ArcFace identity similarity, and VLM style-removal
-scoring. `configs/models.yaml` records expected server assets and licenses;
-`configs/experiments.yaml` declares primary and extension comparisons. The copy backend is only
-plumbing validation and is not an experimental result. A GPU smoke test must not be described as a
-controlled or evaluated method.
+Pose/depth extraction and SigLIP remain unverified extensions. `configs/models.yaml` records
+expected server assets and licenses; `configs/experiments.yaml` preserves the declared comparison
+matrix. The copy backend is only plumbing validation and is not an experimental result. Historical
+GPU commands reproduce earlier work but do not authorize a new run.
 
 ## Installation
 
@@ -111,6 +116,8 @@ smoke evaluator uses an explicitly labeled, unmeasured style-removal sentinel so
 can be exercised. Do not report it as a scientific metric.
 
 ## First AutoDL Diffusers baseline
+
+This section is a historical reproduction example, not an active experiment instruction.
 
 The first GPU baseline uses `stabilityai/stable-diffusion-xl-base-1.0` at revision
 `462165984030d82259a11f4367a4eed129e94a7b` through `AutoPipelineForImage2Image`. It performs
@@ -190,19 +197,19 @@ style_category, target_source_id, reference_source_id
 Only accepted samples are used. Reference and target share a style category but cannot share a
 `source_id`.
 
-## Planned evaluation and ablations
+## Completed evaluation and routing
 
-Formal evaluation will calibrate thresholds against a human-annotated validation set and report:
+The repository records:
 
 - DINO/CLIP content preservation;
-- ArcFace identity preservation;
-- VLM style removal;
-- human acceptance rate.
+- paired ArcFace face-drift diagnostics with explicit no-face handling;
+- structured VLM style-removal output;
+- human strict-pass decisions and limitations.
 
-The planned comparisons are generic versus adaptive prompts; prompt-only versus global Canny versus
-face/background region-aware Canny; and predeclared failure-aware routing after uniform methods
-plateau. Seeds, model revisions, prompts, control strengths, and threshold calibration must be
-recorded.
+The final route uses Base FLUX for comic, ink, watercolor, and Needle-felt; optional frozen Origami
+V1 checkpoint 100 plus residual-region fallback for Origami; sequential editing and teacher/failure
+handling for Clay; and Base/teacher/failure handling for 3D cartoon. Exact evidence and limitations
+are in the closure report. No new LoRA, selector, or formal rerun is active.
 
 ## Repository layout
 

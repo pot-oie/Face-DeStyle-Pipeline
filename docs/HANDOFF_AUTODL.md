@@ -5,22 +5,23 @@
 Origami V2 and caption-only V2.1 both completed and failed to beat the frozen V1 checkpoint 100.
 The earlier eight-pair 3D adapter is also a negative smoke result; Clay and Needle-felt do not have
 an authorized LoRA plan. No AutoDL command is currently prescribed. Keep the server offline unless
-the operator explicitly creates a new GPU task. The active next-window handoff is
-`docs/HANDOFF_MULTISTYLE_ROUTING_AND_PROJECT_CLOSURE.md`.
+the operator explicitly creates a new GPU task. The completed branch result and evidence map are
+`docs/results/multistyle_project_closure_20260826.md` and
+`docs/EXPERIMENT_EVIDENCE_INDEX.md`.
 
 The execution records below are historical and must not be treated as current launch instructions.
 
 ## Historical 2026-08-25 execution boundary — Origami LoRA V2
 
-The active next server experiment is the fresh 51-pair Origami V2 adapter described in
+At that time, the next server experiment was the fresh 51-pair Origami V2 adapter described in
 `docs/AUTODL_ORIGAMI_LORA_V2.md`. The local package combines the unchanged 23-pair strict V1
 dataset with 28 independently accepted difficult pairs and excludes hard V2 IDs `021` and `023`.
-Wait until the operator explicitly reports that AutoDL is online. Then use `screen`, not `tmux`,
-and train from the base Kontext model at rank 16, learning rate `1e-4`, effective batch 4, and at
-most 200 steps, saving checkpoints 50/100/150/200. Never resume the frozen V1 checkpoint 100.
+The run later used `screen` and trained from the base Kontext model at rank 16, learning rate
+`1e-4`, effective batch 4, and 200 steps, saving checkpoints 50/100/150/200. These details are
+provenance, not instructions to rerun it. The frozen V1 checkpoint 100 must not be resumed.
 
-The older execution boundaries below are historical records and do not override this current
-operator-directed experiment.
+All execution boundaries below are historical records and do not override the current no-run
+boundary at the top of this file.
 
 Training completion update: the V2 run reached 200/200 and saved valid weights at checkpoints
 50/100/150/200 plus the final adapter under
@@ -151,7 +152,7 @@ conda run -n face-destyle ruff check .
 conda run -n face-destyle pytest
 ```
 
-## First AutoDL commands after commit and push
+## Historical environment bootstrap (not an active run)
 
 ```bash
 conda activate face-destyle

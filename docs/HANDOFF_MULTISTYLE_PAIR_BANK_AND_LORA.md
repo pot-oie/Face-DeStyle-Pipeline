@@ -12,8 +12,8 @@ documents remain useful history, but their freezes, blind review, acceptance gat
 prescribed next steps are not active requirements. Follow the operator policy at the top of
 `AGENTS.md`: keep the work lightweight, visually interpretable, and useful for the research story.
 
-The active goal is no longer to rescue one tiny LoRA run. It is to build a credible small-scale
-research project around a repeatable sequence:
+At that stage, the goal shifted away from rescuing one tiny LoRA run and toward a repeatable
+small-scale research sequence:
 
 1. identify style classes that a strong editor still fails to remove;
 2. collect a larger bank of genuine styled portrait inputs;
@@ -157,7 +157,7 @@ The first eight-pair LoRA remains on AutoDL under approximately
 `/root/autodl-tmp/face-destyle/outputs/3d-destyle-lora-smoke-r16-steps200`. Preserve it as the
 conservative negative baseline. Do not overwrite or continue its checkpoint.
 
-## Active data-construction strategy
+## Historical data-construction strategy
 
 ### 1. Curate genuine styled source banks
 
@@ -225,7 +225,7 @@ Begin with human selection and optional VLM suggestions. After roughly 100--200 
 exist, a lightweight ranking model or structured VLM scorer can be studied. Do not train a scorer
 before there are meaningful labels, and do not collapse the three concepts into one opaque score.
 
-## Immediate next work for the main implementation window
+## Chronology of the completed implementation windows
 
 Update (2026-08-24): all three curated Stage 1 batches completed on AutoDL and were reviewed
 locally: 27 3D, 19 Clay, and 24 Origami outputs, all with zero runner failures. Fourteen Origami
@@ -301,10 +301,11 @@ dataset is exactly 51 pairs. This is enough for the next experiment; do not gene
 testing it. Package inventory, accepted IDs, and the review rationale are recorded in
 `docs/results/origami_hard_pairs_v2_review_20260825.md`.
 
-The next local task is to create a repository-owned V2 selection manifest, normalize the delivered
-absolute CSV paths to portable source-relative metadata, build and visually check the 51-pair
-ImageFolder package, and prepare a fresh rank-16/200-step run. Do not modify the original 23-pair
-dataset and do not train directly from the generation window's 30-row `selected_pairs.csv`.
+The subsequent local task created a repository-owned V2 selection manifest, normalized the
+delivered absolute CSV paths to portable source-relative metadata, built and visually checked the
+51-pair ImageFolder package, and prepared the fresh rank-16/200-step run. It did not modify the
+original 23-pair dataset or train directly from the generation window's 30-row
+`selected_pairs.csv`.
 
 Origami V2 result update (2026-08-25): the exact 51-pair dataset trained successfully from Base for
 200 steps and saved checkpoints 50/100/150/200. The unchanged six-holdout comparison completed for

@@ -1,5 +1,9 @@
 # Prompt for the next multistyle routing and closure window
 
+> Completed on 2026-08-26. Do not repeat this prompt as an active task. Read
+> `docs/results/multistyle_project_closure_20260826.md` and
+> `docs/EXPERIMENT_EVIDENCE_INDEX.md` for the final result and evidence map.
+
 Continue `Face-DeStyle-Pipeline` from the completed Origami V1/V2/V2.1 experiments and the earlier
 3D, Clay, Needle-felt, comic, ink, and watercolor investigations.
 
