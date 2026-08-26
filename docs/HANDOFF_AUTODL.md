@@ -1,14 +1,15 @@
 # AutoDL handoff — 2026-08-14
 
-## 2026-08-26 current execution boundary — all prescribed runs complete
+## 2026-08-26 current execution boundary — 137-source routing validation prepared
 
 Origami V2 and caption-only V2.1 both completed and failed to beat the frozen V1 checkpoint 100.
 The earlier eight-pair 3D adapter is also a negative smoke result; Clay and Needle-felt do not have
 an authorized LoRA plan. The 24-source Comic/Ink/Watercolor/Needle-felt Stage 1 and true sequential
 Stage 2 run completed 24/24 at each stage. The final Origami V1-100 residual Stage 2 diagnostic
-completed 3/3 and rescued 0/3 strict failures. The processing router and final report are complete.
-No further AutoDL action is prescribed; the cloned inference card may be stopped after the operator
-confirms local downloads.
+completed 3/3 and rescued 0/3 strict failures. The compact processing router is implemented, but
+the earlier six-per-style evidence is not enough to close the full multistyle route. The active
+inference-only task is the 137-source, six-style Stage 1/true-sequential-Stage 2 run in
+`docs/HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md`. Origami remains closed and must not be included.
 
 The recommended clone target is `vGPU-32GB`: the earlier real Kontext run already succeeded on an
 RTX 4080 SUPER vGPU with 32 GB visible memory and reached about 24.9 GB peak allocated VRAM. This
@@ -17,8 +18,8 @@ inference-only task does not justify the former 48GB-350W cost. Avoid unchanged 
 official clone and `source /etc/network_turbo` workflow as documented in the current
 processing-router handoff, and keep validation lightweight.
 
-All commands in the processing-router record and below are historical and must not be treated as
-current launch instructions.
+Only the commands in `HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md` are current. All commands below
+and in the compact processing-router record are historical.
 
 ## Historical 2026-08-25 execution boundary — Origami LoRA V2
 

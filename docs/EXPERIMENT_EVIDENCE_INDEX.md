@@ -2,21 +2,23 @@
 
 ## Current reading order
 
-1. [`results/multistyle_project_closure_20260826.md`](results/multistyle_project_closure_20260826.md)
-   — final evidence summary, strict outcomes, and per-style routing contract.
-2. [`results/multistyle_routing_gap_v1_review_20260826.csv`](results/multistyle_routing_gap_v1_review_20260826.csv)
+1. [`HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md`](HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md)
+   — active six-style, 137-source Stage 1/true-sequential-Stage 2 validation.
+2. [`results/multistyle_project_closure_20260826.md`](results/multistyle_project_closure_20260826.md)
+   — interim evidence summary; Origami is closed, other style routes remain provisional.
+3. [`results/multistyle_routing_gap_v1_review_20260826.csv`](results/multistyle_routing_gap_v1_review_20260826.csv)
    — all 24 Comic/Ink/Watercolor/Needle-felt Stage 1/Stage 2 decisions.
-3. [`results/origami_v1_residual_stage2_review_20260826.md`](results/origami_v1_residual_stage2_review_20260826.md)
+4. [`results/origami_v1_residual_stage2_review_20260826.md`](results/origami_v1_residual_stage2_review_20260826.md)
    — final three-source V1-100 residual-edit review; 0/3 strict rescues.
-4. [`HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md`](HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md)
+5. [`HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md`](HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md)
    — completed run record and executable human-review router usage.
-5. [`results/multistyle_processing_coverage_audit_20260826.md`](results/multistyle_processing_coverage_audit_20260826.md)
+6. [`results/multistyle_processing_coverage_audit_20260826.md`](results/multistyle_processing_coverage_audit_20260826.md)
    — pre-completion coverage audit that identified the resolved gaps.
-6. [`HANDOFF_MULTISTYLE_ROUTING_AND_PROJECT_CLOSURE.md`](HANDOFF_MULTISTYLE_ROUTING_AND_PROJECT_CLOSURE.md)
+7. [`HANDOFF_MULTISTYLE_ROUTING_AND_PROJECT_CLOSURE.md`](HANDOFF_MULTISTYLE_ROUTING_AND_PROJECT_CLOSURE.md)
    — project boundary and closure handoff.
-7. [`results/formal_v1_reduced_heldout_20260822.md`](results/formal_v1_reduced_heldout_20260822.md)
+8. [`results/formal_v1_reduced_heldout_20260822.md`](results/formal_v1_reduced_heldout_20260822.md)
    — exploratory 32-source, five-method reduced replication.
-8. [`HANDOFF_MULTISTYLE_PAIR_BANK_AND_LORA.md`](HANDOFF_MULTISTYLE_PAIR_BANK_AND_LORA.md)
+9. [`HANDOFF_MULTISTYLE_PAIR_BANK_AND_LORA.md`](HANDOFF_MULTISTYLE_PAIR_BANK_AND_LORA.md)
    — chronological pair-bank and adaptation history; not an active training plan.
 
 ## Repository-owned result records
@@ -76,5 +78,6 @@ The final returned evidence also remains outside Git:
 
 Files named `AUTODL_*`, older `PROMPT_*`, and the detailed pair-bank workflow are preserved to show
 how completed experiments were run. Their commands and “next experiment” language describe
-historical state. All prescribed routing-gap inference is complete; no LoRA training, new dataset
-generation, formal evaluation, or additional AutoDL run is authorized.
+historical state. The only active AutoDL work is the declared non-Origami 137-source inference
+validation. No LoRA training, new dataset generation, Origami rerun, teacher generation, or formal
+metric suite is authorized.

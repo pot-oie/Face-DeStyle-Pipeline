@@ -1,15 +1,18 @@
-# Final multistyle result and processing-routing report
+# Interim multistyle result report — Origami branch closed
 
-> Finalized 2026-08-26 after the missing 24-source Stage 1/true-sequential-Stage 2 run, the
-> three-source Origami V1 residual-Stage 2 diagnostic, and implementation of the human-reviewed
-> manifest/record router. No experiment is left active by this report.
+> Scope correction: Origami is fully closed, and the 24-source Stage 1/true-sequential-Stage 2 run
+> establishes initial routes for four styles. It is not the final large-batch validation of the
+> complete non-Origami route. That active task is frozen in
+> [`../HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md`](../HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md).
 
 ## Scope and conclusion
 
-This report closes both the adaptation branch and the missing processing-route branch. The final
-completion run added 24 Stage 1 outputs and 24 true sequential Stage 2 outputs for Comic, Ink,
+This report closes the Origami adaptation branch and records the first implemented processing-route
+evidence. The compact completion run added 24 Stage 1 outputs and 24 true sequential Stage 2
+outputs for Comic, Ink,
 Watercolor, and the replacement Needle-felt bank. It also tested three frozen Origami V1 outputs
-through a true residual edit. No new LoRA was trained.
+through a true residual edit. No new LoRA was trained. The non-Origami routing claims remain
+provisional until the 137-source validation and terminal-route review finish.
 
 The result is not one universal adapter or an automatic quality selector. Original-BF16 FLUX
 Kontext is the default editor, while a lightweight executable router turns explicit human decisions

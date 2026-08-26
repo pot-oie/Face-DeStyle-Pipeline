@@ -10,10 +10,11 @@ is in [`docs/research_context.md`](docs/research_context.md), and the approved p
 licensing, screening, and splitting artistic images is in
 [`docs/data_acquisition.md`](docs/data_acquisition.md).
 
-The style-specific LoRA branch and multistyle processing-route work are complete. Start with the
-[`final multistyle report`](docs/results/multistyle_project_closure_20260826.md) and
-[`experiment evidence index`](docs/EXPERIMENT_EVIDENCE_INDEX.md). There is no active AutoDL run or
-unfinished experiment.
+The Origami adaptation branch is closed, while broader non-Origami routing validation is active.
+Start with [`docs/HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md`](docs/HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md),
+which freezes a 137-source, six-style Stage 1/true-sequential-Stage 2 run. The earlier 24-source
+result established the workflow and initial route hypotheses; it is not the final large-batch
+validation.
 
 > “This repository is a compact and independent reproduction developed from an undergraduate
 > innovation project under the same research direction as DeStyle. It focuses on face-domain
@@ -22,13 +23,14 @@ unfinished experiment.
 
 ## Research outcome and scope
 
-The completed study tested style-adaptive prompts, structural controls, original-BF16 FLUX Kontext,
+The study has tested style-adaptive prompts, structural controls, original-BF16 FLUX Kontext,
 material-aware sequential editing, and small failure-targeted LoRAs. SDXL prompt/Canny variants
 reached a practical plateau, while FLUX showed a stronger signal on comic, ink, and watercolor.
 Geometry/material-entangled styles remained harder. Origami V1 checkpoint 100 is retained as a
 limited adapter at about 3/6 strict holdout passes; Origami V2/V2.1 and the eight-pair 3D LoRA did
-not improve the selected boundary. The final output is an evidence-backed per-style route, not a
-universal multistyle adapter.
+not improve the selected boundary. The Origami result is frozen, but the final non-Origami
+per-style route awaits the declared 137-source validation; no universal multistyle adapter is
+planned.
 
 This repository owns code, small public examples, configuration, tests, and documentation. It
 does not contain DeStyle-350K, model weights, full datasets, private faces, caches, checkpoints, or
@@ -207,11 +209,11 @@ The repository records:
 - structured VLM style-removal output;
 - human strict-pass decisions and limitations.
 
-The final route accepts one-stage Base FLUX for Comic and Watercolor, uses a review-triggered second
-edit for Ink, and records explicit fallback/failure handling for Needle-felt. Origami retains the
-optional frozen V1 checkpoint 100 plus a limited residual edit; Clay and 3D cartoon retain
-teacher/failure handling. Exact evidence and limitations are in the closure report. No new LoRA,
-selector, formal rerun, or GPU experiment is active.
+The preliminary route accepts one-stage Base FLUX for Comic and Watercolor, uses a review-triggered
+second edit for Ink, and records explicit fallback/failure handling for Needle-felt. Origami retains
+the optional frozen V1 checkpoint 100 plus a limited residual edit; Clay and 3D cartoon retain
+teacher/failure handling. These non-Origami routes must now be checked on the frozen 137-source
+validation bank. No new LoRA, selector, formal rerun, or Origami experiment is active.
 
 ## Repository layout
 

@@ -1,9 +1,10 @@
 # Multistyle processing-router completion record
 
-## Final status — completed 2026-08-26
+## Compact-route status — completed; broader validation active
 
-The missing Stage 1/true-sequential-Stage 2 evidence and the human-reviewed processing router are
-complete. No GPU or training task remains active. The LoRA branch stays closed: do not restart
+The compact Stage 1/true-sequential-Stage 2 evidence and the human-reviewed processing router are
+complete. They do not finish the larger non-Origami validation, which is now defined in
+`docs/HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md`. The LoRA branch stays closed: do not restart
 Origami V2/V2.1, 3D style-contrast19, or any multistyle adapter.
 
 The 24-source run completed 24/24 Stage 1 and 24/24 true sequential Stage 2 outputs with zero runner
