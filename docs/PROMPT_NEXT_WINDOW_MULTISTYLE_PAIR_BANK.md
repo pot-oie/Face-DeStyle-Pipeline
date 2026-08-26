@@ -1,5 +1,9 @@
 # Prompt for the next main implementation window
 
+> Superseded on 2026-08-26 by
+> `docs/PROMPT_NEXT_WINDOW_MULTISTYLE_ROUTING_AND_CLOSURE.md`. The V2 and V2.1 runs completed without
+> beating Origami V1; do not execute the training plan below as an active task.
+
 Continue `Face-DeStyle-Pipeline` from the completed first Origami LoRA experiment and the completed,
 independently reviewed hard-pair expansion. The operator has temporarily shut down AutoDL. Do not
 attempt remote commands until the operator explicitly reports that the instance is running again.

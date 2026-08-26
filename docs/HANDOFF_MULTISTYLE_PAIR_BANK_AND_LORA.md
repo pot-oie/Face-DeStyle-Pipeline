@@ -1,5 +1,9 @@
 # Multistyle reconstruction pair bank and targeted LoRA handoff
 
+> Closure update (2026-08-26): this file preserves the pair-bank and training history. Active work
+> has moved to `docs/HANDOFF_MULTISTYLE_ROUTING_AND_PROJECT_CLOSURE.md`. Do not infer a new LoRA run
+> from older plans below.
+
 ## Status and authority
 
 This handoff records the active research direction as of 2026-08-24. It supersedes the immediate

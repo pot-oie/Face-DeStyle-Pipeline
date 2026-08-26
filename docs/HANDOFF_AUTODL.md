@@ -1,6 +1,16 @@
 # AutoDL handoff — 2026-08-14
 
-## 2026-08-25 current execution boundary — Origami LoRA V2
+## 2026-08-26 current execution boundary — no active GPU run
+
+Origami V2 and caption-only V2.1 both completed and failed to beat the frozen V1 checkpoint 100.
+The earlier eight-pair 3D adapter is also a negative smoke result; Clay and Needle-felt do not have
+an authorized LoRA plan. No AutoDL command is currently prescribed. Keep the server offline unless
+the operator explicitly creates a new GPU task. The active next-window handoff is
+`docs/HANDOFF_MULTISTYLE_ROUTING_AND_PROJECT_CLOSURE.md`.
+
+The execution records below are historical and must not be treated as current launch instructions.
+
+## Historical 2026-08-25 execution boundary — Origami LoRA V2
 
 The active next server experiment is the fresh 51-pair Origami V2 adapter described in
 `docs/AUTODL_ORIGAMI_LORA_V2.md`. The local package combines the unchanged 23-pair strict V1
