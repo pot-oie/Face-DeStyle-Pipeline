@@ -19,6 +19,11 @@ official clone and `source /etc/network_turbo` workflow, and keep validation lig
 No command is currently active. `HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md` and all commands
 below are historical run records.
 
+A later display-only extension also completed 20/20 Stage 1 and 20/20 true sequential Stage 2
+outputs for 10 selected 3D-cartoon and 10 selected Needle-felt sources. It used no LoRA and does not
+change the 137-source counts. The review is in
+`docs/results/showcase_refinement_20_review_20260827.md`; no further GPU work is active.
+
 ## Historical 2026-08-25 execution boundary — Origami LoRA V2
 
 At that time, the next server experiment was the fresh 51-pair Origami V2 adapter described in

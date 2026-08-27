@@ -6,27 +6,32 @@
    — final evidence summary and actual seven-style processing route.
 2. [`results/multistyle_routing_validation_137_review_20260827.csv`](results/multistyle_routing_validation_137_review_20260827.csv)
    — all 137 Stage 1/true-sequential-Stage 2 visual decisions and terminal routes.
-3. [`HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md`](HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md)
+3. [`PORTFOLIO_PROJECT_STORY.md`](PORTFOLIO_PROJECT_STORY.md)
+   — curated project narrative, resume bullets, interview explanation, and showcase order.
+4. [`results/showcase_refinement_20_review_20260827.md`](results/showcase_refinement_20_review_20260827.md)
+   — post-closure 3D/Needle-felt display extension and exact claim boundary.
+5. [`HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md`](HANDOFF_MULTISTYLE_ROUTING_VALIDATION_137.md)
    — completed run instructions and returned-run record.
-4. [`results/multistyle_routing_gap_v1_review_20260826.csv`](results/multistyle_routing_gap_v1_review_20260826.csv)
+6. [`results/multistyle_routing_gap_v1_review_20260826.csv`](results/multistyle_routing_gap_v1_review_20260826.csv)
    — all 24 Comic/Ink/Watercolor/Needle-felt Stage 1/Stage 2 decisions.
-5. [`results/origami_v1_residual_stage2_review_20260826.md`](results/origami_v1_residual_stage2_review_20260826.md)
+7. [`results/origami_v1_residual_stage2_review_20260826.md`](results/origami_v1_residual_stage2_review_20260826.md)
    — final three-source V1-100 residual-edit review; 0/3 strict rescues.
-6. [`HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md`](HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md)
+8. [`HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md`](HANDOFF_MULTISTYLE_PROCESSING_ROUTER.md)
    — completed run record and executable human-review router usage.
-7. [`results/multistyle_processing_coverage_audit_20260826.md`](results/multistyle_processing_coverage_audit_20260826.md)
+9. [`results/multistyle_processing_coverage_audit_20260826.md`](results/multistyle_processing_coverage_audit_20260826.md)
    — pre-completion coverage audit that identified the resolved gaps.
-8. [`HANDOFF_MULTISTYLE_ROUTING_AND_PROJECT_CLOSURE.md`](HANDOFF_MULTISTYLE_ROUTING_AND_PROJECT_CLOSURE.md)
+10. [`HANDOFF_MULTISTYLE_ROUTING_AND_PROJECT_CLOSURE.md`](HANDOFF_MULTISTYLE_ROUTING_AND_PROJECT_CLOSURE.md)
    — project boundary and closure handoff.
-9. [`results/formal_v1_reduced_heldout_20260822.md`](results/formal_v1_reduced_heldout_20260822.md)
+11. [`results/formal_v1_reduced_heldout_20260822.md`](results/formal_v1_reduced_heldout_20260822.md)
    — exploratory 32-source, five-method reduced replication.
-10. [`HANDOFF_MULTISTYLE_PAIR_BANK_AND_LORA.md`](HANDOFF_MULTISTYLE_PAIR_BANK_AND_LORA.md)
+12. [`HANDOFF_MULTISTYLE_PAIR_BANK_AND_LORA.md`](HANDOFF_MULTISTYLE_PAIR_BANK_AND_LORA.md)
    — chronological pair-bank and adaptation history; not an active training plan.
 
 ## Repository-owned result records
 
 | Evidence | What it supports | Status |
 |---|---|---|
+| [`results/showcase_refinement_20_review_20260827.md`](results/showcase_refinement_20_review_20260827.md) and [`results/showcase_refinement_20_review_20260827.csv`](results/showcase_refinement_20_review_20260827.csv) | 20/20 two-stage 3D/Needle-felt display extension; one primary plus three backup 3D examples and four selected Needle-felt semantic reconstructions | completed display-oriented review; excluded from finalized 137-source counts |
 | [`results/multistyle_routing_validation_137_review_20260827.csv`](results/multistyle_routing_validation_137_review_20260827.csv) | 137/137 Stage 1 and true Stage 2 visual decisions: 71 selected successes, 66 explicit failures, and five Clay Stage 2 rescues | completed final routing review |
 | [`results/multistyle_routing_gap_v1_review_20260826.csv`](results/multistyle_routing_gap_v1_review_20260826.csv) | 24/24 Stage 1 and 24/24 true Stage 2 visual decisions: Comic 6/6 Stage 1, Ink 5/6 Stage 2, Watercolor 6/6 Stage 1, Needle-felt 0/6 | completed full-bank review |
 | [`results/origami_v1_residual_stage2_review_20260826.md`](results/origami_v1_residual_stage2_review_20260826.md) | V1-100 residual Stage 2 rescues 0/3 strict hard failures; `011` is local face improvement only | completed final inference diagnostic |
@@ -44,6 +49,7 @@ The compact visual set is intentionally not tracked by Git:
 
 ```text
 /Users/pot/Documents/大创/实验归档/showcase-20260825
+/Users/pot/Documents/大创/实验归档/portfolio-showcase-20260827
 ```
 
 These paths are machine-local evidence pointers. They are not redistribution links and may not
@@ -64,6 +70,17 @@ exist on another checkout.
 | `11-origami-prompt-alignment-hard3.jpg` | V2-200 source-specific prompts on `002`, `011`, `018` | only `011` strictly passes; wording mismatch is contributory but not sufficient |
 | `12-origami-v21-clip77-negative.jpg` | V2.1 checkpoints on the six fixed holdouts | shorter CLIP-safe captions do not solve full-subject residual material |
 
+The later `portfolio-showcase-20260827` folder is the recommended presentation layer:
+
+| File | Comparison shown | Use |
+|---|---|---|
+| `00-seven-style-overview.jpg` | one selected input/result pair for all seven styles | opening project overview |
+| `01-direct-stage1-2d.jpg` | Comic, Ink, and Watercolor input / Base Stage 1 | direct-route evidence |
+| `02-clay-stage2-rescue.jpg` | three Clay input / Stage 1 / true Stage 2 rows | sequential-rescue explanation |
+| `03-needle-felt-semantic-reconstruction.jpg` | four Needle-felt input / semantic Stage 1 / Stage 2 rows | semantic reconstruction and stage-selection explanation |
+| `04-3d-progressive-refinement.jpg` | generic, targeted, and closed-teacher 3D outcomes | difficult-style boundary and improvement path |
+| `05-origami-v1-limited-adapter.jpg` | three Origami input / Base / V1-100 rows | limited adapter result |
+
 Full archives, source images, pair packages, logs, and checkpoint weights remain under the local
 experiment archive or AutoDL data disk. They must not be copied into this repository. The selected
 Origami V1 checkpoint 100 is identified in the V1 report by its server path and SHA-256; this index
@@ -77,6 +94,7 @@ The final returned evidence also remains outside Git:
 | `multistyle-routing-gap-v1` | 24 Stage 1 outputs and their 24 true sequential Stage 2 outputs | `results/multistyle_routing_gap_v1_review_20260826.csv` |
 | `origami-lora-heldout-base-ckpt100-200-300-seed42/checkpoint-100` | frozen V1 checkpoint 100 inputs for the final residual edit | `results/origami_lora_holdout_review_20260824.md` |
 | `origami-v1ckpt100-residual-stage2-hard3-seed42` | `002/011/018` after V1 output to Base residual Stage 2 | `results/origami_v1_residual_stage2_review_20260826.md` |
+| `showcase-refinement-20-v1` | 10 3D-cartoon and 10 Needle-felt Stage 1 plus true Stage 2 display candidates | `results/showcase_refinement_20_review_20260827.md` |
 
 ## Historical execution documents
 

@@ -1,0 +1,21 @@
+style_category,source_id,stage1_display,stage2_display,selected_route,portfolio_role,review_notes
+3d_cartoon,synthetic-3d-cartoon-001,no,no,not_selected,none,Large eyes and smooth rendered skin remain after both stages.
+3d_cartoon,synthetic-3d-cartoon-002,no,no,not_selected,none,Facial anatomy improves but the result remains visibly rendered and waxy.
+3d_cartoon,synthetic-3d-cartoon-003,backup,yes,showcase_stage2,primary,Targeted reconstruction reduces cartoon geometry while retaining gaze clothing greenhouse composition and palette.
+3d_cartoon,synthetic-3d-cartoon-006,no,no,teacher_comparator,diagnostic,Open-model stages remain rendered; the existing closed-teacher output is retained as the stronger ceiling example.
+3d_cartoon,synthetic-3d-cartoon-007,no,no,not_selected,none,Age and pose remain stable but hair skin and lighting still read as CG.
+3d_cartoon,synthetic-3d-cartoon-011,no,no,not_selected,none,Subject and workshop scene are stable but the output remains a polished 3D portrait.
+3d_cartoon,synthetic-3d-cartoon-015,no,no,not_selected,none,The face remains animation-like despite improved local anatomy.
+3d_cartoon,synthetic-3d-cartoon-017,yes,backup,showcase_stage1,backup,Stage 1 gives a useful reconstruction but enlarged eyes and smooth lighting remain visible.
+3d_cartoon,synthetic-3d-cartoon-021,yes,backup,showcase_stage1,backup,Stage 1 preserves the laboratory scene and person while moving toward a photographic portrait.
+3d_cartoon,synthetic-3d-cartoon-024,yes,backup,showcase_stage1,backup,Stage 1 is a stable realistic reconstruction though some polished-render texture remains.
+needle_felt,matv2-needle-felt-002,no,no,not_selected,none,The bust edge and support construction remain visible.
+needle_felt,matv2-needle-felt-003,yes,backup,showcase_stage1,primary,Stage 1 converts the bust into a coherent portrait with stable pose hair palette and clothing semantics.
+needle_felt,matv2-needle-felt-005,yes,backup,showcase_stage1,primary,Stage 1 produces the strongest natural portrait while preserving age gaze hairstyle and palette.
+needle_felt,matv2-needle-felt-007,no,no,not_selected,none,Felt clothing and the circular bust support remain.
+needle_felt,matv2-needle-felt-009,conditional,conditional,not_selected,none,The face is plausible but the circular support and doll construction remain conspicuous.
+needle_felt,matv2-needle-felt-010,no,no,not_selected,none,The result remains a stylized textile bust rather than a full portrait reconstruction.
+needle_felt,matv2-needle-felt-012,no,no,not_selected,none,Facial material improves but the bust base and constructed garment remain.
+needle_felt,synthetic-needle-felt-009,no,no,not_selected,none,Doll-like facial proportions and the bust base remain after both stages.
+needle_felt,synthetic-needle-felt-011,yes,backup,showcase_stage1,primary,Stage 1 removes the bust support and produces coherent shoulders clothing and natural facial material.
+needle_felt,synthetic-needle-felt-012,yes,backup,showcase_stage1,primary,Stage 1 gives a complete waist-up portrait with strong age hair palette and expression continuity.

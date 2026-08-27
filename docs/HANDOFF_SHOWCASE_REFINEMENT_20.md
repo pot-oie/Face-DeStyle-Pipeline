@@ -1,8 +1,17 @@
 # AutoDL handoff: 20-source showcase refinement
 
-This is a display-oriented lightweight inference extension, not a reopening of the finalized
-137-source routing validation. It runs 10 selected 3D-cartoon sources and 10 selected needle-felt
-sources through two sequential FLUX.1 Kontext edits, producing up to 40 candidate images. It does
+## Completed status — 2026-08-27
+
+Both stages completed 20/20 with no recorded runner failure, and the complete returned folder was
+reviewed locally. The selected display candidates and limitations are recorded in
+[`results/showcase_refinement_20_review_20260827.md`](results/showcase_refinement_20_review_20260827.md).
+Derived presentation panels are under the machine-local
+`/Users/pot/Documents/大创/实验归档/portfolio-showcase-20260827` folder. The AutoDL instance was no
+longer needed after download; all commands below are preserved as historical execution records.
+
+This was a display-oriented lightweight inference extension, not a reopening of the finalized
+137-source routing validation. It ran 10 selected 3D-cartoon sources and 10 selected needle-felt
+sources through two sequential FLUX.1 Kontext edits, producing 40 candidate images. It did
 not train or load a LoRA, and its outcomes must not be added to the finalized study counts.
 
 The 3D route focuses on realistic facial anatomy followed by removal of residual rendered and
