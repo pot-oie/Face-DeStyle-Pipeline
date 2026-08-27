@@ -43,3 +43,9 @@ second-stage subset after seeing results.
 The manifest is generated deterministically by
 `scripts/build_multistyle_routing_validation_manifest.py`. Rebuilding is unnecessary during normal
 execution; it exists to make selection provenance clear.
+
+`showcase_refinement_20.jsonl` is a later display-oriented subset containing 10 3D-cartoon and 10
+needle-felt sources selected from the 137-source bank. It provides enough candidate margin for a
+two-stage lightweight reconstruction run without changing the finalized routing-validation counts.
+Its prompts live in `configs/styles_showcase_refinement.yaml`, and its AutoDL commands are recorded
+in `docs/HANDOFF_SHOWCASE_REFINEMENT_20.md`.

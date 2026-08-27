@@ -11,6 +11,9 @@ MANIFEST = (
 GAP_MANIFEST = (
     ROOT / "data/manifests/multistyle-routing/missing_stage12_sources.jsonl"
 )
+SHOWCASE_MANIFEST = (
+    ROOT / "data/manifests/multistyle-routing/showcase_refinement_20.jsonl"
+)
 
 
 def test_non_origami_validation_manifest_has_declared_style_counts():
@@ -36,3 +39,19 @@ def test_non_origami_validation_manifest_has_declared_style_counts():
         if record.style_category in {"comic", "ink", "watercolor"}
     }
     assert gap_2d_ids.isdisjoint({record.source_id for record in records})
+
+
+def test_showcase_refinement_manifest_is_balanced_subset_of_validation_bank():
+    validation_records = read_jsonl(MANIFEST, DatasetManifestRecord)
+    showcase_records = read_jsonl(SHOWCASE_MANIFEST, DatasetManifestRecord)
+
+    assert len(showcase_records) == 20
+    assert len({record.source_id for record in showcase_records}) == 20
+    assert Counter(record.style_category for record in showcase_records) == {
+        "3d_cartoon": 10,
+        "needle_felt": 10,
+    }
+    assert {record.split for record in showcase_records} == {"extension"}
+    assert {record.source_id for record in showcase_records} <= {
+        record.source_id for record in validation_records
+    }

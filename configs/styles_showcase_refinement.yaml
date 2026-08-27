@@ -1,0 +1,15 @@
+styles:
+  3d_cartoon:
+    display_name: 3D Cartoon Showcase Refinement
+    stage1_prompt: "Reconstruct the same depicted person as a real human with anatomically realistic facial proportions. Reduce oversized cartoon eyes and stylized head geometry; use natural eyelids, nose, jaw, ears, and subtle facial asymmetry. Preserve apparent age, skin tone, expression, gaze, hairstyle silhouette, clothing colors, pose, camera angle, composition, and background. The result must not look like a 3D render."
+    stage2_prompt: "Refine this as a natural DSLR portrait. Remove remaining CGI, plastic, doll-like, cel-shaded, and rendered-lighting cues; use realistic skin texture, fine hair, natural eye size and reflections, and plausible photographic lighting. Do not change the person, apparent age, expression, pose, crop, clothing, or background."
+    negative_prompt: "3d render, CGI, cartoon, animation, plastic skin, doll, oversized eyes, cel shading, illustration, changed person, changed age, changed expression, changed pose, altered crop, altered clothing, altered background"
+    canny_low: 80
+    canny_high: 180
+  needle_felt:
+    display_name: Needle Felt Showcase Reconstruction
+    stage1_prompt: "Reconstruct this needle-felt bust as a real human waist-up photographic portrait. Preserve apparent age, face shape, expression, gaze, hairstyle, clothing palette, pose, camera angle, and background. Replace felt fibers, doll anatomy, sculpted bust edges, pedestal or support, and stuffed-wool construction with natural skin, real hair, fabric clothing, shoulders, and torso. Keep the framing close to the source."
+    stage2_prompt: "Refine this as a natural photograph and remove all remaining wool, fiber, fuzzy textile, stuffed-doll, bust, pedestal, support, and handmade cues. Use realistic eyes, skin, hair, shoulders, and fabric while preserving the person, apparent age, expression, pose, crop, palette, and background."
+    negative_prompt: "needle felt, wool, fiber, fuzzy textile, stuffed doll, soft sculpture, bust, pedestal, support, handmade toy, changed person, changed age, changed expression, changed pose, altered crop, altered palette, altered background"
+    canny_low: 60
+    canny_high: 150
